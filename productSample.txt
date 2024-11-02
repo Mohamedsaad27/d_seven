@@ -1,0 +1,243 @@
+// app/Interfaces/ProductRepositoryInterface.php
+<?php
+
+namespace App\Interfaces;
+
+interface ProductRepositoryInterface
+{
+    public function getAllProducts();
+    public function getProductById($productId);
+    public function getProductsByCategory($categoryId);
+    public function getProductsByBrand($brandId);
+    public function createProduct(array $productDetails);
+    public function updateProduct($productId, array $newDetails);
+    public function deleteProduct($productId);
+    public function getProductWithColors($productId);
+    public function getProductWithSizes($productId);
+    public function getProductWithInventory($productId);
+}
+
+// app/Repositories/ProductRepository.php
+<?php
+
+namespace App\Repositories;
+
+use App\Interfaces\ProductRepositoryInterface;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
+
+class ProductRepository implements ProductRepositoryInterface
+{
+    protected $model;
+
+    public function __construct(Product $model)
+    {
+        $this->model = $model;
+    }
+
+    public function getAllProducts()
+    {
+        return $this->model->with(['images', 'brand', 'category'])->get();
+    }
+
+    public function getProductById($productId)
+    {
+        return $this->model->with(['images', 'brand', 'category'])->findOrFail($productId);
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+        return $this->model->where('category_id', $categoryId)->get();
+    }
+
+    public function getProductsByBrand($brandId)
+    {
+        return $this->model->where('brand_id', $brandId)->get();
+    }
+
+    public function createProduct(array $productDetails)
+    {
+        return $this->model->create($productDetails);
+    }
+
+    public function updateProduct($productId, array $newDetails)
+    {
+        return $this->model->whereId($productId)->update($newDetails);
+    }
+
+    public function deleteProduct($productId)
+    {
+        return $this->model->destroy($productId);
+    }
+
+    public function getProductWithColors($productId)
+    {
+        return $this->model->with('colors.images')->findOrFail($productId);
+    }
+
+    public function getProductWithSizes($productId)
+    {
+        return $this->model->with('sizes')->findOrFail($productId);
+    }
+
+    public function getProductWithInventory($productId)
+    {
+        return $this->model->with('inventory')->findOrFail($productId);
+    }
+}
+
+// app/Models/Product.php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Product extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'brand_id',
+        'category_id',
+        'base_price',
+        'is_active'
+    ];
+
+    protected $casts = [
+        'base_price' => 'decimal:2',
+        'is_active' => 'boolean'
+    ];
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(ProductColor::class);
+    }
+
+    public function sizes()
+    {
+        return $this->hasMany(ProductSize::class);
+    }
+
+    public function inventory()
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'product_discounts');
+    }
+}
+
+// app/Providers/RepositoryServiceProvider.php
+<?php
+
+namespace App\Providers;
+
+use App\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
+use Illuminate\Support\ServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        // Add other repository bindings here
+    }
+}
+
+// app/Http/Controllers/ProductController.php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\ProductRequest;
+use App\Interfaces\ProductRepositoryInterface;
+use Illuminate\Http\JsonResponse;
+
+class ProductController extends Controller
+{
+    private ProductRepositoryInterface $productRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
+    public function index(): JsonResponse
+    {
+        $products = $this->productRepository->getAllProducts();
+        return response()->json(['data' => $products], 200);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $product = $this->productRepository->getProductById($id);
+        return response()->json(['data' => $product], 200);
+    }
+
+    public function store(ProductRequest $request): JsonResponse
+    {
+        $product = $this->productRepository->createProduct($request->validated());
+        return response()->json(['data' => $product], 201);
+    }
+
+    public function update(ProductRequest $request, $id): JsonResponse
+    {
+        $product = $this->productRepository->updateProduct($id, $request->validated());
+        return response()->json(['data' => $product], 200);
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $this->productRepository->deleteProduct($id);
+        return response()->json(null, 204);
+    }
+}
+
+// app/Http/Requests/ProductRequest.php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ProductRequest extends FormRequest
+{
+    public function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
+            'base_price' => 'required|numeric|min:0',
+            'is_active' => 'boolean'
+        ];
+    }
+}
