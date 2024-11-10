@@ -8,8 +8,7 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.svg') }}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
+   
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="{{ asset('assets/css/front/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/LineIcons.3.0.css') }}" />
@@ -30,7 +29,6 @@
         </div>
     </div>
 
-    @include('layouts.website.header')
     @include('layouts.website.nav')
     <!-- Main Content -->
     @yield('content')

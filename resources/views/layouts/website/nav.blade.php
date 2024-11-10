@@ -21,9 +21,9 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="{{route('index')}}">Home</a></li>
+                                <li><a href="{{route('aboutUs')}}">About Us</a></li>
+                                <li><a href="{{route('contact.index')}}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                         <select id="select1">
                                             <option selected>All</option>
                                             <option value="1">option 01</option>
-                                          
+
                                         </select>
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@
                                     </a>
                                 </div>
                                 <div class="cart-items">
-                                    <a href="javascript:void(0)" class="main-btn">
+                                    <a href="{{route('cart.index')}}" class="main-btn">
                                         <i class="lni lni-cart"></i>
                                         <span class="total-items">2</span>
                                     </a>
@@ -107,7 +107,7 @@
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
                                             <span>2 Items</span>
-                                            <a href="cart.html">View Cart</a>
+                                            <a href="{{route('cart.index')}}">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
                                             <li>
@@ -170,12 +170,12 @@
                                 <li><a href="product-grids.html">Electronics <i class="lni lni-chevron-right"></i></a>
                                     <ul class="inner-sub-category">
                                         <li><a href="product-grids.html">Digital Cameras</a></li>
-                                      
+
                                     </ul>
                                 </li>
                                 <li><a href="product-grids.html">accessories</a></li>
                                 <li><a href="product-grids.html">Televisions</a></li>
-                           
+
                             </ul>
                         </div>
                         <!-- End Mega Category Menu -->
@@ -191,7 +191,7 @@
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                 <ul id="nav" class="navbar-nav ms-auto">
                                     <li class="nav-item">
-                                        <a href="index.html" aria-label="Toggle navigation">Home</a>
+                                        <a href="{{route('index')}}" aria-label="Toggle navigation">Home</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="dd-menu active collapsed" href="javascript:void(0)"
@@ -199,10 +199,10 @@
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
                                             aria-label="Toggle navigation">Pages</a>
                                         <ul class="sub-menu collapse" id="submenu-1-2">
-                                            <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                            <li class="nav-item"><a href="faq.html">Faq</a></li>
-                                            <li class="nav-item active"><a href="login.html">Login</a></li>
-                                            <li class="nav-item"><a href="register.html">Register</a></li>
+                                            <li class="nav-item"><a href="{{route('aboutUs')}}">About Us</a></li>
+                                            <li class="nav-item"><a href="{{route('faq')}}">Faq</a></li>
+                                            <li class="nav-item active"><a href="{{route('login')}}">Login</a></li>
+                                            <li class="nav-item"><a href="{{route('register')}}">Register</a></li>
                                             <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
                                             <li class="nav-item"><a href="404.html">404 Error</a></li>
                                         </ul>
@@ -213,29 +213,15 @@
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
                                             aria-label="Toggle navigation">Shop</a>
                                         <ul class="sub-menu collapse" id="submenu-1-3">
-                                            <li class="nav-item"><a href="product-grids.html">Shop Grid</a></li>
-                                            <li class="nav-item"><a href="product-list.html">Shop List</a></li>
-                                            <li class="nav-item"><a href="product-details.html">shop Single</a></li>
-                                            <li class="nav-item"><a href="cart.html">Cart</a></li>
-                                            <li class="nav-item"><a href="checkout.html">Checkout</a></li>
+                                            <li class="nav-item"><a href="{{route('product.index')}}">Products List</a></li>
+                                            <li class="nav-item"><a href="{{route('product.show',1)}}">Product Single</a></li>
+                                            <li class="nav-item"><a href="{{route('cart.index')}}">Cart</a></li>
+                                            <li class="nav-item"><a href="#">Checkout</a></li>
                                         </ul>
                                     </li>
+                                   
                                     <li class="nav-item">
-                                        <a class="dd-menu collapsed" href="javascript:void(0)"
-                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-4"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">Blog</a>
-                                        <ul class="sub-menu collapse" id="submenu-1-4">
-                                            <li class="nav-item"><a href="blog-grid-sidebar.html">Blog Grid
-                                                    Sidebar</a>
-                                            </li>
-                                            <li class="nav-item"><a href="blog-single.html">Blog Single</a></li>
-                                            <li class="nav-item"><a href="blog-single-sidebar.html">Blog Single
-                                                    Sibebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="contact.html" aria-label="Toggle navigation">Contact Us</a>
+                                        <a href="{{route('contact.index')}}" aria-label="Toggle navigation">Contact Us</a>
                                     </li>
                                 </ul>
                             </div> <!-- navbar collapse -->
