@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - E-commerce Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container py-3">
+            <h1 class="h3 mb-0">My Account</h1>
+        </div>
+    </header>
+
+    <main class="container py-4">
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400" 
+                                     alt="Sarah Anderson" 
+                                     class="rounded-circle profile-avatar">
+                                <button class="btn btn-primary btn-sm position-absolute bottom-0 end-0 rounded-circle p-2">
+                                    <i class="bi bi-camera"></i>
+                                </button>
+                            </div>
+                            <h5 class="mt-3 mb-1">Sarah Anderson</h5>
+                            <p class="text-muted small">sarah.anderson@example.com</p>
+                        </div>
+
+                        <div class="nav flex-column nav-pills">
+                            <a href="#profile" class="nav-link active text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-person me-2"></i>
+                                Profile Information
+                            </a>
+                            <a href="#orders" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-box me-2"></i>
+                                Orders
+                            </a>
+                            <a href="#wishlist" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-heart me-2"></i>
+                                Wishlist
+                            </a>
+                            <a href="#addresses" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                Addresses
+                            </a>
+                            <a href="#payment" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-credit-card me-2"></i>
+                                Payment Methods
+                            </a>
+                            <a href="#notifications" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-bell me-2"></i>
+                                Notifications
+                            </a>
+                            <a href="#security" class="nav-link text-start mb-2" data-bs-toggle="pill">
+                                <i class="bi bi-shield-lock me-2"></i>
+                                Security
+                            </a>
+                            <a href="#" class="nav-link text-start text-danger">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-12 col-md-9">
+                <div class="card">
+                    <div class="card-body tab-content">
+                        <!-- Profile Tab -->
+                        <div class="tab-pane fade show active" id="profile">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="card-title mb-0">Profile Information</h4>
+                                <button class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-pencil me-2"></i>
+                                    Edit Profile
+                                </button>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" value="Sarah Anderson" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" value="sarah.anderson@example.com" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" value="+1 (555) 123-4567" disabled>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="text" class="form-control" value="April 15, 1990" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Tab -->
+                        <div class="tab-pane fade" id="orders">
+                            <h4 class="card-title mb-4">Order History</h4>
+                            <div class="orders-list">
+                                <div class="card mb-3 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-bold">#ORD-2024-1234</span>
+                                            <span class="badge bg-success">Delivered</span>
+                                        </div>
+                                        <div class="text-muted small">
+                                            <p class="mb-1">Order Date: March 15, 2024</p>
+                                            <p class="mb-1">Items: 3</p>
+                                            <p class="mb-0">Total: $249.99</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3 order-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="fw-bold">#ORD-2024-1233</span>
+                                            <span class="badge bg-primary">Processing</span>
+                                        </div>
+                                        <div class="text-muted small">
+                                            <p class="mb-1">Order Date: March 10, 2024</p>
+                                            <p class="mb-1">Items: 2</p>
+                                            <p class="mb-0">Total: $129.99</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Tabs -->
+                        <div class="tab-pane fade" id="wishlist">
+                            <div class="text-center py-5">
+                                <h4 class="mb-2">Coming Soon</h4>
+                                <p class="text-muted">This feature is under development</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="addresses">
+                            <div class="text-center py-5">
+                                <h4 class="mb-2">Coming Soon</h4>
+                                <p class="text-muted">This feature is under development</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="payment">
+                            <div class="text-center py-5">
+                                <h4 class="mb-2">Coming Soon</h4>
+                                <p class="text-muted">This feature is under development</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="notifications">
+                            <div class="text-center py-5">
+                                <h4 class="mb-2">Coming Soon</h4>
+                                <p class="text-muted">This feature is under development</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="security">
+                            <div class="text-center py-5">
+                                <h4 class="mb-2">Coming Soon</h4>
+                                <p class="text-muted">This feature is under development</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+/* Custom styles to complement Bootstrap */
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-pills .nav-link {
+  color: #495057;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #f8f9fa;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.order-card {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #dee2e6;
+}
+
+.order-card:hover {
+  border-color: #0d6efd;
+  transform: translateY(-2px);
+}
+
+.form-control:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -2,27 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Inventory extends Model
 {
     use HasFactory;
+
+    protected $table = 'inventory';
+
     protected $fillable = [
         'product_id',
-        'product_color_id',
-        'product_size_id',
+        'color_id',
+        'size_id',
         'quantity',
     ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
+
     public function productColor()
     {
-        return $this->belongsTo(ProductColor::class);
+        return $this->belongsTo(Color::class);
     }
+
     public function productSize()
     {
-        return $this->belongsTo(ProductSize::class);
+        return $this->belongsTo(Size::class);
     }
 }
