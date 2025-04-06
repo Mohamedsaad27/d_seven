@@ -42,6 +42,19 @@ const translations = {
         size: "Sizes",
         add_size: "Add Size",
         size_list: "Size List",
+        inventory: "Inventory",
+        inventory_list: "Inventory List",
+        add_inventory: "Add Inventory",
+        discount: "Discount",
+        discount_list: "Discount List",
+        add_discount: "Add Discount",
+        order: "Order",
+        order_list: "Order List",
+        add_order: "Add Order",
+        users: "Users",
+        users_list: "Users List",
+        add_users: "Add Users",
+        
     },
     ar: {
         // login page
@@ -85,6 +98,18 @@ const translations = {
         size: "المقاسات",
         add_size: "إضافة مقاس",
         size_list: "قائمة المقاسات",
+        inventory: "المخزون",
+        inventory_list: "قائمة المخزون",
+        add_inventory: "إضافة مخزون",
+        discount: "الخصومات",
+        discount_list: "قائمة الخصومات",
+        add_discount: "إضافة خصم",
+        order: "الطلبات",
+        order_list: "قائمة الطلبات",
+        add_order: "إضافة طلب",
+        users: "المستخدمين",
+        users_list: "قائمة المستخدمين",
+        add_users: "إضافة مستخدم",
     },
 };
 

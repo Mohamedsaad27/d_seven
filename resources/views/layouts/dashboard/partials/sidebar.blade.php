@@ -211,6 +211,124 @@
                     </ul>
                 </div>
             </li>
+             <!-- Orders Section -->
+             <li class="nav-item">
+                <a href="#submenu-order" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-order">
+                    <span class="d-flex align-items-center">
+                        <span class="sidebar-icon">
+                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3h14v2H3zM3 9h14v2H3zM3 15h14v2H3z"></path>
+                            </svg>
+                        </span>
+                        <span class="sidebar-text" data-i18n="order">Manage Orders</span>
+                    </span>
+                    <span class="link-arrow">
+                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </a>
+                <div class="multi-level collapse" id="submenu-order" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('orders.create')}}">
+                                <span class="sidebar-text ms-3" data-i18n="add_order">Add Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('orders.index')}}">
+                                <span class="sidebar-text ms-3" data-i18n="order_list">Order List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+             <!-- Discounts Section -->
+             <li class="nav-item">
+                <a href="#submenu-discount" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-discount">
+                    <span class="d-flex align-items-center">
+                        <span class="sidebar-icon">
+                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3h14v2H3zM3 9h14v2H3zM3 15h14v2H3z"></path>
+                            </svg>
+                        </span>
+                        <span class="sidebar-text" data-i18n="discount">Manage Discounts</span>
+                    </span>
+                    <span class="link-arrow">
+                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </a>
+                <div class="multi-level collapse" id="submenu-discount" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('discounts.create')}}">
+                                <span class="sidebar-text ms-3" data-i18n="add_discount">Add Discount</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('discounts.index')}}">
+                                <span class="sidebar-text ms-3" data-i18n="discount_list">Discount List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+             <!-- Inventory Section -->
+             <li class="nav-item">
+                <a href="#submenu-inventory" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-inventory">
+                    <span class="d-flex align-items-center">
+                        <span class="sidebar-icon">
+                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3h14v2H3zM3 9h14v2H3zM3 15h14v2H3z"></path>
+                            </svg>
+                        </span>
+                        <span class="sidebar-text" data-i18n="inventory">Manage Inventory</span>
+                    </span>
+                    <span class="link-arrow">
+                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </a>
+                <div class="multi-level collapse" id="submenu-inventory" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('inventory.index')}}">
+                                <span class="sidebar-text ms-3" data-i18n="inventory_list">Inventory</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- users Section -->
+            <li class="nav-item">
+                <a href="#submenu-users" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-users">
+                    <span class="d-flex align-items-center">
+                        <span class="sidebar-icon">
+                            <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3h14v2H3zM3 9h14v2H3zM3 15h14v2H3z"></path>
+                            </svg>
+                        </span>
+                        <span class="sidebar-text" data-i18n="users">Manage Users</span>
+                    </span>
+                    <span class="link-arrow">
+                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                </a>
+                <div class="multi-level collapse" id="submenu-users" aria-expanded="false">
+                    <ul class="flex-column nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('users.index')}}">
+                                <span class="sidebar-text ms-3" data-i18n="users_list">Users</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 
