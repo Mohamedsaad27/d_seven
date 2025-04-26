@@ -270,7 +270,7 @@
     <div class="email-wrapper">
         <div class="email-header">
             <div class="language-toggle">AR | EN</div>
-            <img src="{{ asset('WhatsApp Image 2025-03-15 at 15.04.26_844da7bd.jpg') }}" alt="D-Seven Store Logo">
+            <img src="{{ asset('logo.jpg') }}" alt="D-Seven Store Logo">
             <h1>تحقق من حسابك | Verify Your Account</h1>
         </div>
         
