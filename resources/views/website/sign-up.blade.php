@@ -133,7 +133,7 @@
                                         <a href="#" class="btn btn-outline-secondary me-2"><i class="lni lni-facebook"></i></a>
                                         <a href="#" class="btn btn-outline-secondary"><i class="lni lni-apple"></i></a>
                                     </div>
-                                    <p class="mb-0">Already have an account? <a href="login.html" class="fw-bold text-decoration-none">Login Now</a></p>
+                                    <p class="mb-0">Already have an account? <a href="{{route('login')}}" class="fw-bold text-decoration-none">Login Now</a></p>
                                 </div>
                             </div>
                         </form>
