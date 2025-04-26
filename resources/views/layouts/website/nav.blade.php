@@ -6,7 +6,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-left">
-                            <ul class="menu-top-link">
+                            <!-- <ul class="menu-top-link">
                                 <li>
                                     <div class="select-position">
                                         <select id="select5">
@@ -15,7 +15,7 @@
                                         </select>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
@@ -29,10 +29,14 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
     <div class="top-end">
-        @auth
+        @if(Auth::check() && Auth::user()->is_active == 1)
             <div class="user">
                 <i class="lni lni-user"></i>
-                Hello, {{ Auth::user()->name_en }}
+                @if(Auth::user()->name_en)
+                    Hello, {{ Auth::user()->name_en }}
+                @else
+                    Hello, {{ Auth::user()->name_ar }}
+                @endif
             </div>
             <ul class="user-login">
                 <li>
@@ -47,18 +51,24 @@
                     </form>
                 </li>
             </ul>
-        @else
+            @else
             <div class="user">
                 <i class="lni lni-user"></i>
-                Hello
+                Hello 
             </div>
             <ul class="user-login">
+            @if(Auth::check() && Auth::user()->is_active == 0)
+                <li>
+                    <a href="{{ route('verification.form') }}">Verify Account</a>
+                </li>
+            @else
                 <li>
                     <a href="{{ route('login') }}">Sign In</a>
                 </li>
                 <li>
                     <a href="{{ route('register') }}">Register</a>
                 </li>
+            @endauth
             </ul>
         @endauth
     </div>

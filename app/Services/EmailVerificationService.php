@@ -11,6 +11,7 @@ class EmailVerificationService
 {
     public function sendVerificationEmail($user)
     {
+        $user = User::find($user->id);
         Mail::to($user->email)->send(new EmailVerification($user));
     }
 

@@ -2,7 +2,7 @@
     <div class="sidebar-inner px-4 pt-3">
         <ul class="nav flex-column pt-3 pt-md-0 mt-4">
             <li class="nav-item active">
-                <a href="../../pages/dashboard/dashboard.html" class="nav-link">
+                <a href="{{route('dashboard')}}" class="nav-link">
                     <span class="sidebar-icon">
                         <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
