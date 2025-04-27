@@ -141,7 +141,7 @@
                                     <div class="product-card rounded-3 overflow-hidden bg-white shadow-sm h-100">
                                         <div class="product-image position-relative">
                                             <span class="badge bg-primary position-absolute top-0 end-0 m-3">New</span>
-                                            <img src="{{ $product->productImages()->first()->image_url ?? 'https://via.placeholder.com/335x335' }}" 
+                                            <img src="{{ asset($product->productImages()->first()->image_url) ?? 'https://via.placeholder.com/335x335' }}" 
                                                  alt="{{ $product->name_ar }}" 
                                                  class="img-fluid w-100 product-img">
                                             <div class="product-action position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0">
