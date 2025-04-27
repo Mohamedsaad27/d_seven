@@ -382,7 +382,8 @@
 
     <!-- Language JS -->
     <script src="{{ asset('assets/js/dashboard/translations.js') }}" type="module"></script>
-
+   
+    @stack('scripts')
 </body>
 
 </html>

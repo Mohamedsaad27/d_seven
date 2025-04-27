@@ -9,8 +9,8 @@ use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\ProductDashboardInterface;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Color;
-use App\Models\Size;
 use App\Models\Product;
+use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 

@@ -17,7 +17,7 @@ class ShippingZoneRepository implements ShippingZoneRepositoryInterface
 
     public function getAllShippingZones()
     {
-        return $this->shippingZone->all();
+        return $this->shippingZone->orderBy('created_at', 'desc')->get();
     }
 
     public function getShippingZoneById($id)

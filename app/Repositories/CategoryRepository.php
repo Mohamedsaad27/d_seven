@@ -15,64 +15,78 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $this->model = $model;
     }
-    public function index(){
-        $categories = $this->model->all();
+
+    public function index()
+    {
+        $categories = $this->model->orderBy('created_at', 'desc')->get();
         return $categories;
     }
-    public function show(Category $category){
+
+    public function show(Category $category)
+    {
         return view('dashboard.category.show', compact('category'));
     }
-    public function create(){
+
+    public function create()
+    {
         $categories = $this->model->get();
         return view('dashboard.category.create', compact('categories'));
     }
-    public function store(StoreCategoryRequest $request){
+
+    public function store(StoreCategoryRequest $request)
+    {
         $validated = $request->validated();
-        try{
-            if($request->hasFile('image')){
+        try {
+            if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $imagePath = 'Uploads/Categories/'.$imageName;
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'Uploads/Categories/' . $imageName;
                 $image->move(public_path('Uploads/Categories/'), $imageName);
                 $validated['image'] = $imagePath;
             }
             $this->model->create($validated);
-            return redirect()->route('category.index')->with('success','Category Created Successfully');
-        }catch(\Exception $e){
+            return redirect()->route('category.index')->with('success', 'Category Created Successfully');
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Category Creation Failed');
         }
     }
-    public function edit(Category $category){
+
+    public function edit(Category $category)
+    {
         $parentCategories = $this->model->where('id', '!=', $category->id)->get();
         return view('dashboard.category.edit', compact('category', 'parentCategories'));
     }
-    public function update(UpdateCategoryRequest $request, Category $category){
+
+    public function update(UpdateCategoryRequest $request, Category $category)
+    {
         $validated = $request->validated();
-        try{
-            if($request->hasFile('image')){
-                if($category->image){
+        try {
+            if ($request->hasFile('image')) {
+                if ($category->image) {
                     unlink(public_path($category->image));
                 }
                 $image = $request->file('image');
-                $imageName = time().'.'.$image->getClientOriginalExtension();
-                $imagePath = 'Uploads/Categories/'.$imageName;
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'Uploads/Categories/' . $imageName;
                 $image->move(public_path('Uploads/Categories/'), $imageName);
                 $validated['image'] = $imagePath;
             }
             $category->update($validated);
-            return redirect()->route('category.index')->with('success','Category Updated Successfully');
-        }catch(\Exception $e){
+            return redirect()->route('category.index')->with('success', 'Category Updated Successfully');
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Category Update Failed');
         }
     }
-    public function destroy(Category $category){
-        try{
-            if($category->image){
-            unlink(public_path($category->image));
+
+    public function destroy(Category $category)
+    {
+        try {
+            if ($category->image) {
+                unlink(public_path($category->image));
             }
             $category->delete();
-            return redirect()->route('category.index')->with('success','Category Deleted Successfully');
-        }catch(\Exception $e){
+            return redirect()->route('category.index')->with('success', 'Category Deleted Successfully');
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Category Deletion Failed');
         }
     }
