@@ -317,7 +317,7 @@
                         <div class="product-card">
                             <div class="product-image">
                                 <a href="{{ route('product.show', $relatedProduct->id) }}">
-                                    <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" alt="{{ $relatedProduct->{'name_' . app()->getLocale()} }}" class="img-fluid">
+                                    <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" alt="{{ $relatedProduct->name_en }}" class="img-fluid">
                                 </a>
                                 <div class="product-action">
                                     <a href="#" class="quick-view" data-product-id="{{ $relatedProduct->id }}"><i class="lni lni-eye"></i></a>
@@ -326,7 +326,8 @@
                                 </div>
                             </div>
                             <div class="product-info">
-                                <h3 class="product-name"><a href="{{ route('product.show', $relatedProduct->id) }}">{{ $relatedProduct->{'name_' . app()->getLocale()} }}</a></h3>
+                                <h3 class="product-name"><a href="{{ route('product.show', $relatedProduct->id) }}">{{ $relatedProduct->name_ar }}</a></h3>
+                                
                                 <div class="product-price">${{ number_format($relatedProduct->price, 2) }}</div>
                             </div>
                         </div>
