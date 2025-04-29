@@ -173,8 +173,8 @@ class ProductDashboardRepository implements ProductDashboardInterface
         // Add product images
         foreach ($data['images'] as $image) {
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'Uploads/products/' . $product->id . '/' . $imageName;
-            $image->move(public_path('Uploads/products/' . $product->id), $imageName);
+            $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
+            $image->move(public_path('uploads/products/' . $product->id), $imageName);
             ProductImage::create([
                 'product_id' => $product->id,
                 'image_url' => $imagePath,

@@ -11,11 +11,4 @@ interface ProductRepositoryInterface
     public function deleteProduct($productId);
     public function editProduct($productId);
     public function updateProduct($productId, array $newDetails);
-    // public function getFeturedProducts();
-    // public function getProductByCategory($categoryId);
-    // public function getProductBySubCategory($subCategoryId);
-    // public function getProductByBrand($brandId);
-    // public function getProductByColor($color);
-    // public function getProductBySize($size);
-    // public function getProductBySearch($search);
 }

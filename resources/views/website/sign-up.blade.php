@@ -45,45 +45,60 @@
                             <!-- Name in English -->
                             <div class="col-sm-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name_en" name="name_en" placeholder="Name in English" required>
+                                    <input type="text" class="form-control" id="name_en" name="name_en" placeholder="Name in English" >
                                     <label for="name_en"><i class="lni lni-user me-1"></i> Name in English</label>
                                 </div>
+                                @error('name_en')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Name in Arabic -->
                             <div class="col-sm-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name_ar" name="name_ar" placeholder="Name in Arabic" required>
+                                    <input type="text" class="form-control" id="name_ar" name="name_ar" placeholder="Name in Arabic" >
                                     <label for="name_ar"><i class="lni lni-user me-1"></i> Name in Arabic</label>
                                 </div>
+                                @error('name_ar')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Email -->
                             <div class="col-sm-6">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" >
                                     <label for="email"><i class="lni lni-envelope me-1"></i> Email Address</label>
                                 </div>
+                                @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Phone -->
                             <div class="col-sm-6">
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" >
                                     <label for="phone"><i class="lni lni-phone me-1"></i> Phone Number</label>
                                 </div>
+                                @error('phone')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Gender -->
                             <div class="col-sm-6">
                                 <div class="form-floating mb-3">
-                                    <select class="form-select" id="gender" name="gender" required>
+                                    <select class="form-select" id="gender" name="gender" >
                                         <option value="" selected disabled>Select Gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                     </select>
                                     <label for="gender"><i class="lni lni-users me-1"></i> Gender</label>
                                 </div>
+                                @error('gender')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Profile Image -->
@@ -92,24 +107,37 @@
                                     <label for="profile_image" class="form-label"><i class="lni lni-image me-1"></i> Profile Image</label>
                                     <input type="file" class="form-control" id="profile_image" name="profile_image">
                                 </div>
+                                @error('profile_image')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <!-- Password -->
+                           <!-- Password -->
                             <div class="col-sm-6">
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                <div class="form-floating mb-3 position-relative">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" >
                                     <label for="password"><i class="lni lni-lock-alt me-1"></i> Password</label>
+                                    <i class="lni lni-eye position-absolute end-0 top-50 translate-middle-y me-3 cursor-pointer"
+                                    onclick="togglePassword('password', this)"></i>
                                 </div>
+                                @error('password')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            
+
                             <!-- Confirm Password -->
                             <div class="col-sm-6">
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                                <div class="form-floating mb-3 position-relative">
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" >
                                     <label for="password_confirmation"><i class="lni lni-lock me-1"></i> Confirm Password</label>
+                                    <i class="lni lni-eye position-absolute end-0 top-50 translate-middle-y me-3 cursor-pointer"
+                                    onclick="togglePassword('password_confirmation', this)"></i>
                                 </div>
+                                @error('password_confirmation')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            
                             <!-- Terms and Conditions -->
                             <div class="col-12">
                                 <div class="form-check mb-3">
@@ -232,5 +260,21 @@
         animation: fadeInUp 0.5s ease-out;
     }
 </style>
+@push('scripts')
+<script>
+function togglePassword(fieldId, icon) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+        icon.classList.remove("lni-eye");
+        icon.classList.add("lni-eye-off");
+    } else {
+        field.type = "password";
+        icon.classList.remove("lni-eye-off");
+        icon.classList.add("lni-eye");
+    }
+}
+</script>
+
 @endpush
 

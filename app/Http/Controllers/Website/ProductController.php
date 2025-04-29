@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\BrandRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\ProductRepositoryInterface;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -63,5 +64,30 @@ class ProductController extends Controller
     {
         $this->productRepository->deleteProduct($productId);
         return redirect()->route('product.index')->with('success', 'Product deleted successfully');
+    }
+
+    public function getProductsByCategory(Request $request, $category_id)
+    {
+        $products = Product::with('productImages', 'discounts')->where('category_id', $category_id)->get();
+        return response()->json($products);
+    }
+
+    public function getProductsByBrand(Request $request, $brand_id)
+    {
+        $products = Product::with('productImages', 'discounts')->where('category_id', $brand_id)->get();
+        return response()->json($products);
+    }
+
+    public function getAllProducts(Request $request)
+    {
+        $products = Product::with(['productImages', 'discounts', 'category', 'brand'])
+            ->where('is_active', 1)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'count' => $products->count()
+        ]);
     }
 }

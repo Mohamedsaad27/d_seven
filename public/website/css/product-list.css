@@ -1,0 +1,89 @@
+     /* Hero section styling */
+     .shop-hero {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    /* Product card styling */
+    .product-card {
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+    
+    .product-card:hover .product-action {
+        opacity: 1 !important;
+        bottom: 10px;
+    }
+    
+    .product-image {
+        height: 220px;
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+    
+    .product-img {
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.5s ease;
+    }
+    
+    .product-card:hover .product-img {
+        transform: scale(1.05);
+    }
+    
+    .product-action {
+        transition: all 0.3s ease;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+        bottom: -50px;
+    }
+    
+    .product-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    
+    /* Sidebar styling */
+    .shop-sidebar {
+        background-color: white;
+        border: 1px solid #eee;
+    }
+    
+    /* Specific UI element improvements */
+    .sidebar-widget {
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-widget:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .category-item:hover {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    /* Fix for list view images */
+    .object-fit-cover {
+        object-fit: cover;
+    }
+    
+    /* Improve form controls */
+    .form-control:focus, .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    /* Additional responsive improvements */
+    @media (max-width: 768px) {
+        .product-image {
+            height: 180px;
+        }
+    }

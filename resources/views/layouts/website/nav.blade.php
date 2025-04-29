@@ -96,13 +96,12 @@
                             <!-- navbar search start -->
                             <div class="navbar-search search-style-5">
                                 <div class="search-select">
-                                    <div class="select-position">
+                                    <!-- <div class="select-position">
                                         <select id="select1">
                                             <option selected>All</option>
                                             <option value="1">option 01</option>
-
                                         </select>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="search-input">
                                     <input type="text" placeholder="Search">
@@ -120,7 +119,7 @@
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
                                 <h3>Hotline:
-                                    <span>(+100) 123 456 7890</span>
+                                    <span>(+20) 01021369699</span>
                                 </h3>
                             </div>
                             <div class="navbar-cart">
@@ -195,21 +194,43 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="nav-inner">
+                        @php 
+                        $categories = \App\Models\Category::whereNull('parent_category_id')
+                        ->where('is_active', 1)
+                        ->with(['children' => function ($q) {
+                            $q->where('is_active', 1);
+                        }])
+                        ->get();
+                        @endphp
                         <!-- Start Mega Category Menu -->
                         <div class="mega-category-menu">
-                            <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
-                            <ul class="sub-category">
-                                <li><a href="product-grids.html">Electronics <i class="lni lni-chevron-right"></i></a>
-                                    <ul class="inner-sub-category">
-                                        <li><a href="product-grids.html">Digital Cameras</a></li>
+                        <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                        <ul class="sub-category">
+                            @foreach($categories as $category)
+                                <li>
+                                    <a href="{{ route('product.index', $category->id) }}">
+                                        {{ $category->name_en }}
+                                        @if($category->children->count())
+                                            <i class="lni lni-chevron-right"></i>
+                                        @endif
+                                    </a>
 
-                                    </ul>
+                                    @if($category->children->count())
+                                        <ul class="inner-sub-category">
+                                            @foreach($category->children as $child)
+                                                <li>
+                                                    <a href="{{ route('product.index', $child->id) }}">
+                                                        {{ $child->name_en }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </li>
-                                <li><a href="product-grids.html">accessories</a></li>
-                                <li><a href="product-grids.html">Televisions</a></li>
-
+                            @endforeach
                             </ul>
                         </div>
+
                         <!-- End Mega Category Menu -->
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
@@ -229,16 +250,7 @@
                                         <a href="{{route('aboutUs')}}" aria-label="Toggle navigation">About Us</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dd-menu collapsed" href="javascript:void(0)"
-                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">Shop</a>
-                                        <ul class="sub-menu collapse" id="submenu-1-3">
-                                            <li class="nav-item"><a href="{{route('product.index')}}">Products List</a></li>
-                                            <li class="nav-item"><a href="{{route('product.show',1)}}">Product Single</a></li>
-                                            <li class="nav-item"><a href="{{route('cart.index')}}">Cart</a></li>
-                                            <li class="nav-item"><a href="#">Checkout</a></li>
-                                        </ul>
+                                        <a aria-label="Toggle navigation" href="{{ route('product.index') }}">Products</a>
                                     </li>
                                    
                                     <li class="nav-item">
@@ -256,16 +268,15 @@
                         <h5 class="title">Follow Us:</h5>
                         <ul>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                <a href="https://www.facebook.com/profile.php?id=61570890732774"><i class="lni lni-facebook-filled"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                <a href="https://chat.whatsapp.com/LsE6xzbFvQHDFGFL6jppGZ">
+                                <i class="lni lni-whatsapp"></i>
+                                </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
+                                <a href="https://t.me/+EOgqegm9M_ZjMTk0"><i class="lni lni-telegram"></i></a>
                             </li>
                         </ul>
                     </div>
