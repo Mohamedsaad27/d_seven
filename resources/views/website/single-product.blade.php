@@ -309,33 +309,49 @@
         
         <!-- Related Products -->
         @if($product->relatedProducts->isNotEmpty())
-        <div class="related-products mt-5">
-            <h2 class="section-title mb-4">Related Products</h2>
-            <div class="row">
-                @foreach($product->relatedProducts as $relatedProduct)
-                    <div class="col-lg-3 col-md-4 col-6 mb-4">
-                        <div class="product-card">
-                            <div class="product-image">
-                                <a href="{{ route('product.show', $relatedProduct->id) }}">
-                                    <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" alt="{{ $relatedProduct->name_en }}" class="img-fluid">
+    <div class="related-products mt-5">
+        <h2 class="section-title mb-4 text-center">منتجات ذات صلة</h2>
+        <div class="row">
+            @foreach($product->relatedProducts as $relatedProduct)
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card product-card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                        <div class="position-relative">
+                            <a href="{{ route('product.show', $relatedProduct->id) }}">
+                                <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" 
+                                     alt="{{ $relatedProduct->name_en }}" 
+                                     class="card-img-top img-fluid hover-zoom"
+                                     style="height: 250px; object-fit: cover;">
+                            </a>
+                            <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+                                <a href="#" class="btn btn-sm btn-light rounded-circle shadow add-to-wishlist" 
+                                   data-product-id="{{ $relatedProduct->id }}" title="Wishlist">
+                                   <i class="lni lni-heart text-danger"></i>
                                 </a>
-                                <div class="product-action">
-                                    <a href="#" class="quick-view" data-product-id="{{ $relatedProduct->id }}"><i class="lni lni-eye"></i></a>
-                                    <a href="#" class="add-to-wishlist" data-product-id="{{ $relatedProduct->id }}"><i class="lni lni-heart"></i></a>
-                                    <a href="#" class="add-to-cart" data-product-id="{{ $relatedProduct->id }}"><i class="lni lni-cart"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-name"><a href="{{ route('product.show', $relatedProduct->id) }}">{{ $relatedProduct->name_ar }}</a></h3>
-                                
-                                <div class="product-price">${{ number_format($relatedProduct->price, 2) }}</div>
+                                <a href="#" class="btn btn-sm btn-light rounded-circle shadow quick-view" 
+                                   data-product-id="{{ $relatedProduct->id }}" title="Quick View">
+                                   <i class="lni lni-eye text-primary"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-light rounded-circle shadow add-to-cart" 
+                                   data-product-id="{{ $relatedProduct->id }}" title="Add to Cart">
+                                   <i class="lni lni-cart text-success"></i>
+                                </a>
                             </div>
                         </div>
+                        <div class="card-body text-center">
+                            <h6 class="card-title mb-2">
+                                <a href="{{ route('product.show', $relatedProduct->id) }}" class="text-dark">
+                                    {{ $relatedProduct->name_ar }}
+                                </a>
+                            </h6>
+                            <p class="text-muted mb-0">${{ number_format($relatedProduct->price, 2) }}</p>
+                        </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
-        @endif
+    </div>
+@endif
+
     </section>
 
     <!-- Review Modal -->
@@ -515,6 +531,19 @@
         align-items: center;
         gap: 10px;
     }
+    .hover-zoom {
+    transition: transform 0.3s ease-in-out;
+}
+.hover-zoom:hover {
+    transform: scale(1.05);
+}
+
+.product-card .btn {
+    transition: background 0.2s, transform 0.2s;
+}
+.product-card .btn:hover {
+    transform: scale(1.1);
+}
 
     .product-price .original-price {
         font-size: 1.2rem;
