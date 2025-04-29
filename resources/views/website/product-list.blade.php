@@ -116,128 +116,159 @@
                     </div>
 
                     <!-- Products Grid -->
-                    <div class="tab-content">
-                        <!-- Grid View -->
-                        <div class="tab-pane fade show active" id="nav-grid">
-                            <div class="row g-4">
-                                @foreach($products as $product)
-                                <div class="col-lg-4 col-md-6 col-12">
-                                    <div class="product-card rounded-3 overflow-hidden bg-white shadow-sm h-100">
-                                        <div class="product-image position-relative">
-                                            <span class="badge bg-primary position-absolute top-0 end-0 m-3">New</span>
-                                            @php
-                                                $firstImage = $product->productImages()->first();
-                                            @endphp
+<div class="tab-content">
+    <!-- Grid View -->
+    <div class="tab-pane fade show active" id="nav-grid">
+        <div class="row g-4">
+            @foreach($products as $product)
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="product-card rounded-3 overflow-hidden bg-white shadow-sm h-100">
+                    <div class="product-image position-relative">
+                        @if($product->created_at->isToday())
+                        <span class="badge bg-primary position-absolute top-0 end-0 m-3">New</span>
+                        @endif
+                        @php
+                            $firstImage = $product->productImages()->first();
+                        @endphp
 
-                                            @if($firstImage && $firstImage->image_url)
-                                                <img src="{{ asset($firstImage->image_url) }}" 
-                                                    alt="{{ $product->name_ar }}" 
-                                                    class="img-fluid w-100 product-img">
-                                            @else
-                                                <img src="https://via.placeholder.com/335x335" 
-                                                    alt="{{ $product->name_ar }}" 
-                                                    class="img-fluid w-100 product-img">
-                                            @endif 
-                                            <div class="product-action position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0">
-                                                <button class="btn btn-sm btn-primary rounded-circle" data-bs-toggle="tooltip" title="Add to Cart">
-                                                    <i class="lni lni-cart"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Add to Wishlist">
-                                                    <i class="lni lni-heart"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Quick View">
-                                                    <i class="lni lni-eye"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="product-info p-3">
-                                            <div class="product-category mb-1">
-                                                <span class="text-muted small">{{ $product->category->name_ar ?? 'Category' }}</span>
-                                            </div>
-                                            <h5 class="product-title mb-2">
-                                                <a href="{{ route('product.show', $product->id) }}" class="text-dark text-decoration-none">{{ $product->name_ar }}</a>
-                                            </h5>
-                                            <div class="product-rating mb-2">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="ratings me-2">
-                                                        <i class="lni lni-star-filled text-warning"></i>
-                                                        <i class="lni lni-star-filled text-warning"></i>
-                                                        <i class="lni lni-star-filled text-warning"></i>
-                                                        <i class="lni lni-star-filled text-warning"></i>
-                                                        <i class="lni lni-star text-warning"></i>
-                                                    </div>
-                                                    <span class="text-muted small">(4.0)</span>
-                                                </div>
-                                            </div>
-                                            <div class="product-price d-flex justify-content-between align-items-center">
-                                                <span class="new-price fw-bold text-primary">${{ number_format($product->price, 2) }}</span>
-                                                <button class="btn btn-primary btn-sm add-to-cart">
-                                                    <i class="lni lni-cart me-1"></i> Add to Cart
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                        @if($firstImage && $firstImage->image_url)
+                            <img src="{{ asset($firstImage->image_url) }}" 
+                                alt="{{ $product->name_ar }}" 
+                                class="img-fluid w-100 product-img">
+                        @else
+                            <img src="https://via.placeholder.com/335x335" 
+                                alt="{{ $product->name_ar }}" 
+                                class="img-fluid w-100 product-img">
+                        @endif 
+                        <div class="product-action position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0">
+                            <button class="btn btn-sm btn-primary rounded-circle" data-bs-toggle="tooltip" title="Add to Cart">
+                                <i class="lni lni-cart"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Add to Wishlist">
+                                <i class="lni lni-heart"></i>
+                            </button>
+                            <a href="{{ route('product.show', $product->id) }}" class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Quick View">
+                                <i class="lni lni-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="product-info p-3">
+                        <div class="product-category mb-1">
+                            <span class="text-muted small">{{ $product->category->name_ar ?? 'Category' }}</span>
+                        </div>
+                        <h5 class="product-title mb-2">
+                            <a href="{{ route('product.show', $product->id) }}" class="text-dark text-decoration-none">{{ $product->name_ar }}</a>
+                        </h5>
+                        <div class="product-rating mb-2">
+                            <div class="d-flex align-items-center">
+                                @php
+                                    $rating = $product->calculateRating();
+                                    $fullStars = floor($rating);
+                                    $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                                @endphp
+                                <div class="ratings me-2">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $fullStars)
+                                            <i class="lni lni-star-filled text-warning"></i>
+                                        @elseif ($hasHalfStar && $i == $fullStars + 1)
+                                            <i class="lni lni-star-half text-warning"></i>
+                                        @else
+                                            <i class="lni lni-star text-warning"></i>
+                                        @endif
+                                    @endfor
                                 </div>
-                                @endforeach
+                                <span class="text-muted small">({{ number_format($rating, 1) }})</span>
                             </div>
                         </div>
+                        <div class="product-price d-flex justify-content-between align-items-center">
+                            <span class="new-price fw-bold text-primary">${{ number_format($product->price, 2) }}</span>
+                            <button class="btn btn-primary btn-sm add-to-cart">
+                                <i class="lni lni-cart me-1"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
 
-                        <!-- List View -->
-                        <div class="tab-pane fade" id="nav-list">
-                            <div class="row g-4">
-                                @foreach($products as $product)
-                                <div class="col-12">
-                                    <div class="product-card-horizontal rounded-3 overflow-hidden bg-white shadow-sm">
-                                        <div class="row g-0">
-                                            <div class="col-md-4 position-relative">
-                                                <span class="badge bg-primary position-absolute top-0 start-0 m-3">New</span>
-                                                <img src="{{ $product->productImages()->first()->image_url ?? 'https://via.placeholder.com/335x335' }}" 
-                                                     class="img-fluid h-100 object-fit-cover" 
-                                                     alt="{{ $product->name_ar }}">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body d-flex flex-column h-100 p-4">
-                                                    <div class="mb-1">
-                                                        <span class="text-muted small">{{ $product->category->name_ar ?? 'Category' }}</span>
-                                                    </div>
-                                                    <h4 class="product-title mb-2">
-                                                        <a href="{{ route('product.show', $product->id) }}" class="text-dark text-decoration-none">{{ $product->name_ar }}</a>
-                                                    </h4>
-                                                    <div class="product-rating mb-2">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="ratings me-2">
-                                                                <i class="lni lni-star-filled text-warning"></i>
-                                                                <i class="lni lni-star-filled text-warning"></i>
-                                                                <i class="lni lni-star-filled text-warning"></i>
-                                                                <i class="lni lni-star-filled text-warning"></i>
-                                                                <i class="lni lni-star text-warning"></i>
-                                                            </div>
-                                                            <span class="text-muted small">(4.0)</span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="text-muted mb-4">{{ $product->description ?? 'No description available' }}</p>
-                                                    <div class="mt-auto d-flex justify-content-between align-items-center">
-                                                        <div class="product-price">
-                                                            <span class="new-price fw-bold text-primary fs-4">${{ number_format($product->price, 2) }}</span>
-                                                        </div>
-                                                        <div class="product-actions d-flex gap-2">
-                                                            <button class="btn btn-primary">
-                                                                <i class="lni lni-cart me-1"></i> Add to Cart
-                                                            </button>
-                                                            <button class="btn btn-outline-secondary">
-                                                                <i class="lni lni-heart"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+    <!-- List View -->
+    <div class="tab-pane fade" id="nav-list">
+        <div class="row g-4">
+            @foreach($products as $product)
+            <div class="col-12">
+                <div class="product-card-horizontal rounded-3 overflow-hidden bg-white shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4 position-relative">
+                            @if($product->created_at->isToday())
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-3">New</span>
+                            @endif  
+                            @php
+                                $firstImage = $product->productImages()->first();
+                            @endphp
+                            @if($firstImage && $firstImage->image_url)
+                                <img src="{{ asset($firstImage->image_url) }}" 
+                                     alt="{{ $product->name_ar }}" 
+                                     class="img-fluid h-100 object-fit-cover">
+                            @else
+                                <img src="https://via.placeholder.com/335x335" 
+                                     alt="{{ $product->name_ar }}" 
+                                     class="img-fluid h-100 object-fit-cover">
+                            @endif
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column h-100 p-4">
+                                <div class="mb-1">
+                                    <span class="text-muted small">{{ $product->category->name_ar ?? 'Category' }}</span>
+                                </div>
+                                <h4 class="product-title mb-2">
+                                    <a href="{{ route('product.show', $product->id) }}" class="text-dark text-decoration-none">{{ $product->name_ar }}</a>
+                                </h4>
+                                <div class="product-rating mb-2">
+                                    <div class="d-flex align-items-center">
+                                        @php
+                                            $rating = $product->calculateRating();
+                                            $fullStars = floor($rating);
+                                            $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                                        @endphp
+                                        <div class="ratings me-2">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $fullStars)
+                                                    <i class="lni lni-star-filled text-warning"></i>
+                                                @elseif ($hasHalfStar && $i == $fullStars + 1)
+                                                    <i class="lni lni-star-half text-warning"></i>
+                                                @else
+                                                    <i class="lni lni-star text-warning"></i>
+                                                @endif
+                                            @endfor
                                         </div>
+                                        <span class="text-muted small">({{ number_format($rating, 1) }})</span>
                                     </div>
                                 </div>
-                                @endforeach
+                                <p class="text-muted mb-4">{{ $product->description ?? 'No description available' }}</p>
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <div class="product-price">
+                                        <span class="new-price fw-bold text-primary fs-4">${{ number_format($product->price, 2) }}</span>
+                                    </div>
+                                    <div class="product-actions d-flex gap-2">
+                                        <button class="btn btn-primary">
+                                            <i class="lni lni-cart me-1"></i> Add to Cart
+                                        </button>
+                                        <button class="btn btn-outline-secondary">
+                                            <i class="lni lni-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
 
                     <!-- Pagination -->
                     <div class="pagination-wrapper mt-5 d-flex justify-content-center">

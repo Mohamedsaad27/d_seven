@@ -22,7 +22,10 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getProductById($productId)
     {
-        $product = $this->product->find($productId);
+        $product = $this
+            ->product
+            ->with('productImages', 'reviews', 'category', 'brand', 'discounts', 'colors.color', 'sizes.size', 'inventory', 'relatedProducts')
+            ->find($productId);
         return $product;
     }
 

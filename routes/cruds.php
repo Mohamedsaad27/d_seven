@@ -20,7 +20,7 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('category', CategoryController::class)->middleware('admin');
     Route::resource('brand', BrandController::class)->middleware('admin');
-    Route::resource('products', ProductController::class)->middleware('admin');
+    Route::resource('products', ProductController::class);
     Route::resource('shipping_zone', ShippingZoneController::class)->middleware('admin');
     Route::resource('sizes', SizeController::class)->middleware('admin');
     Route::resource('colors', ColorController::class)->middleware('admin');
