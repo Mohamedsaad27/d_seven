@@ -78,11 +78,11 @@
                             
                             if($product->discounts->isNotEmpty()) { 
                                 foreach($product->discounts as $discount) { 
-                                if($discount->is_active) { 
+                                if($discount->is_active ) { 
                                     $newPrice = 0;
                                     
                                     if($discount->discount_type == 'fixed') { 
-                                        $newPrice = max($product->price - $discount->discount_amount, 0);
+                                        $newPrice = $product->price - $discount->discount_amount;
                                     } else { 
                                         $discountPercentage = min(max($discount->discount_amount, 0), 100);
                                         $newPrice = $product->price - ($product->price * $discountPercentage / 100); 
