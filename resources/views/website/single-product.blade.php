@@ -280,7 +280,11 @@
                     @forelse($product->reviews as $review)
                         <div class="review-item">
                             <div class="reviewer-avatar">
-                                <img src="{{ $review->user->profile_image ?? asset('uploads/download.png') }}" alt="{{ $review->user->name }}">
+                                @if($review->user->profile_image)
+                                    <img src="{{ asset($review->user->profile_image) }}" alt="{{ $review->user->name }}">
+                                @else
+                                    <img src="{{ asset('uploads/download.png') }}" alt="{{ $review->user->name }}">
+                                @endif
                             </div>
                             <div class="review-content">
                                 <h4 class="reviewer-name">{{ $review->user->name }}</h4>
