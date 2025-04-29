@@ -284,7 +284,7 @@
                             </div>
                             <div class="review-content">
                                 <h4 class="reviewer-name">{{ $review->user->name }}</h4>
-                                <div class="review-date">{{ $review->created_at->format('M d, Y') }}</div>
+                                <div class="review-date">{{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}</div>
                                 <div class="review-stars">
                                     @for($i = 1; $i <= 5; $i++)
                                         <i class="lni lni-star{{ $i <= $review->rating ? '-filled' : '' }}"></i>
