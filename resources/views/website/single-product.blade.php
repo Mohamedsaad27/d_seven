@@ -78,7 +78,7 @@
                             
                             if($product->discounts->isNotEmpty()) { 
                                 foreach($product->discounts as $discount) { 
-                                if($discount->is_active ) { 
+                                if($discount->is_active && $discount->ends_at > now()) { 
                                     $newPrice = 0;
                                     
                                     if($discount->discount_type == 'fixed') { 
