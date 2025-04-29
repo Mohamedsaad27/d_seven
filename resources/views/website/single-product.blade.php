@@ -317,7 +317,7 @@
                         <div class="product-card">
                             <div class="product-image">
                                 <a href="{{ route('product.show', $relatedProduct->id) }}">
-                                    <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" alt="{{ $relatedProduct->name_en }}" class="img-fluid">
+                                    <img src="{{ asset($relatedProduct->productImages->first()->image_url ?? asset('uploads/download5.png')) }}" alt="{{ $relatedProduct->name_en }}" class="img-fluid">
                                 </a>
                                 <div class="product-action">
                                     <a href="#" class="quick-view" data-product-id="{{ $relatedProduct->id }}"><i class="lni lni-eye"></i></a>
