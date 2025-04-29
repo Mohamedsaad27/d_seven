@@ -82,7 +82,7 @@
                                     $newPrice = 0;
                                     
                                     if($discount->discount_type == 'fixed') { 
-                                        $newPrice = $product->price - $discount->discount_amount;
+                                        $newPrice = max($product->price - $discount->discount_amount, 0);
                                     } else { 
                                         $discountPercentage = min(max($discount->discount_amount, 0), 100);
                                         $newPrice = $product->price - ($product->price * $discountPercentage / 100); 
@@ -201,7 +201,7 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <img src="{{ $product->productImages->first()->image_url ?? 'assets/images/placeholder.jpg' }}" alt="Product details" class="img-fluid rounded">
+                        <img src="{{ asset($product->productImages->first()->image_url ?? 'assets/images/placeholder.jpg') }}" alt="Product details" class="img-fluid rounded">
                     </div>
                 </div>
             </div>
