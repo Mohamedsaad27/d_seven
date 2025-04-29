@@ -8,7 +8,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('index') }}"><i class="lni lni-home"></i> Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $product->{'name_' . app()->getLocale()} }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $product->name_en }}</li>
             </ol>
         </nav>
     </div>
@@ -74,31 +74,38 @@
                     <div class="product-price"> 
                         @php 
                             $discountedPrice = $product->price; 
-                            $hasDiscount = false; 
+                            $hasDiscount = false;
+                            $discountEndsAt = null;
                             
                             if($product->discounts->isNotEmpty()) { 
                                 foreach($product->discounts as $discount) { 
-                                if($discount->is_active && $discount->ends_at > now()) { 
-                                    $newPrice = 0;
-                                    
-                                    if($discount->discount_type == 'fixed') { 
-                                        $newPrice = max($product->price - $discount->discount_amount, 0);
-                                    } else { 
-                                        $discountPercentage = min(max($discount->discount_amount, 0), 100);
-                                        $newPrice = $product->price - ($product->price * $discountPercentage / 100); 
+                                    if($discount->is_active && $discount->ends_at > now()) { 
+                                        $newPrice = 0;
+                                        
+                                        if($discount->discount_type == 'fixed') { 
+                                            $newPrice = max($product->price - $discount->discount_amount, 0);
+                                        } else { 
+                                            $discountPercentage = min(max($discount->discount_amount, 0), 100);
+                                            $newPrice = $product->price - ($product->price * $discountPercentage / 100); 
+                                        } 
+                                        $minimumPrice = 0; 
+                                        $discountedPrice = max($newPrice, $minimumPrice);
+                                        $hasDiscount = true;
+                                        $discountEndsAt = $discount->ends_at;
+                                        break; 
                                     } 
-                                    $minimumPrice = 0; 
-                                    $discountedPrice = max($newPrice, $minimumPrice);
-                                    $hasDiscount = true; 
-                                    break; 
                                 } 
                             } 
-                        } 
-                    @endphp 
-                    
+                        @endphp 
+
                         @if($hasDiscount) 
-                            ${{ number_format($discountedPrice, 2) }} 
-                            <span class="original-price">${{ number_format($product->price, 2) }}</span> 
+                            <div class="price-container">
+                                <div class="current-price">${{ number_format($discountedPrice, 2) }}</div>
+                                <div class="original-price">${{ number_format($product->price, 2) }}</div>
+                                <div class="discount-timer">
+                                    Sale ends: {{ \Carbon\Carbon::parse($discountEndsAt)->format('F j, Y') }}
+                                </div>
+                            </div>
                         @else 
                             ${{ number_format($product->price, 2) }} 
                         @endif 
@@ -131,20 +138,6 @@
                                         @endif
                                     @endforeach
                                     <input type="hidden" name="color_id" id="selectedColor" value="{{ $product->colors->first()?->color?->id ?? '' }}">
-                                </div>
-                            </div>
-                        @endif
-
-                        
-                        @if($product->sizes->isNotEmpty())
-                            <div class="mb-4">
-                                <h3 class="option-title">Sizes</h3>
-                                <div class="select-wrapper">
-                                    <select name="size_id" class="custom-select">
-                                        @foreach($product->sizes as $size)
-                                            <option value="{{ $size->id }}">{{ $size->size->size }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                         @endif
@@ -221,7 +214,7 @@
                     <div class="col-md-6">
                         <h3>Package Contents</h3>
                         <ul class="specs-list">
-                            <li><span>Main Product:</span> 1x {{ $product->{'name_' . app()->getLocale()} }}</li>
+                            <li><span>Main Product:</span> 1x {{ $product->name_en }}</li>
                             <li><span>User Manual:</span> 1x Instruction booklet</li>
                             <li><span>Accessories:</span> Varies by model</li>
                             <li><span>Warranty Card:</span> Included</li>
@@ -233,78 +226,109 @@
             <div class="tab-content" id="shipping-tab">
                 <h3>Shipping Information</h3>
                 <ul class="specs-list">
-                    <li><span>Standard Shipping:</span> 3-5 business days, $5.99</li>
-                    <li><span>Express Shipping:</span> 1-2 business days, $12.99</li>
-                    <li><span>International:</span> 7-14 business days, varies by location</li>
-                    <li><span>Free Shipping:</span> Orders over $50 (domestic only)</li>
+                    <li><span>Standard Shipping:</span> 3-5 business days</li>
+                    <li><span>Express Shipping:</span> 1-2 business days</li>
+                    <li><span>Free Shipping:</span> Orders over 1000EGP (domestic only)</li>
                 </ul>
                 
                 <h3 class="mt-4">Return Policy</h3>
-                <p>We offer a 30-day return policy for most items. Products must be returned in original packaging and in unused condition. Please contact our customer service team to initiate a return.</p>
+                <p class="text-danger">We offer a 10-day return policy for most items. Products must be returned in original packaging and in unused condition. Please contact our customer service team to initiate a return.</p>
             </div>
             
             <div class="tab-content" id="reviews-tab">
-                <div class="reviews-header">
-                    <div class="rating-overview">
-                        <div class="average-rating">{{ number_format($product->calculateRating(), 1) }}</div>
-                        <div class="rating-bars">
-                            @php
-                                $reviewCounts = [
-                                    5 => $product->reviews->where('rating', 5)->count(),
-                                    4 => $product->reviews->where('rating', 4)->count(),
-                                    3 => $product->reviews->where('rating', 3)->count(),
-                                    2 => $product->reviews->where('rating', 2)->count(),
-                                    1 => $product->reviews->where('rating', 1)->count(),
-                                ];
-                                $totalReviews = $product->reviews->count() ?: 1;
-                            @endphp
-                            
-                            @for($i = 5; $i >= 1; $i--)
-                                <div class="rating-bar">
-                                    <div class="rating-label">{{ $i }} stars</div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: {{ ($reviewCounts[$i] / $totalReviews) * 100 }}%"></div>
-                                    </div>
-                                    <div class="rating-count">{{ $reviewCounts[$i] }}</div>
-                                </div>
+    <div class="reviews-header">
+        <div class="rating-overview">
+            <div class="average-rating">{{ number_format($product->calculateRating(), 1) }}</div>
+            <div class="rating-bars">
+                @php
+                    $reviewCounts = [
+                        5 => $product->reviews->where('rating', 5)->count(),
+                        4 => $product->reviews->where('rating', 4)->count(),
+                        3 => $product->reviews->where('rating', 3)->count(),
+                        2 => $product->reviews->where('rating', 2)->count(),
+                        1 => $product->reviews->where('rating', 1)->count(),
+                    ];
+                    $totalReviews = $product->reviews->count() ?: 1;
+                @endphp
+                
+                @for($i = 5; $i >= 1; $i--)
+                    <div class="rating-bar">
+                        <div class="rating-label">{{ $i }} stars</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ ($reviewCounts[$i] / $totalReviews) * 100 }}%"></div>
+                        </div>
+                        <div class="rating-count">{{ $reviewCounts[$i] }}</div>
+                    </div>
+                @endfor
+            </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
+            <i class="lni lni-pencil"></i> Write a Review
+        </button>
+    </div>
+
+    <!-- Reviews List Section -->
+    <div class="reviews-list">
+        @if($product->reviews->count() > 0)
+            @foreach($product->reviews->sortByDesc('created_at') as $review)
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">
+                                {{ $review->user->name_en ?? 'Anonymous' }}
+                                @if($review->verified_purchase)
+                                    <span class="verified-badge">Verified Purchase</span>
+                                @endif
+                            </div>
+                            <div class="review-date">{{ $review->created_at->format('M d, Y') }}</div>
+                        </div>
+                        <div class="review-rating">
+                            @for($i = 1; $i <= 5; $i++)
+                                @if($i <= $review->rating)
+                                    <i class="lni lni-star-filled"></i>
+                                @else
+                                    <i class="lni lni-star"></i>
+                                @endif
                             @endfor
                         </div>
                     </div>
+                    <div class="review-title">{{ $review->comment }}</div>
+                    <div class="review-content">{{ $review->comment }}</div>
                     
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">
-                        <i class="lni lni-pencil"></i> Write a Review
-                    </button>
-                </div>
-                
-                <div class="reviews-list">
-                    @forelse($product->reviews as $review)
-                        <div class="review-item">
-                            <div class="reviewer-avatar">
-                                @if($review->user->profile_image)
-                                    <img src="{{ asset($review->user->profile_image) }}" alt="{{ $review->user->name }}">
-                                @else
-                                    <img src="{{ asset('uploads/download.png') }}" alt="{{ $review->user->name }}">
-                                @endif
-                            </div>
-                            <div class="review-content">
-                                <h4 class="reviewer-name">{{ $review->user->name }}</h4>
-                                <div class="review-date">{{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}</div>
-                                <div class="review-stars">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <i class="lni lni-star{{ $i <= $review->rating ? '-filled' : '' }}"></i>
-                                    @endfor
-                                </div>
-                                <p class="review-text">{{ $review->comment }}</p>
-                            </div>
+                    @if($review->user_id == auth()->id())
+                        <div class="review-actions">
+                            <button class="btn btn-sm btn-outline-secondary edit-review" 
+                                    data-review-id="{{ $review->id }}"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editReviewModal">
+                                Edit
+                            </button>
+                            <form action="{{ route('reviews.destroy', $review) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                        onclick="return confirm('Are you sure you want to delete this review?')">
+                                    Delete
+                                </button>
+                            </form>
                         </div>
-                    @empty
-                        <div class="text-center py-5">
-                            <i class="lni lni-comments-alt" style="font-size: 3rem; color: var(--light-gray);"></i>
-                            <p class="mt-3">No reviews yet</p>
-                        </div>
-                    @endforelse
+                    @endif
                 </div>
+            @endforeach
+            
+            @if($product->reviews->count() > 5)
+                <div class="text-center mt-4">
+                    <button id="loadMoreReviews" class="btn btn-outline-primary">Load More Reviews</button>
+                </div>
+            @endif
+        @else
+            <div class="no-reviews">
+                <p>This product has no reviews yet. Be the first to review!</p>
             </div>
+        @endif
+    </div>
+</div>
         </div>
         
         <!-- Related Products -->
@@ -346,26 +370,10 @@
                     <h5 class="modal-title" id="reviewModalLabel">Write a Review</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="#" method="POST">
+                <form action="{{ route('reviews.store', $product) }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="review-name">Your Name</label>
-                                    <input class="form-control" type="text" id="review-name" name="name" required 
-                                           value="{{ auth()->check() ? auth()->user()->name : '' }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="review-email">Your Email</label>
-                                    <input class="form-control" type="email" id="review-email" name="email" required
-                                           value="{{ auth()->check() ? auth()->user()->email : '' }}">
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label for="review-rating">Rating</label>
                             <select class="form-control" id="review-rating" name="rating" required>
@@ -378,7 +386,7 @@
                         </div>
                         <div class="form-group">
                             <label for="review-comment">Your Review</label>
-                            <textarea class="form-control" id="review-comment" name="comment" rows="5" required></textarea>
+                            <textarea class="form-control" id="review-comment" name="comment"  rows="5" required>Write your review here</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -593,7 +601,140 @@
         cursor: pointer;
         transition: border-color 0.3s ease;
     }
+    .reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
 
+.average-rating {
+    font-size: 48px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.rating-bars {
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.rating-label {
+    width: 60px;
+}
+
+.progress-bar {
+    height: 12px;
+    background-color: #eee;
+    border-radius: 10px;
+    flex-grow: 1;
+    margin: 0 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #ffc107;
+}
+
+.rating-count {
+    width: 30px;
+    text-align: right;
+}
+
+.reviews-list {
+    margin-top: 30px;
+}
+
+.review-item {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.reviewer-name {
+    font-weight: 600;
+}
+
+.verified-badge {
+    font-size: 12px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+}
+
+.review-date {
+    color: #777;
+    font-size: 14px;
+}
+
+.review-rating {
+    color: #ffc107;
+}
+
+.review-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.review-content {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.review-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.review-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.review-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.review-actions {
+    margin-top: 15px;
+}
+
+.no-reviews {
+    padding: 30px;
+    text-align: center;
+    color: #777;
+}
+
+@media (max-width: 768px) {
+    .reviews-header {
+        flex-direction: column;
+    }
+    
+    .rating-overview {
+        display: flex;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+}
     .custom-select:focus {
         outline: none;
         border-color: var(--primary-color);
