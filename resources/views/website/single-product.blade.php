@@ -281,7 +281,7 @@
                                     <span class="verified-badge">Verified Purchase</span>
                                 @endif
                             </div>
-                            <div class="review-date">{{ $review->created_at->format('M d, Y') }}</div>
+                            <div class="review-date">{{ \Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}</div>
                         </div>
                         <div class="review-rating">
                             @for($i = 1; $i <= 5; $i++)
