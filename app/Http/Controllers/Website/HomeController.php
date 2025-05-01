@@ -34,7 +34,7 @@ class HomeController extends Controller
                 ->leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
                 ->select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
                 ->groupBy([
-                    'products.id', 'products.name', 'products.name_ar', 'products.description',
+                    'products.id', 'products.name_en', 'products.name_ar', 'products.description_en',
                     'products.description_ar', 'products.price', 'products.status', 'products.stock',
                     'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
                     // Add any other columns from the products table that exist in your schema
@@ -56,7 +56,7 @@ class HomeController extends Controller
             ->leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
             ->select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
             ->groupBy([
-                'products.id', 'products.name', 'products.name_ar', 'products.description',
+                'products.id', 'products.name_en', 'products.name_ar', 'products.description_en',
                 'products.description_ar', 'products.price', 'products.status', 'products.stock',
                 'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
                 // Add any other columns from the products table that exist in your schema
@@ -74,7 +74,7 @@ class HomeController extends Controller
             ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
             ->select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered'))
             ->groupBy([
-                'products.id', 'products.name', 'products.name_ar', 'products.description',
+                'products.id', 'products.name_en', 'products.name_ar', 'products.description_en',
                 'products.description_ar', 'products.price', 'products.status', 'products.stock',
                 'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
                 // Add any other columns from the products table that exist in your schema
