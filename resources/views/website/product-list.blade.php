@@ -181,7 +181,7 @@
                             </div>
                         </div>
                         <div class="product-price d-flex justify-content-between align-items-center">
-                            <span class="new-price fw-bold text-primary">${{ number_format($product->price, 2) }}</span>
+                            <span class="new-price fw-bold text-primary">{{ number_format($product->price, 2) }} EGP</span>
                             <button class="btn btn-primary btn-sm add-to-cart">
                                 <i class="lni lni-cart me-1"></i> Add to Cart
                             </button>
@@ -249,7 +249,7 @@
                                 <p class="text-muted mb-4">{{ $product->description ?? 'No description available' }}</p>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <div class="product-price">
-                                        <span class="new-price fw-bold text-primary fs-4">${{ number_format($product->price, 2) }}</span>
+                                        <span class="new-price fw-bold text-primary fs-4">{{ number_format($product->price, 2) }} EGP</span>
                                     </div>
                                     <div class="product-actions d-flex gap-2">
                                         <button class="btn btn-primary">

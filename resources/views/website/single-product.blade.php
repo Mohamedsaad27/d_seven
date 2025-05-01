@@ -100,8 +100,8 @@
 
                         @if($hasDiscount) 
                             <div class="price-container">
-                                <div class="current-price">${{ number_format($discountedPrice, 2) }}</div>
-                                <div class="original-price">${{ number_format($product->price, 2) }}</div>
+                                <div class="current-price">{{ number_format($discountedPrice, 2) }} EGP</div>
+                                <div class="original-price">{{ number_format($product->price, 2) }} EGP</div>
                                 <div class="discount-timer">
                                     Sale ends: {{ \Carbon\Carbon::parse($discountEndsAt)->format('F j, Y') }}
                                 </div>
@@ -352,7 +352,7 @@
                             <div class="product-info">
                                 <h3 class="product-name"><a href="{{ route('product.show', $relatedProduct->id) }}">{{ $relatedProduct->name_ar }}</a></h3>
                                 
-                                <div class="product-price">${{ number_format($relatedProduct->price, 2) }}</div>
+                                <div class="product-price">{{ number_format($relatedProduct->price, 2) }} EGP</div>
                             </div>
                         </div>
                     </div>
