@@ -40,8 +40,8 @@ class CategoryRepository implements CategoryRepositoryInterface
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'Uploads/Categories/' . $imageName;
-                $image->move(public_path('Uploads/Categories/'), $imageName);
+                $imagePath = 'uploads/Categories/' . $imageName;
+                $image->move(public_path('uploads/Categories/'), $imageName);
                 $validated['image'] = $imagePath;
             }
             $this->model->create($validated);
@@ -67,8 +67,8 @@ class CategoryRepository implements CategoryRepositoryInterface
                 }
                 $image = $request->file('image');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'Uploads/Categories/' . $imageName;
-                $image->move(public_path('Uploads/Categories/'), $imageName);
+                $imagePath = 'uploads/Categories/' . $imageName;
+                $image->move(public_path('uploads/Categories/'), $imageName);
                 $validated['image'] = $imagePath;
             }
             $category->update($validated);

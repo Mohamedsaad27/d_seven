@@ -4,69 +4,70 @@
 
 @section('content')
    <!-- Start Hero Area -->
-  <!-- Start Hero Area -->
-  <section class="hero-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-12 custom-padding-right">
-                    <div class="slider-head">
-                        <!-- Start Hero Slider -->
-                        <div class="hero-slider">
-                            <!-- Start Single Slider -->
-                            <div class="single-slider"
-                                style="background-image: url({{ asset('uploads/1.jpg') }});">
-                                <div class="content">
-                                    <h2><span>No restocking fee ($35 savings)</span>
-                                        M75 Sport Watch
-                                    </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Now Only</span> $320.99</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
-                                    </div>
+<!-- Start Hero Area -->
+<section class="modern-hero-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12 pe-lg-4">
+                <div class="main-hero-slider">
+                    <!-- Start Hero Slider -->
+                    <div class="hero-slider-item" style="background-image: url({{ asset('uploads/3d-rendering-cartoon-shopping-cart.jpg?height=1500&width=500') }});">
+                        <div class="hero-slider-overlay"></div>
+                        <div class="hero-content">
+                            <div class="hero-content-inner">
+                                <span class="hero-subtitle">Free shipping on orders over 1000EGP</span>
+                                <h1 class="hero-title">Premium Cookware Set</h1>
+                                <p class="hero-description">Professional-grade stainless steel cookware with non-stick coating, heat-resistant handles, and dishwasher-safe construction for the modern kitchen.</p>
+                                
+                                <div class="hero-button">
+                                    <a href="{{ route('product.index') }}" class="btn hero-btn">
+                                        Shop Now <i class="lni lni-arrow-right"></i>
+                                    </a>
                                 </div>
                             </div>
-                          
-                            <!-- End Single Slider -->
                         </div>
-                        <!-- End Hero Slider -->
                     </div>
+                    <!-- End Hero Slider -->
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-6 col-12 md-custom-padding">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner"
-                                style="background-image: url('https://via.placeholder.com/370x250');">
-                                <div class="content">
-                                    <h2>
-                                        <span>New line required</span>
-                                        iPhone 12 Pro Max
-                                    </h2>
-                                    <h3>$259.99</h3>
+            </div>
+            <div class="col-lg-4 col-12">
+                <div class="row">
+                    <div class="col-lg-12 col-md-6 col-12 mb-4">
+                        <!-- Start Small Banner -->
+                        <div class="small-banner" style="background-image: url({{ asset($latestProduct->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }});">
+                            <div class="small-banner-overlay"></div>
+                            <div class="banner-content">
+                                <span class="banner-subtitle">New arrival</span>
+                                <h2 class="banner-title">{{ $latestProduct->name_ar ? $latestProduct->name_ar : $latestProduct->name_en }}</h2>
+                                <div class="banner-price">{{ $latestProduct->price }} EGP</div>
+                                <a href="{{ route('product.show', $latestProduct->id) }}" class="banner-link">
+                                    Explore <i class="lni lni-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Small Banner -->
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-12">
+                        <!-- Start Small Banner -->
+                        <div class="small-banner weekly-sale">
+                            <div class="banner-content">
+                                <div class="sale-badge">Spring Sale</div>
+                                <h2 class="banner-title">Kitchen Essentials!</h2>
+                                <p class="banner-description">Refresh your home with up to 40% off kitchen and dining collections this week.</p>
+                                <div class="banner-button">
+                                    <a class="btn sale-btn" href="{{ route('product.index') }}">
+                                        Shop Now <i class="lni lni-cart"></i>
+                                    </a>
                                 </div>
                             </div>
-                            <!-- End Small Banner -->
                         </div>
-                        <div class="col-lg-12 col-md-6 col-12">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner style2">
-                                <div class="content">
-                                    <h2>Weekly Sale!</h2>
-                                    <p>Saving up to 50% off all online store items this week.</p>
-                                    <div class="button">
-                                        <a class="btn" href="product-grids.html">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Start Small Banner -->
-                        </div>
+                        <!-- End Small Banner -->
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 <!-- End Hero Area -->
 
 <!-- Start Featured Categories Area -->
@@ -81,266 +82,106 @@
             </div>
         </div>
         <div class="row">
+            @foreach ($categories as $category)
             <div class="col-lg-4 col-md-6 col-12">
                 <!-- Start Single Category -->
                 <div class="single-category modern-category">
                     <div class="category-image">
-                        <img src="{{ asset('uploads/1.jpg') }}" alt="TV & Audios">
+                        <img src="{{ asset($category->image) }}" alt="{{ $category->name_ar ? $category->name_ar : $category->name_en }}">
                         <div class="category-overlay"></div>
                     </div>
                     <div class="category-content">
-                        <h3 class="category-heading">TV & Audios</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
+                        <h3 class="category-heading">{{ $category->name_ar ? $category->name_ar : $category->name_en }}</h3>
+                        @if ($category->children->isNotEmpty())
+                            <ul class="category-list">
+                                @foreach ($category->children as $child)
+                                    <li><a href="{{ route('product.index', ['category_id' => $child->id]) }}">{{ $child->name_ar ? $child->name_ar : $child->name_en }}</a></li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
                 <!-- End Single Category -->
             </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Category -->
-                <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset('uploads/2.jpg') }}" alt="Desktop & Laptop">
-                        <div class="category-overlay"></div>
-                    </div>
-                    <div class="category-content">
-                        <h3 class="category-heading">Desktop & Laptop</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">Gaming Laptops</a></li>
-                            <li><a href="product-grids.html">Business Laptops</a></li>
-                            <li><a href="product-grids.html">Desktop Computers</a></li>
-                            <li><a href="product-grids.html">Computer Accessories</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Category -->
-                <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset('uploads/3.jpg') }}" alt="CCTV Camera">
-                        <div class="category-overlay"></div>
-                    </div>
-                    <div class="category-content">
-                        <h3 class="category-heading">CCTV Camera</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">Security Cameras</a></li>
-                            <li><a href="product-grids.html">Smart Doorbells</a></li>
-                            <li><a href="product-grids.html">Wireless Systems</a></li>
-                            <li><a href="product-grids.html">Surveillance Kits</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Category -->
-                <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset('uploads/4.jpg') }}" alt="DSLR Camera">
-                        <div class="category-overlay"></div>
-                    </div>
-                    <div class="category-content">
-                        <h3 class="category-heading">DSLR Camera</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">DSLR Cameras</a></li>
-                            <li><a href="product-grids.html">Mirrorless Cameras</a></li>
-                            <li><a href="product-grids.html">Camera Lenses</a></li>
-                            <li><a href="product-grids.html">Camera Accessories</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Category -->
-                <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset('uploads/5.jpg') }}" alt="Smart Phones">
-                        <div class="category-overlay"></div>
-                    </div>
-                    <div class="category-content">
-                        <h3 class="category-heading">Smart Phones</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">Apple iPhones</a></li>
-                            <li><a href="product-grids.html">Android Phones</a></li>
-                            <li><a href="product-grids.html">Phone Cases</a></li>
-                            <li><a href="product-grids.html">Phone Accessories</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Category -->
-                <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset('uploads/6.jpg') }}" alt="Game Console">
-                        <div class="category-overlay"></div>
-                    </div>
-                    <div class="category-content">
-                        <h3 class="category-heading">Game Console</h3>
-                        <ul class="category-list">
-                            <li><a href="product-grids.html">PlayStation 5</a></li>
-                            <li><a href="product-grids.html">Xbox Series X</a></li>
-                            <li><a href="product-grids.html">Nintendo Switch</a></li>
-                            <li><a href="product-grids.html">Gaming Accessories</a></li>
-                            <li><a href="product-grids.html" class="view-all">View All <i class="lni lni-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- End Single Category -->
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
 <!-- End Featured Categories Area -->
 
 <!-- Start Trending Product Area -->
-<section class="trending-product section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2>Trending Product</h2>
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                        suffered alteration in some form.</p>
+<section class="trending-product section"> 
+    <div class="container"> 
+        <div class="row"> 
+            <div class="col-12"> 
+                <div class="section-title"> 
+                    <h2>Trending Product</h2> 
+                    <p>Explore our trending products—loved by customers and handpicked for quality, style, and unbeatable value. Don't miss out on what's hot right now!</p> 
+                </div> 
+            </div> 
+        </div> 
+        <div class="row"> 
+            @foreach ($trendingProducts as $product) 
+            <div class="col-lg-3 col-md-6 col-12"> 
+                <!-- Start Single Product --> 
+                <div class="single-product"> 
+                    <div class="product-image"> 
+                        <img src="{{ asset($product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $product->name_ar ? $product->name_ar : $product->name_en }}" class="product-img"> 
+                        @php
+                            $activeDiscount = $product->discounts->firstWhere(function($discount) {
+                                return $discount->is_active && $discount->ends_at > now();
+                            });
+                        @endphp
+                        @if ($activeDiscount)
+                            @if ($activeDiscount->discount_type == 'percent')
+                                <span class="sale-tag">-{{ $activeDiscount->discount_amount }}%</span>
+                            @else
+                                <span class="sale-tag">-{{ number_format($activeDiscount->discount_amount, 0) }} EGP</span>
+                            @endif
+                        @endif
+                        <div class="button"> 
+                            <a href="{{ route('product.show', $product->id) }}" class="btn"><i class="lni lni-cart"></i> Add to Cart</a> 
+                        </div> 
+                    </div>
+                    <div class="product-info"> 
+                        <span class="category">{{ $product->category->name_ar ? $product->category->name_ar : $product->category->name_en }}</span> 
+                        <h4 class="title"> 
+                            <a href="{{ route('product.show', $product->id) }}">{{ $product->name_ar ? $product->name_ar : $product->name_en }}</a> 
+                        </h4> 
+                        <ul class="review"> 
+                            @php
+                                $rating = $product->calculateRating();
+                                $fullStars = floor($rating);
+                                $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                                $reviewCount = $product->reviews->count();
+                            @endphp
+                            
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $fullStars)
+                                    <li><i class="lni lni-star-filled"></i></li>
+                                @elseif ($i == $fullStars + 1 && $hasHalfStar)
+                                    <li><i class="lni lni-star-half"></i></li>
+                                @else
+                                    <li><i class="lni lni-star"></i></li>
+                                @endif
+                            @endfor
+                            <li><span>{{ number_format($rating, 1) }} Review(s) ({{ $reviewCount }})</span></li>
+                        </ul> 
+                        <div class="price"> 
+                            @if ($product->discount_price)
+                                <span>{{ $product->discount_price }} EGP</span> 
+                                <span class="discount-price">{{ $product->price }} EGP</span>
+                            @else
+                                <span>{{ $product->price }} EGP</span>
+                            @endif
+                        </div> 
+                    </div> 
                 </div>
-            </div>
-        </div>
-        <div class="row">
-    <div class="col-lg-3 col-md-6 col-12">
-        <!-- Start Single Product -->
-        <div class="single-product">
-            <div class="product-image">
-                <img src="{{ asset('uploads/1.jpg') }}" alt="#" class="product-img">
-                <div class="button">
-                    <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                </div>
-            </div>
-            <div class="product-info">
-                <span class="category">Watches</span>
-                <h4 class="title">
-                    <a href="product-grids.html">Xiaomi Mi Band 5</a>
-                </h4>
-                <ul class="review">
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star"></i></li>
-                    <li><span>4.0 Review(s)</span></li>
-                </ul>
-                <div class="price">
-                    <span>$199.00</span>
-                </div>
-            </div>
-        </div>
-        <!-- End Single Product -->
-    </div>
-    <div class="col-lg-3 col-md-6 col-12">
-        <!-- Start Single Product -->
-        <div class="single-product">
-            <div class="product-image">
-                <img src="{{ asset('uploads/2.jpg') }}" alt="#" class="product-img">
-                <span class="sale-tag">-25%</span>
-                <div class="button">
-                    <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                </div>
-            </div>
-            <div class="product-info">
-                <span class="category">Speaker</span>
-                <h4 class="title">
-                    <a href="product-grids.html">Big Power Sound Speaker</a>
-                </h4>
-                <ul class="review">
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><span>5.0 Review(s)</span></li>
-                </ul>
-                <div class="price">
-                    <span>$275.00</span>
-                    <span class="discount-price">$300.00</span>
-                </div>
-            </div>
-        </div>
-        <!-- End Single Product -->
-    </div>
-    <!-- Remaining product items with the same structure and class="product-img" added to all img tags -->
-    <div class="col-lg-3 col-md-6 col-12">
-        <!-- Start Single Product -->
-        <div class="single-product">
-            <div class="product-image">
-                <img src="{{ asset('uploads/3.jpg') }}" alt="#" class="product-img">
-                <div class="button">
-                    <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                </div>
-            </div>
-            <div class="product-info">
-                <span class="category">Camera</span>
-                <h4 class="title">
-                    <a href="product-grids.html">WiFi Security Camera</a>
-                </h4>
-                <ul class="review">
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><span>5.0 Review(s)</span></li>
-                </ul>
-                <div class="price">
-                    <span>$399.00</span>
-                </div>
-            </div>
-        </div>
-        <!-- End Single Product -->
-    </div>
-    <div class="col-lg-3 col-md-6 col-12">
-        <!-- Start Single Product -->
-        <div class="single-product">
-            <div class="product-image">
-                <img src="{{ asset('uploads/4.jpg') }}" alt="#" class="product-img">
-                <span class="new-tag">New</span>
-                <div class="button">
-                    <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                </div>
-            </div>
-            <div class="product-info">
-                <span class="category">Phones</span>
-                <h4 class="title">
-                    <a href="product-grids.html">iphone 6x plus</a>
-                </h4>
-                <ul class="review">
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><i class="lni lni-star-filled"></i></li>
-                    <li><span>5.0 Review(s)</span></li>
-                </ul>
-                <div class="price">
-                    <span>$400.00</span>
-                </div>
-            </div>
-        </div>
-        <!-- End Single Product -->
-    </div>
-</div>
-    </div>
+                <!-- End Single Product -->
+            </div> 
+            @endforeach 
+        </div> 
+    </div> 
 </section>
 <!-- End Trending Product Area -->
 
@@ -568,135 +409,36 @@
 <section class="home-product-list section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">
-                <h4 class="list-title">Best Sellers</h4>
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">GoPro Hero4 Silver</a>
-                        </h3>
-                        <span>$287.99</span>
-                    </div>
+            @foreach ([
+                ['title' => 'Best Sellers', 'products' => $bestSellers],
+                ['title' => 'New Arrivals', 'products' => $newArrivals],
+                ['title' => 'Top Rated', 'products' => $topRated]
+            ] as $section)
+                <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">
+                    <h4 class="list-title">{{ $section['title'] }}</h4>
+                    @foreach ($section['products'] as $product)
+                        <div class="single-list">
+                            <div class="list-image">
+                                <a href="{{ route('product.show', $product->id) }}">
+                                    <img src="{{ asset($product->productImages->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $product->name_en }}">
+                                </a>
+                            </div>
+                            <div class="list-info">
+                                <h3>
+                                    <a href="{{ route('product.show', $product->id) }}">{{ $product->name_ar ?? $product->name_en }}</a>
+                                </h3>
+                                <span>{{ $product->price }} EGP</span>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Puro Sound Labs BT2200</a>
-                        </h3>
-                        <span>$95.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">HP OfficeJet Pro 8710</a>
-                        </h3>
-                        <span>$120.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-            </div>
-            <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">
-                <h4 class="list-title">New Arrivals</h4>
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">iPhone X 256 GB Space Gray</a>
-                        </h3>
-                        <span>$1150.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Canon EOS M50 Mirrorless Camera</a>
-                        </h3>
-                        <span>$950.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Microsoft Xbox One S</a>
-                        </h3>
-                        <span>$298.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-            </div>
-            <div class="col-lg-4 col-md-4 col-12">
-                <h4 class="list-title">Top Rated</h4>
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Samsung Gear 360 VR Camera</a>
-                        </h3>
-                        <span>$68.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Samsung Galaxy S9+ 64 GB</a>
-                        </h3>
-                        <span>$840.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-                <!-- Start Single List -->
-                <div class="single-list">
-                    <div class="list-image">
-                        <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
-                    </div>
-                    <div class="list-info">
-                        <h3>
-                            <a href="product-grids.html">Zeus Bluetooth Headphones</a>
-                        </h3>
-                        <span>$28.00</span>
-                    </div>
-                </div>
-                <!-- End Single List -->
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
+
+
+
 <!-- End Home Product List -->
 
 <!-- Start Brands Area -->
@@ -712,41 +454,13 @@
         </div>
         <div class="brands-container">
             <div class="brands-wrapper">
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/1.jpg') }}" alt="Brand Logo">
+                @foreach ($brands as $brand)
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                            <img src="{{ asset($brand->image ?? 'uploads/Brands/default-brand-image.jpg') }}" alt="Brand Logo">
+                        </div>
                     </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/2.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/3.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/4.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/5.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/6.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">
-                        <img src="{{ asset('uploads/1.jpg') }}" alt="Brand Logo">
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -765,7 +479,7 @@
                 </div>
                 <div class="info-content">
                     <h4>Free Shipping</h4>
-                    <p>On orders over $99</p>
+                    <p>On orders over 1000 EGP</p>
                 </div>
             </div>
             
@@ -798,7 +512,7 @@
                 </div>
                 <div class="info-content">
                     <h4>Easy Returns</h4>
-                    <p>30-day return policy</p>
+                    <p>10-day return policy</p>
                 </div>
             </div>
         </div>
@@ -872,25 +586,82 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+
+
 .category-image {
     position: relative;
     overflow: hidden;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 220px; /* Increased height for better visibility */
+    width: 100%;
+    border-radius: 8px;
     background: #f5f5f5;
 }
 
 .category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This ensures the image covers the entire container */
     transition: all 0.5s ease;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2); /* Slight overlay for better text visibility */
+    transition: all 0.3s ease;
 }
 
 .modern-category:hover .category-image img {
     transform: scale(1.1);
+}
+
+.modern-category:hover .category-overlay {
+    background: rgba(0, 0, 0, 0.3); /* Darker on hover */
+}
+
+.category-content {
+    padding: 20px 15px;
+    background: #fff;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.category-heading {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin-bottom: 5px;
+}
+
+.category-list li a {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.category-list li a:hover {
+    color: #ff6b6b;
+    padding-left: 5px;
+}
+
+.single-category {
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.single-category:hover {
+    transform: translateY(-5px);
 }
 /* Product Image Standardization */
 .product-image {
@@ -1054,7 +825,478 @@
     text-align: center;
     margin-bottom: 50px;
 }
+/* Modern Hero Area Styles */
+.modern-hero-area {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
 
+/* Main Hero Slider Styles */
+.main-hero-slider {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.hero-slider-item {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hero-slider-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 50px;
+}
+
+.hero-content-inner {
+    max-width: 60%;
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-subtitle {
+    display: inline-block;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.hero-title {
+    color: #fff;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 25px;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 90%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.hero-price {
+    margin-bottom: 30px;
+}
+
+.price-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.price-amount {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-btn {
+    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+    border: none;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(45deg, #ff9f43, #ff6b6b);
+}
+
+.hero-btn i {
+    transition: transform 0.3s ease;
+}
+
+.hero-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* Small Banner Styles */
+.small-banner {
+    position: relative;
+    height: 240px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.small-banner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.small-banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 100%);
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.small-banner:hover .small-banner-overlay {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.banner-subtitle {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 25px;
+    backdrop-filter: blur(5px);
+}
+
+.banner-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.banner-price {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.banner-link {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+}
+
+.banner-link:hover {
+    opacity: 1;
+    gap: 8px;
+    color: #ff6b6b;
+}
+
+/* Weekly Sale Banner */
+.weekly-sale {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    position: relative;
+    overflow: hidden;
+}
+
+.weekly-sale:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    animation: pulse 4s infinite linear;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+.sale-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    backdrop-filter: blur(5px);
+}
+
+.banner-description {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.sale-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sale-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+.sale-btn i {
+    transition: transform 0.3s ease;
+}
+
+.sale-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* Responsive Styles */
+@media (max-width: 1199px) {
+    .hero-content-inner {
+        max-width: 70%;
+    }
+    
+    .hero-title {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 991px) {
+    .modern-hero-area {
+        padding: 40px 0;
+    }
+    
+    .main-hero-slider {
+        height: 450px;
+        margin-bottom: 30px;
+    }
+    
+    .hero-content {
+        padding: 40px;
+    }
+    
+    .hero-content-inner {
+        max-width: 80%;
+    }
+    
+    .hero-title {
+        font-size: 32px;
+    }
+    
+    .hero-description {
+        font-size: 15px;
+    }
+    
+    .price-amount {
+        font-size: 28px;
+    }
+    
+    .small-banner {
+        height: 220px;
+    }
+}
+
+@media (max-width: 767px) {
+    .modern-hero-area {
+        padding: 30px 0;
+    }
+    
+    .main-hero-slider {
+        height: 400px;
+    }
+    
+    .hero-content {
+        padding: 30px;
+    }
+    
+    .hero-content-inner {
+        max-width: 100%;
+    }
+    
+    .hero-title {
+        font-size: 28px;
+    }
+    
+    .hero-description {
+        font-size: 14px;
+    }
+    
+    .price-label {
+        font-size: 14px;
+    }
+    
+    .price-amount {
+        font-size: 24px;
+    }
+    
+    .hero-btn {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+    
+    .small-banner {
+        height: 200px;
+        margin-bottom: 20px;
+    }
+    
+    .banner-title {
+        font-size: 20px;
+    }
+    
+    .banner-price {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 575px) {
+    .modern-hero-area {
+        padding: 20px 0;
+    }
+    
+    .main-hero-slider {
+        height: 350px;
+    }
+    
+    .hero-content {
+        padding: 20px;
+    }
+    
+    .hero-subtitle {
+        font-size: 10px;
+        padding: 4px 12px;
+        margin-bottom: 15px;
+    }
+    
+    .hero-title {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .hero-description {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+    
+    .hero-price {
+        margin-bottom: 20px;
+    }
+    
+    .price-amount {
+        font-size: 22px;
+    }
+    
+    .small-banner {
+        height: 180px;
+    }
+    
+    .banner-content {
+        padding: 20px;
+    }
+    
+    .banner-subtitle {
+        font-size: 10px;
+        padding: 3px 10px;
+        margin-bottom: 10px;
+    }
+    
+    .banner-title {
+        font-size: 18px;
+    }
+    
+    .banner-price {
+        font-size: 16px;
+    }
+    
+    .banner-description {
+        font-size: 12px;
+    }
+}
 .section-title h2 {
     font-size: 32px;
     font-weight: 700;
@@ -2208,6 +2450,78 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add parallax effect to hero slider
+    const heroSlider = document.querySelector('.hero-slider-item');
+    
+    if (heroSlider) {
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            if (scrollPosition < 600) {
+                heroSlider.style.backgroundPositionY = `calc(50% + ${scrollPosition * 0.1}px)`;
+            }
+        });
+        
+        // Optional: Add mouse move parallax effect
+        heroSlider.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xPercent = x / rect.width;
+            const yPercent = y / rect.height;
+            
+            // Subtle movement of background
+            this.style.backgroundPosition = `${50 + (xPercent - 0.5) * 5}% ${50 + (yPercent - 0.5) * 5}%`;
+        });
+        
+        // Reset position on mouse leave
+        heroSlider.addEventListener('mouseleave', function() {
+            this.style.backgroundPosition = 'center';
+        });
+    }
+    
+    // Add hover effects to small banners
+    const smallBanners = document.querySelectorAll('.small-banner');
+    
+    smallBanners.forEach(banner => {
+        banner.addEventListener('mouseenter', function() {
+            // Add a subtle scale effect to the background
+            if (this.style.backgroundImage) {
+                this.style.backgroundSize = '105%';
+            }
+        });
+        
+        banner.addEventListener('mouseleave', function() {
+            // Reset the background size
+            if (this.style.backgroundImage) {
+                this.style.backgroundSize = 'cover';
+            }
+        });
+    });
+    
+    // Add animation to weekly sale banner
+    const weeklySale = document.querySelector('.weekly-sale');
+    
+    if (weeklySale) {
+        // Create a subtle floating animation
+        let floatY = 0;
+        let floatDirection = 1;
+        
+        function animateFloat() {
+            if (floatY > 5) floatDirection = -1;
+            if (floatY < -5) floatDirection = 1;
+            
+            floatY += 0.1 * floatDirection;
+            weeklySale.style.transform = `translateY(${floatY}px)`;
+            
+            requestAnimationFrame(animateFloat);
+        }
+        
+        // Start the animation
+        animateFloat();
+    }
+});
     document.addEventListener('DOMContentLoaded', function() {
     // Initialize countdown timer
     initCountdownTimer();
