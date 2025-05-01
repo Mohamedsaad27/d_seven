@@ -19,20 +19,14 @@ class HomeController extends Controller
         $latestProduct = Product::latest()->first();
 
         // Trending products by order quantity
-        $trendingProducts = Product::select(
-            'products.id',
-            'products.name_ar',
-            'products.name_en',
-            'products.slug',
-            'products.price',
-            'products.description',
-            DB::raw('SUM(order_items.quantity) as total_ordered')
-        )
-            ->join('order_items', 'products.id', '=', 'order_items.product_id')
-            ->groupBy('products.id', 'products.name_ar', 'products.name_en', 'products.slug', 'products.price', 'products.description')
-            ->orderByDesc('total_ordered')
+        $trendingProducts = Product::whereIn('id', function ($query) {
+            $query
+                ->select('product_id')
+                ->from('order_items')
+                ->groupBy('product_id')
+                ->orderByDesc(DB::raw('SUM(quantity)'));
+        })
             ->with('productImages', 'reviews', 'discounts')
-            ->take(4)
             ->get();
 
         // If no trending products, fallback to highest rated
