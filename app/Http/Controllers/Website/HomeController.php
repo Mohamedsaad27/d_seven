@@ -30,7 +30,11 @@ class HomeController extends Controller
             ->get();
 
         // If no trending products, fallback to highest rated
+        // If no trending products, fallback to highest rated
         if ($trendingProducts->isEmpty()) {
+            // OPTION 1: Use ONLY_FULL_GROUP_BY exception
+            DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
             $trendingProducts = Product::select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
                 ->leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
                 ->groupBy('products.id')
@@ -38,6 +42,9 @@ class HomeController extends Controller
                 ->with('productImages', 'reviews', 'discounts')
                 ->take(4)
                 ->get();
+
+            // Reset SQL mode back to default
+            DB::statement("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))");
 
             // If no reviews either, fallback to highest price
             if ($trendingProducts->isEmpty()) {
