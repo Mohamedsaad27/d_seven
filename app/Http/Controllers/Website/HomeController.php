@@ -66,6 +66,7 @@ class HomeController extends Controller
             ->with('productImages')
             ->take(3)
             ->get();
+        DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         $bestSellers = Product::select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered'))
             ->join('order_items', 'products.id', '=', 'order_items.product_id')
             ->groupBy('products.id')
@@ -73,6 +74,8 @@ class HomeController extends Controller
             ->with('productImages')
             ->take(3)
             ->get();
+        // Reset the SQL mode back to default
+        DB::statement("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))");
         if ($bestSellers->isEmpty()) {
             $bestSellers = Product::select('products.*')
                 ->orderByDesc('price')
@@ -80,6 +83,8 @@ class HomeController extends Controller
                 ->take(3)
                 ->get();
         }
+        // Reset the SQL mode back to default
+        DB::statement("SET SESSION sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))");
 
         return view('website.index', compact('categories', 'brands', 'latestProduct', 'trendingProducts', 'topRated', 'newArrivals', 'bestSellers'));
     }
