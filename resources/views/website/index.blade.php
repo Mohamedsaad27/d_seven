@@ -5,128 +5,7 @@
 @section('content')
    <!-- Start Hero Area -->
   <!-- Start Hero Area -->
-<!-- Start Hero Area -->
-<section class="hero-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-12">
-                <div class="hero-slider-container">
-                    <!-- Start Hero Slider -->
-                    <div class="hero-slider swiper">
-                        <div class="swiper-wrapper">
-                            <!-- Start Single Slider -->
-                            <div class="swiper-slide single-slider">
-                                <div class="slider-image-container">
-                                    <img src="https://via.placeholder.com/800x500" alt="M75 Sport Watch" class="slider-bg">
-                                    <div class="overlay"></div>
-                                </div>
-                                <div class="content">
-                                    <div class="badge-offer">No restocking fee ($35 savings)</div>
-                                    <h2 class="slider-title">M75 Sport Watch</h2>
-                                    <p class="slider-text">Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <div class="price-container">
-                                        <span class="price-label">Now Only</span>
-                                        <h3 class="price">$320.99</h3>
-                                    </div>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now <i class="lni lni-arrow-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Slider -->
-                            
-                            <!-- Start Single Slider -->
-                            <div class="swiper-slide single-slider">
-                                <div class="slider-image-container">
-                                    <img src="https://via.placeholder.com/800x500" alt="CCTV Camera" class="slider-bg">
-                                    <div class="overlay"></div>
-                                </div>
-                                <div class="content">
-                                    <div class="badge-offer">Big Sale Offer</div>
-                                    <h2 class="slider-title">Get the Best Deal on CCTV Camera</h2>
-                                    <p class="slider-text">Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <div class="price-container">
-                                        <span class="price-label">Combo Only:</span>
-                                        <h3 class="price">$590.00</h3>
-                                    </div>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now <i class="lni lni-arrow-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Slider -->
-                        </div>
-                        
-                        <!-- Slider pagination -->
-                        <div class="swiper-pagination"></div>
-                        
-                        <!-- Slider navigation -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                    </div>
-                    <!-- End Hero Slider -->
-                </div>
-            </div>
-            <div class="col-lg-4 col-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6 col-12 mb-4">
-                        <!-- Start Small Banner -->
-                        <div class="hero-small-banner">
-                            <div class="banner-image-container">
-                                <img src="https://via.placeholder.com/370x250" alt="iPhone 12 Pro Max" class="banner-bg">
-                                <div class="overlay"></div>
-                            </div>
-                            <div class="content">
-                                <div class="badge-offer">New line required</div>
-                                <h2 class="banner-title">iPhone 12 Pro Max</h2>
-                                <h3 class="banner-price">$259.99</h3>
-                                <a href="product-grids.html" class="banner-btn">View Details</a>
-                            </div>
-                        </div>
-                        <!-- End Small Banner -->
-                    </div>
-                    <div class="col-lg-12 col-md-6 col-12">
-                        <!-- Start Small Banner -->
-                        <div class="hero-small-banner weekly-sale">
-                            <div class="content">
-                                <div class="sale-icon"><i class="lni lni-bolt"></i></div>
-                                <h2 class="banner-title">Weekly Sale!</h2>
-                                <p class="banner-text">Saving up to 50% off all online store items this week.</p>
-                                <div class="button">
-                                    <a class="btn" href="product-grids.html">Shop Now <i class="lni lni-arrow-right"></i></a>
-                                </div>
-                                <div class="sale-timer">
-                                    <div class="countdown">
-                                        <div class="countdown-item">
-                                            <span id="days">03</span>
-                                            <p>Days</p>
-                                        </div>
-                                        <div class="countdown-item">
-                                            <span id="hours">12</span>
-                                            <p>Hours</p>
-                                        </div>
-                                        <div class="countdown-item">
-                                            <span id="minutes">45</span>
-                                            <p>Minutes</p>
-                                        </div>
-                                        <div class="countdown-item">
-                                            <span id="seconds">30</span>
-                                            <p>Seconds</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Small Banner -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End Hero Area -->
+  <section class="hero-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-12 custom-padding-right">
@@ -135,7 +14,7 @@
                         <div class="hero-slider">
                             <!-- Start Single Slider -->
                             <div class="single-slider"
-                                style="background-image: url(https://via.placeholder.com/800x500);">
+                                style="background-image: url({{ asset('uploads/1.jpg') }});">
                                 <div class="content">
                                     <h2><span>No restocking fee ($35 savings)</span>
                                         M75 Sport Watch
@@ -148,22 +27,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Single Slider -->
-                            <!-- Start Single Slider -->
-                            <div class="single-slider"
-                                style="background-image: url(https://via.placeholder.com/800x500);">
-                                <div class="content">
-                                    <h2><span>Big Sale Offer</span>
-                                        Get the Best Deal on CCTV Camera
-                                    </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Combo Only:</span> $590.00</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
+                          
                             <!-- End Single Slider -->
                         </div>
                         <!-- End Hero Slider -->
@@ -481,43 +345,29 @@
 <!-- End Trending Product Area -->
 
 <!-- Start Banner Area -->
-<section class="banner-section">
+<section class="banner section">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-12">
-                <div class="modern-banner" style="background-image:url('{{ asset('uploads/6.jpg') }}')">
-                    <div class="banner-overlay"></div>
+                <div class="single-banner" style="background-image:url('{{ asset('uploads/6.jpg') }}')">
                     <div class="content">
-                        <span class="category-tag">Featured</span>
                         <h2>Smart Watch 2.0</h2>
-                        <p>Space Gray Aluminum Case with premium Black/Volt Real Sport Band for ultimate comfort and style</p>
-                        <div class="banner-price">
-                            <span class="price">$299.00</span>
-                            <span class="discount">$350.00</span>
-                        </div>
+                        <p>Space Gray Aluminum Case with <br>Black/Volt Real Sport Band </p>
                         <div class="button">
-                            <a href="product-grids.html" class="btn banner-btn">
-                                View Details <i class="lni lni-arrow-right"></i>
-                            </a>
+                            <a href="product-grids.html" class="btn">View Details</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-12">
-                <div class="modern-banner" style="background-image:url('{{ asset('uploads/5.jpg') }}')">
-                    <div class="banner-overlay"></div>
+                <div class="single-banner custom-responsive-margin"
+                    style="background-image:url('{{ asset('uploads/5.jpg') }}')">
                     <div class="content">
-                        <span class="category-tag">New Arrival</span>
                         <h2>Smart Headphone</h2>
-                        <p>Premium noise-cancelling headphones with crystal-clear sound quality and all-day comfort</p>
-                        <div class="banner-price">
-                            <span class="price">$199.00</span>
-                            <span class="discount">$250.00</span>
-                        </div>
+                        <p>Lorem ipsum dolor sit amet, <br>eiusmod tempor
+                            incididunt ut labore.</p>
                         <div class="button">
-                            <a href="product-grids.html" class="btn banner-btn">
-                                Shop Now <i class="lni lni-cart"></i>
-                            </a>
+                            <a href="product-grids.html" class="btn">Shop Now</a>
                         </div>
                     </div>
                 </div>
@@ -850,175 +700,108 @@
 <!-- End Home Product List -->
 
 <!-- Start Brands Area -->
-<div class="brands">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3 col-md-12 col-12">
-                <h2 class="title">Popular Brands</h2>
-            </div>
-        </div>
-        <div class="brands-logo-wrapper">
-            <div class="brands-logo-carousel d-flex align-items-center justify-content-between">
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-                <div class="brand-logo">
-                    <img src="https://via.placeholder.com/220x160" alt="#">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Brands Area -->
-
-<!-- Start Blog Section Area -->
-<section class="blog-section section">
+<section class="brands-section">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="section-title">
-                    <h2>Our Latest News</h2>
-                    <p>There are many variations of passages of Lorem
-                        Ipsum available, but the majority have suffered alteration in some form.</p>
+                <div class="section-title text-center">
+                    <h2>Popular Brands</h2>
+                    <p>Shop your favorite products from trusted brands worldwide</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog -->
-                <div class="single-blog">
-                    <div class="blog-img">
-                        <a href="blog-single-sidebar.html">
-                            <img src="https://via.placeholder.com/370x215" alt="#">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <a class="category" href="javascript:void(0)">eCommerce</a>
-                        <h4>
-                            <a href="blog-single-sidebar.html">What information is needed for shipping?</a>
-                        </h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt.</p>
-                        <div class="button">
-                            <a href="javascript:void(0)" class="btn">Read More</a>
-                        </div>
+        <div class="brands-container">
+            <div class="brands-wrapper">
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/1.jpg') }}" alt="Brand Logo">
                     </div>
                 </div>
-                <!-- End Single Blog -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog -->
-                <div class="single-blog">
-                    <div class="blog-img">
-                        <a href="blog-single-sidebar.html">
-                            <img src="https://via.placeholder.com/370x215" alt="#">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <a class="category" href="javascript:void(0)">Gaming</a>
-                        <h4>
-                            <a href="blog-single-sidebar.html">Interesting fact about gaming consoles</a>
-                        </h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt.</p>
-                        <div class="button">
-                            <a href="javascript:void(0)" class="btn">Read More</a>
-                        </div>
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/2.jpg') }}" alt="Brand Logo">
                     </div>
                 </div>
-                <!-- End Single Blog -->
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Single Blog -->
-                <div class="single-blog">
-                    <div class="blog-img">
-                        <a href="blog-single-sidebar.html">
-                            <img src="https://via.placeholder.com/370x215" alt="#">
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <a class="category" href="javascript:void(0)">Electronic</a>
-                        <h4>
-                            <a href="blog-single-sidebar.html">Electronics, instrumentation & control engineering
-                            </a>
-                        </h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt.</p>
-                        <div class="button">
-                            <a href="javascript:void(0)" class="btn">Read More</a>
-                        </div>
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/3.jpg') }}" alt="Brand Logo">
                     </div>
                 </div>
-                <!-- End Single Blog -->
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/4.jpg') }}" alt="Brand Logo">
+                    </div>
+                </div>
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/5.jpg') }}" alt="Brand Logo">
+                    </div>
+                </div>
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/6.jpg') }}" alt="Brand Logo">
+                    </div>
+                </div>
+                <div class="brand-item">
+                    <div class="brand-logo">
+                        <img src="{{ asset('uploads/1.jpg') }}" alt="Brand Logo">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<!-- End Blog Section Area -->
+<!-- End Brands Area -->
+
 
 <!-- Start Shipping Info -->
-<section class="shipping-info">
+<section class="shipping-info-section">
     <div class="container">
-        <ul>
+        <div class="shipping-info-wrapper">
             <!-- Free Shipping -->
-            <li>
-                <div class="media-icon">
+            <div class="shipping-info-item">
+                <div class="info-icon">
                     <i class="lni lni-delivery"></i>
                 </div>
-                <div class="media-body">
-                    <h5>Free Shipping</h5>
-                    <span>On order over $99</span>
+                <div class="info-content">
+                    <h4>Free Shipping</h4>
+                    <p>On orders over $99</p>
                 </div>
-            </li>
-            <!-- Money Return -->
-            <li>
-                <div class="media-icon">
+            </div>
+            
+            <!-- 24/7 Support -->
+            <div class="shipping-info-item">
+                <div class="info-icon">
                     <i class="lni lni-support"></i>
                 </div>
-                <div class="media-body">
-                    <h5>24/7 Support.</h5>
-                    <span>Live Chat Or Call.</span>
+                <div class="info-content">
+                    <h4>24/7 Support</h4>
+                    <p>Live chat or call</p>
                 </div>
-            </li>
-            <!-- Support 24/7 -->
-            <li>
-                <div class="media-icon">
+            </div>
+            
+            <!-- Online Payment -->
+            <div class="shipping-info-item">
+                <div class="info-icon">
                     <i class="lni lni-credit-cards"></i>
                 </div>
-                <div class="media-body">
-                    <h5>Online Payment.</h5>
-                    <span>Secure Payment Services.</span>
+                <div class="info-content">
+                    <h4>Secure Payment</h4>
+                    <p>100% secure checkout</p>
                 </div>
-            </li>
-            <!-- Safe Payment -->
-            <li>
-                <div class="media-icon">
+            </div>
+            
+            <!-- Easy Return -->
+            <div class="shipping-info-item">
+                <div class="info-icon">
                     <i class="lni lni-reload"></i>
                 </div>
-                <div class="media-body">
-                    <h5>Easy Return.</h5>
-                    <span>Hassle Free Shopping.</span>
+                <div class="info-content">
+                    <h4>Easy Returns</h4>
+                    <p>30-day return policy</p>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </section>
 <!-- End Shipping Info -->
@@ -1291,259 +1074,7 @@
     background: linear-gradient(45deg, #ff6b6b, #ff9f43);
     border-radius: 10px;
 }
-/* Modern Banner Section Styles */
-.banner-section {
-    padding: 70px 0;
-    background-color: #f9f9f9;
-}
 
-.modern-banner {
-    position: relative;
-    height: 400px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
-}
-
-.modern-banner:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-}
-
-.banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 100%);
-    z-index: 1;
-    transition: all 0.3s ease;
-}
-
-.modern-banner:hover .banner-overlay {
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.3) 100%);
-}
-
-.modern-banner .content {
-    position: relative;
-    z-index: 2;
-    padding: 40px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 80%;
-}
-
-.category-tag {
-    display: inline-block;
-    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
-    color: #fff;
-    padding: 6px 16px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-    transform: translateY(0);
-    transition: all 0.3s ease;
-}
-
-.modern-banner:hover .category-tag {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
-}
-
-.modern-banner h2 {
-    color: #fff;
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transform: translateY(0);
-    transition: all 0.3s ease 0.1s;
-}
-
-.modern-banner:hover h2 {
-    transform: translateY(-3px);
-}
-
-.modern-banner p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 25px;
-    font-size: 15px;
-    line-height: 1.6;
-    max-width: 90%;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transform: translateY(0);
-    transition: all 0.3s ease 0.2s;
-}
-
-.modern-banner:hover p {
-    transform: translateY(-3px);
-}
-
-.banner-price {
-    margin-bottom: 25px;
-    transform: translateY(0);
-    transition: all 0.3s ease 0.3s;
-}
-
-.modern-banner:hover .banner-price {
-    transform: translateY(-3px);
-}
-
-.banner-price .price {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.banner-price .discount {
-    text-decoration: line-through;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 18px;
-    margin-left: 10px;
-}
-
-.banner-btn {
-    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
-    border: none;
-    color: #fff;
-    padding: 12px 25px;
-    border-radius: 30px;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transform: translateY(0);
-    transition: all 0.3s ease 0.4s;
-}
-
-.modern-banner:hover .banner-btn {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
-}
-
-.banner-btn:hover {
-    background: linear-gradient(45deg, #ff9f43, #ff6b6b);
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5) !important;
-}
-
-.banner-btn i {
-    font-size: 14px;
-    transition: transform 0.3s ease;
-}
-
-.banner-btn:hover i {
-    transform: translateX(3px);
-}
-
-/* Responsive Styles */
-@media (max-width: 991px) {
-    .banner-section {
-        padding: 50px 0;
-    }
-    
-    .modern-banner {
-        height: 350px;
-    }
-    
-    .modern-banner .content {
-        padding: 30px;
-    }
-    
-    .modern-banner h2 {
-        font-size: 28px;
-    }
-}
-
-@media (max-width: 767px) {
-    .modern-banner {
-        height: 300px;
-    }
-    
-    .modern-banner .content {
-        padding: 25px;
-        max-width: 90%;
-    }
-    
-    .modern-banner h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-    
-    .modern-banner p {
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-    
-    .banner-price {
-        margin-bottom: 20px;
-    }
-    
-    .banner-price .price {
-        font-size: 20px;
-    }
-    
-    .banner-price .discount {
-        font-size: 16px;
-    }
-    
-    .banner-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 575px) {
-    .banner-section {
-        padding: 40px 0;
-    }
-    
-    .modern-banner {
-        height: 250px;
-    }
-    
-    .modern-banner .content {
-        padding: 20px;
-    }
-    
-    .category-tag {
-        padding: 5px 12px;
-        font-size: 10px;
-        margin-bottom: 10px;
-    }
-    
-    .modern-banner h2 {
-        font-size: 20px;
-    }
-    
-    .modern-banner p {
-        font-size: 12px;
-        margin-bottom: 12px;
-    }
-    
-    .banner-price .price {
-        font-size: 18px;
-    }
-    
-    .banner-price .discount {
-        font-size: 14px;
-    }
-}
 .section-title p {
     font-size: 16px;
     max-width: 600px;
@@ -2159,46 +1690,7 @@
         font-size: 18px;
     }
 }
-    .hero-area {
-        padding: 40px 0;
-        background-color: #f9f9f9;
-        overflow: hidden;
-    }
-
-    /* Main Slider Styles */
-    .hero-slider-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        height: 500px;
-    }
-
-    .hero-slider {
-        height: 100%;
-    }
-
-    .single-slider {
-        position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .slider-image-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-    }
-
-    .slider-bg {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+   
 
     .overlay {
         position: absolute;
@@ -2210,13 +1702,7 @@
         z-index: 2;
     }
 
-    .single-slider .content {
-        position: relative;
-        z-index: 3;
-        padding: 40px;
-        max-width: 60%;
-        color: white;
-    }
+   
 
     .badge-offer {
         display: inline-block;
@@ -2439,47 +1925,283 @@
         margin: 0;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 991px) {
-        .hero-slider-container {
-            height: 400px;
-            margin-bottom: 30px;
-        }
-        
-        .single-slider .content {
-            max-width: 80%;
-        }
-    }
+   
+    /* ========================
+   Brands Section Styles
+   ======================== */
+.brands-section {
+    padding: 70px 0;
+    background-color: #f9f9f9;
+}
 
-    @media (max-width: 767px) {
-        .hero-slider-container {
-            height: 350px;
-        }
-        
-        .single-slider .content {
-            max-width: 90%;
-            padding: 20px;
-        }
-        
-        .slider-title {
-            font-size: 24px;
-        }
-        
-        .hero-small-banner {
-            margin-bottom: 20px;
-        }
-    }
+.section-title {
+    margin-bottom: 50px;
+}
 
-    @media (max-width: 576px) {
-        .single-slider .content {
-            max-width: 100%;
-        }
-        
-        .price-container {
-            flex-direction: column;
-            gap: 5px;
-        }
+.section-title h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 3px;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+    border-radius: 10px;
+}
+
+.section-title p {
+    font-size: 16px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.brands-container {
+    padding: 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.brands-container:before,
+.brands-container:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.brands-container:before {
+    left: 0;
+    background: linear-gradient(to right, #f9f9f9, rgba(249, 249, 249, 0));
+}
+
+.brands-container:after {
+    right: 0;
+    background: linear-gradient(to left, #f9f9f9, rgba(249, 249, 249, 0));
+}
+
+.brands-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    animation: scrollBrands 30s linear infinite;
+    width: max-content;
+}
+
+@keyframes scrollBrands {
+    0% {
+        transform: translateX(0);
     }
+    100% {
+        transform: translateX(calc(-150px * 3.5));
+    }
+}
+
+.brand-item {
+    flex: 0 0 150px;
+    height: 100px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.brand-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.brand-logo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.brand-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.brand-item:hover .brand-logo img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* ========================
+   Shipping Info Styles
+   ======================== */
+.shipping-info-section {
+    padding: 70px 0;
+    background-color: #fff;
+}
+
+.shipping-info-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.shipping-info-item {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.shipping-info-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(45deg, rgba(255, 107, 107, 0.05), rgba(255, 159, 67, 0.05));
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.shipping-info-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.shipping-info-item:hover:before {
+    height: 100%;
+}
+
+.info-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+}
+
+.shipping-info-item:hover .info-icon {
+    transform: rotateY(180deg);
+}
+
+.info-icon i {
+    font-size: 28px;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.info-content h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.info-content p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .shipping-info-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .brands-section,
+    .shipping-info-section {
+        padding: 50px 0;
+    }
+    
+    .section-title h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 767px) {
+    .brand-item {
+        flex: 0 0 130px;
+        height: 90px;
+    }
+    
+    .section-title h2 {
+        font-size: 24px;
+    }
+    
+    .section-title p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 575px) {
+    .shipping-info-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .brands-section,
+    .shipping-info-section {
+        padding: 40px 0;
+    }
+    
+    .brand-item {
+        flex: 0 0 120px;
+        height: 80px;
+        padding: 10px;
+    }
+    
+    .info-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .info-icon i {
+        font-size: 24px;
+    }
+    
+    .info-content h4 {
+        font-size: 16px;
+    }
+    
+    .info-content p {
+        font-size: 13px;
+    }
+}
 </style>
 @endpush
 
@@ -2491,26 +2213,48 @@
     initCountdownTimer();
 });
 document.addEventListener('DOMContentLoaded', function() {
-    // Add hover effect for banners
-    const banners = document.querySelectorAll('.modern-banner');
+    // Clone brand items for infinite scroll effect
+    const brandsWrapper = document.querySelector('.brands-wrapper');
     
-    banners.forEach(banner => {
-        // Optional: Add parallax effect on mouse move
-        banner.addEventListener('mousemove', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const xPercent = x / rect.width;
-            const yPercent = y / rect.height;
-            
-            // Subtle movement of background
-            this.style.backgroundPosition = `${50 + (xPercent - 0.5) * 10}% ${50 + (yPercent - 0.5) * 10}%`;
+    if (brandsWrapper) {
+        const brandItems = document.querySelectorAll('.brand-item');
+        
+        // Clone the first set of brand items and append to the end
+        brandItems.forEach(item => {
+            const clone = item.cloneNode(true);
+            brandsWrapper.appendChild(clone);
         });
         
-        // Reset position on mouse leave
-        banner.addEventListener('mouseleave', function() {
-            this.style.backgroundPosition = 'center';
+        // Pause animation on hover
+        brandsWrapper.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+        });
+        
+        brandsWrapper.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
+    }
+    
+    // Add hover effects to shipping info items
+    const shippingItems = document.querySelectorAll('.shipping-info-item');
+    
+    shippingItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            // Add a subtle pulse effect to the icon
+            const icon = this.querySelector('.info-icon');
+            icon.style.transform = 'scale(1.1) rotateY(180deg)';
+            
+            // Highlight the text
+            const title = this.querySelector('h4');
+            title.style.color = '#ff6b6b';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            const icon = this.querySelector('.info-icon');
+            icon.style.transform = '';
+            
+            const title = this.querySelector('h4');
+            title.style.color = '';
         });
     });
 });
@@ -2566,63 +2310,6 @@ function initCountdownTimer() {
         });
     });
 }
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize the hero slider
-        const heroSwiper = new Swiper('.hero-slider', {
-            loop: true,
-            effect: 'fade',
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-
-        // Countdown timer for weekly sale
-        function updateCountdown() {
-            // Set the target date (1 week from now)
-            const now = new Date();
-            const targetDate = new Date();
-            targetDate.setDate(now.getDate() + 7);
-            
-            // Calculate the time difference
-            const diff = targetDate - now;
-            
-            // Calculate days, hours, minutes, seconds
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            // Update the countdown
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-        
-        // Initial call and set interval
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-        
-        // Add hover effects for buttons
-        const buttons = document.querySelectorAll('.btn, .banner-btn');
-        buttons.forEach(button => {
-            button.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-3px)';
-            });
-            
-            button.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    });
+  
 </script>
 @endpush
