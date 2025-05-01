@@ -15,7 +15,6 @@ class HomeController extends Controller
     {
         $categories = Category::with('products', 'children', 'parent')->take(6)->get();
         $brands = Brand::with('products')->take(5)->get();
-
         $latestProduct = Product::latest()->first();
 
         // Trending products by order quantity
@@ -31,11 +30,16 @@ class HomeController extends Controller
 
         // If no trending products, fallback to highest rated
         if ($trendingProducts->isEmpty()) {
-            $trendingProducts = Product::select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
+            $trendingProducts = Product::with('productImages', 'reviews', 'discounts')
                 ->leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
-                ->groupBy('products.id')
+                ->select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
+                ->groupBy([
+                    'products.id', 'products.name', 'products.name_ar', 'products.description',
+                    'products.description_ar', 'products.price', 'products.status', 'products.stock',
+                    'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
+                    // Add any other columns from the products table that exist in your schema
+                ])
                 ->orderByDesc('average_rating')
-                ->with('productImages', 'reviews', 'discounts')
                 ->take(4)
                 ->get();
 
@@ -47,24 +51,38 @@ class HomeController extends Controller
                     ->get();
             }
         }
-        $topRated = Product::select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
+
+        $topRated = Product::with('productImages')
             ->leftJoin('reviews', 'products.id', '=', 'reviews.product_id')
-            ->groupBy('products.id')
+            ->select('products.*', DB::raw('AVG(reviews.rating) as average_rating'))
+            ->groupBy([
+                'products.id', 'products.name', 'products.name_ar', 'products.description',
+                'products.description_ar', 'products.price', 'products.status', 'products.stock',
+                'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
+                // Add any other columns from the products table that exist in your schema
+            ])
             ->orderByDesc('average_rating')
-            ->with('productImages')
             ->take(3)
             ->get();
+
         $newArrivals = Product::orderByDesc('created_at')
             ->with('productImages')
             ->take(3)
             ->get();
-        $bestSellers = Product::select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered'))
-            ->join('order_items', 'products.id', '=', 'order_items.product_id')
-            ->groupBy('products.id')
+
+        $bestSellers = Product::with('productImages')
+            ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+            ->select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered'))
+            ->groupBy([
+                'products.id', 'products.name', 'products.name_ar', 'products.description',
+                'products.description_ar', 'products.price', 'products.status', 'products.stock',
+                'products.brand_id', 'products.category_id', 'products.created_at', 'products.updated_at'
+                // Add any other columns from the products table that exist in your schema
+            ])
             ->orderByDesc('total_ordered')
-            ->with('productImages')
             ->take(3)
             ->get();
+
         if ($bestSellers->isEmpty()) {
             $bestSellers = Product::select('products.*')
                 ->orderByDesc('price')
