@@ -1,4 +1,3 @@
-<script>
 $(document).ready(function() {
     // Initialize tooltips
     $('[data-bs-toggle="tooltip"]').tooltip();
@@ -51,7 +50,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     // Update product count
-                    updateProductCount(response.count);
+                    updateProductCount(response.products.length);
                     
                     // Replace products in both grid and list views
                     replaceProducts(response.products);
@@ -85,7 +84,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     // Update product count
-                    updateProductCount(response.count);
+                    updateProductCount(response.products.length);
                     
                     // Replace products in both grid and list views
                     replaceProducts(response.products);
@@ -106,9 +105,29 @@ $(document).ready(function() {
     
     // Function to reload all products (default state)
     function reloadAllProducts() {
-        // You would need an additional route for this
-        // For now, we'll just reload the page
-        window.location.reload();
+        $.ajax({
+            url: '/get-all-products',
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() {
+                showLoading();
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateProductCount(response.products.length);
+                    replaceProducts(response.products);
+                }
+            },
+            error: function(xhr) {
+                console.error('Error loading all products:', xhr.responseText);
+                showErrorMessage('Failed to load products. Please try again.');
+            },
+            complete: function() {
+                hideLoading();
+            }
+        });
     }
     
     // Function to replace products in the DOM
@@ -117,7 +136,7 @@ $(document).ready(function() {
         $('#nav-grid .row').empty();
         $('#nav-list .row').empty();
         
-        if (products.length === 0) {
+        if (!products || products.length === 0) {
             const noProductsMessage = `
                 <div class="col-12 text-center py-5">
                     <h4>No products found</h4>
@@ -207,6 +226,8 @@ $(document).ready(function() {
                         ? product.product_images[0].image_url 
                         : 'https://via.placeholder.com/335x335';
         
+        const description = product.description_ar || product.description || 'No description available';
+        
         return `
             <div class="col-12">
                 <div class="product-card-horizontal rounded-3 overflow-hidden bg-white shadow-sm">
@@ -237,7 +258,7 @@ $(document).ready(function() {
                                         <span class="text-muted small">(4.0)</span>
                                     </div>
                                 </div>
-                                <p class="text-muted mb-4">${product.description_ar || 'No description available'}</p>
+                                <p class="text-muted mb-4">${description}</p>
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <div class="product-price">
                                         <span class="new-price fw-bold text-primary fs-4">$${parseFloat(product.price).toFixed(2)}</span>
@@ -278,12 +299,14 @@ $(document).ready(function() {
     
     // Function to show loading indicator
     function showLoading() {
-        // You can implement a loading spinner here
-        $('<div class="loading-overlay position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style="z-index: 9999;">' +
-            '<div class="spinner-border text-primary" role="status">' +
-                '<span class="visually-hidden">Loading...</span>' +
-            '</div>' +
-        '</div>').appendTo('body');
+        // Create a loading overlay if it doesn't exist
+        if ($('.loading-overlay').length === 0) {
+            $('<div class="loading-overlay position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-white bg-opacity-75" style="z-index: 9999;">' +
+                '<div class="spinner-border text-primary" role="status">' +
+                    '<span class="visually-hidden">Loading...</span>' +
+                '</div>' +
+            '</div>').appendTo('body');
+        }
     }
     
     // Function to hide loading indicator
@@ -293,6 +316,9 @@ $(document).ready(function() {
     
     // Function to show error message
     function showErrorMessage(message) {
+        // Remove any existing error messages
+        $('.alert-danger').alert('close');
+        
         const errorAlert = `
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 ${message}
@@ -300,38 +326,63 @@ $(document).ready(function() {
             </div>
         `;
         
-        $('#nav-grid').before(errorAlert);
+        // Add before the product grid
+        $('.products-top-wrapper').after(errorAlert);
         
         // Auto-dismiss after 5 seconds
         setTimeout(function() {
             $('.alert').alert('close');
         }, 5000);
     }
-    function reloadAllProducts() {
-        $.ajax({
-            url: '/get-all-products',
-            type: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function() {
-                showLoading();
-            },
-            success: function(response) {
-                if (response.success) {
-                    updateProductCount(response.count);
-                    replaceProducts(response.products);
-                }
-            },
-            error: function(xhr) {
-                console.error('Error loading all products:', xhr.responseText);
-                showErrorMessage('Failed to load products. Please try again.');
-            },
-            complete: function() {
-                hideLoading();
-            }
+
+    // Sorting functionality
+    $('#sortingOptions').on('change', function() {
+        const sortOption = $(this).val();
+        
+        // Get current products
+        let currentProducts = [];
+        
+        // Get the products from the current view
+        $('#nav-grid .product-card').each(function() {
+            const productId = $(this).find('.product-title a').attr('href').split('/').pop();
+            const productName = $(this).find('.product-title a').text();
+            const productPrice = parseFloat($(this).find('.new-price').text().replace('$', ''));
+            
+            currentProducts.push({
+                id: productId,
+                name_ar: productName,
+                price: productPrice,
+                element: $(this).parent()
+            });
         });
-    }
+        
+        // Sort the products based on selected option
+        switch(sortOption) {
+            case 'Price: Low to High':
+                currentProducts.sort((a, b) => a.price - b.price);
+                break;
+            case 'Price: High to Low':
+                currentProducts.sort((a, b) => b.price - a.price);
+                break;
+            case 'Name: A to Z':
+                currentProducts.sort((a, b) => a.name_ar.localeCompare(b.name_ar));
+                break;
+            case 'Name: Z to A':
+                currentProducts.sort((a, b) => b.name_ar.localeCompare(a.name_ar));
+                break;
+            default:
+                // Default (Popularity) - No sorting needed
+                break;
+        }
+        
+        // Reorder the products in the DOM
+        const gridRow = $('#nav-grid .row');
+        gridRow.empty();
+        
+        currentProducts.forEach(function(product) {
+            gridRow.append(product.element);
+        });
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -348,5 +399,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-</script>

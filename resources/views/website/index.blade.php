@@ -86,11 +86,15 @@
             <div class="col-lg-4 col-md-6 col-12">
                 <!-- Start Single Category -->
                 <div class="single-category modern-category">
-                    <div class="category-image">
-                        <img src="{{ asset($category->image) }}" alt="{{ $category->name_ar ? $category->name_ar : $category->name_en }}">
-                        <div class="category-overlay"></div>
-                    </div>
                     <div class="category-content">
+                        <div class="category-image">
+                            @if ($category->image && file_exists(public_path($category->image)))
+                                <img src="{{ asset($category->image) }}" alt="{{ $category->name_ar ? $category->name_ar : $category->name_en }}">
+                            @else
+                                <img src="{{ asset('images/placeholder-category.jpg') }}" alt="{{ $category->name_ar ? $category->name_ar : $category->name_en }}">
+                            @endif
+                            <div class="category-overlay"></div>
+                        </div>
                         <h3 class="category-heading">{{ $category->name_ar ? $category->name_ar : $category->name_en }}</h3>
                         @if ($category->children->isNotEmpty())
                             <ul class="category-list">
@@ -496,140 +500,92 @@
 <style>
     /* Hero Area Styles */
     /* Modern Featured Categories Styles */
-.featured-categories {
-    padding: 70px 0;
-    background-color: #f9f9f9;
-}
-
-.section-title {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.section-title h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-}
-
-.section-title h2:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -10px;
-    transform: translateX(-50%);
-    width: 70px;
-    height: 3px;
-    background: linear-gradient(45deg, #ff6b6b, #ff9f43);
-    border-radius: 10px;
-}
-
-.section-title p {
-    font-size: 16px;
-    max-width: 600px;
-    margin: 0 auto;
-    color: #666;
-    line-height: 1.6;
-    margin-top: 20px;
-}
+    .featured-categories { padding: 70px 0; background-color: #f9f9f9; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: 32px; font-weight: 700; margin-bottom: 15px; position: relative; display: inline-block; }
+.section-title h2:after { content: ''; position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); width: 70px; height: 3px; background: linear-gradient(45deg, #ff6b6b, #ff9f43); border-radius: 10px; }
+.section-title p { font-size: 16px; max-width: 600px; margin: 0 auto; color: #666; line-height: 1.6; margin-top: 20px; }
 
 /* Modern Category Styles */
-.modern-category {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.modern-category { 
+    background: #fff; 
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); 
+    margin-bottom: 30px; 
+    transition: all 0.3s ease; 
+    position: relative; 
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
 }
-
-.modern-category:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.modern-category:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
 }
-
-
-
-.category-image {
-    position: relative;
-    overflow: hidden;
-    height: 220px; /* Increased height for better visibility */
-    width: 100%;
-    border-radius: 8px;
-    background: #f5f5f5;
+.category-image { 
+    position: sticky; 
+    overflow: hidden; 
+    height: 220px; 
+    width: 100%; 
+    border-radius: 8px 8px 0 0; 
+    background: #f5f5f5; 
+    margin-bottom: 15px;
 }
-
-.category-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* This ensures the image covers the entire container */
-    transition: all 0.5s ease;
+.category-image img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: all 0.5s ease; 
 }
-
-.category-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.2); /* Slight overlay for better text visibility */
-    transition: all 0.3s ease;
+.category-overlay { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s ease; 
 }
-
-.modern-category:hover .category-image img {
-    transform: scale(1.1);
+.modern-category:hover .category-image img { 
+    transform: scale(1.1); 
 }
-
-.modern-category:hover .category-overlay {
-    background: rgba(0, 0, 0, 0.3); /* Darker on hover */
+.modern-category:hover .category-overlay { 
+    background: rgba(0, 0, 0, 0.3); 
 }
-
-.category-content {
-    padding: 20px 15px;
-    background: #fff;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+.category-content { 
+    padding: 20px 15px; 
+    background: #fff; 
+    border-radius: 8px; 
+    flex: 1;
 }
-
-.category-heading {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
+.category-heading { 
+    font-size: 18px; 
+    font-weight: 600; 
+    margin-bottom: 10px; 
 }
-
-.category-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.category-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
 }
-
-.category-list li {
-    margin-bottom: 5px;
+.category-list li { 
+    margin-bottom: 5px; 
 }
-
-.category-list li a {
-    color: #666;
-    transition: all 0.3s ease;
+.category-list li a { 
+    color: #666; 
+    transition: all 0.3s ease; 
 }
-
-.category-list li a:hover {
-    color: #ff6b6b;
-    padding-left: 5px;
+.category-list li a:hover { 
+    color: #ff6b6b; 
+    padding-left: 5px; 
 }
-
-.single-category {
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
+.single-category { 
+    margin-bottom: 30px; 
+    transition: all 0.3s ease; 
 }
-
-.single-category:hover {
-    transform: translateY(-5px);
+.single-category:hover { 
+    transform: translateY(-5px); 
 }
 /* Product Image Standardization */
 .product-image {

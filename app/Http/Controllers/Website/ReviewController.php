@@ -32,12 +32,12 @@ class ReviewController extends Controller
     public function update(Request $request, Review $review)
     {
         $this->reviewRepository->updateReview($review, $request);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Review updated successfully');
     }
 
     public function destroy(Review $review)
     {
         $this->reviewRepository->deleteReview($review);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Review deleted successfully');
     }
 }

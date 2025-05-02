@@ -13,8 +13,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('products', 'children', 'parent')->take(6)->get();
-        $brands = Brand::with('products')->take(5)->get();
+        $categories = Category::with('products', 'children', 'parent')->orderBy('created_at', 'desc')->take(6)->get();
+        $brands = Brand::with('products')->orderBy('created_at', 'desc')->take(5)->get();
 
         $latestProduct = Product::latest()->first();
 

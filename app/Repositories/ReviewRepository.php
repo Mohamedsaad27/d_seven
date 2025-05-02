@@ -32,7 +32,17 @@ class ReviewRepository implements ReviewRepositoryInterface
 
     public function updateReview(Review $review, Request $request)
     {
-        return $review->update($request->all());
+        $validatedData = $request->validate([
+            'rating' => 'required|numeric|between:1,5',
+            'comment' => 'required',
+        ]);
+        $validatedData['product_id'] = $request->product_id;
+        $validatedData['user_id'] = auth()->user()->id;
+        
+        return Review::updateOrCreate([
+            'product_id' => $validatedData['product_id'],
+            'user_id' => $validatedData['user_id'],
+        ], $validatedData);
     }
 
     public function deleteReview(Review $review)
