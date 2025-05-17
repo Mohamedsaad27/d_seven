@@ -149,6 +149,7 @@
                                             <a href="{{route('cart.index')}}">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
+                                            @if(Auth::check())
                                             @forelse($cart->cartItems as $cartItem)
                                             <li>
                                                 <a href="javascript:void(0)" class="remove"
@@ -170,6 +171,11 @@
                                                 <p>No items in the cart</p>
                                            </li>
                                            @endforelse
+                                            @else
+                                            <li>
+                                                <p>No items in the cart</p>
+                                           </li>
+                                            @endauth
                                         </ul>
                                         <div class="bottom">
                                             <div class="total">
