@@ -25,10 +25,13 @@ class CartController extends Controller
 
     public function addToCart($id)
     {
-        $this->cartRepository->addToCart($id);
+        $response = $this->cartRepository->addToCart($id);
+
+        $responseData = json_decode($response->getContent());
+
         return response()->json([
             'status' => true,
-            'message' => 'Product added to cart successfully',
+            'message' => $responseData->message,
             'cart_count' => auth()->user()->cart->cartItems->sum('quantity')
         ]);
     }

@@ -195,20 +195,40 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.status) {
-                    // Show success toast notification
-                    toastr.success(response.message);
+                    // Show success toast notification with centered large icon and Arabic message
+                    toastr.success(
+                        '<div class="text-center">' +
+                        '<div>تمت إضافة المنتج إلى سلة التسوق بنجاح</div>' +
+                        '</div>'
+                    );
 
                     // Update cart count in the header if you have one
                     if (response.cart_count) {
                         $('.cart-count').text(response.cart_count);
                     }
                 } else {
-                    // Show error toast notification
-                    toastr.error(response.message);
+                    // Show error toast notification with centered large icon and Arabic message
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
+                        '</div>'
+                    );
                 }
             },
-            error: function(xhr) {
-                toastr.error('Something went wrong, please try again.');
+            error: function(xhr, status, error) {
+                if (xhr.status === 302) {
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>انتهت الجلسة أو تحتاج إلى تسجيل الدخول. يرجى تحديث الصفحة</div>' +
+                        '</div>'
+                    );
+                } else {
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>حدث خطأ ما، يرجى المحاولة مرة أخرى</div>' +
+                        '</div>'
+                    );
+                }
             }
         });
     });

@@ -420,32 +420,66 @@ $(document).ready(function() {
         });
     });
     
+    
+
+});
+$(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     // Add to cart functionality
-    $(document).on('click', '.add-to-cart', function() {
+    $(document).on('click', '.add-to-cart', function(e) {
+        e.preventDefault();
+
         const productId = $(this).data('product-id');
-        
-        // Example AJAX call to add product to cart
-        // This is a placeholder - you should implement your actual cart logic
+        const url = $(this).attr('href');
+
         $.ajax({
-            url: '/cart/add',
             type: 'POST',
+            url: url,
             data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                product_id: productId,
-                quantity: 1
+                product_id: productId
             },
             success: function(response) {
-                // Show success message
-                alert('Product added to cart successfully!');
+                if (response.status) {
+                    // Show success toast notification with centered large icon and Arabic message
+                    toastr.success(
+                        '<div class="text-center">' +
+                        '<div>تمت إضافة المنتج إلى سلة التسوق بنجاح</div>' +
+                        '</div>'
+                    );
+
+                    // Update cart count in the header if you have one
+                    if (response.cart_count) {
+                        $('.cart-count').text(response.cart_count);
+                    }
+                } else {
+                    // Show error toast notification with centered large icon and Arabic message
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
+                        '</div>'
+                    );
+                }
             },
-            error: function(xhr) {
-                console.error('Error adding product to cart:', xhr.responseText);
-                alert('Failed to add product to cart. Please try again.');
+            error: function(xhr, status, error) {
+                if (xhr.status === 302) {
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>انتهت الجلسة أو تحتاج إلى تسجيل الدخول. يرجى تحديث الصفحة</div>' +
+                        '</div>'
+                    );
+                } else {
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>حدث خطأ ما، يرجى المحاولة مرة أخرى</div>' +
+                        '</div>'
+                    );
+                }
             }
         });
     });
-    
-    // Initialize the page by showing all products
-    // Uncomment this if you want to load products via AJAX on page load
-    // reloadAllProducts();
 });

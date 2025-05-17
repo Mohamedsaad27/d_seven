@@ -119,7 +119,7 @@
                         @endif
                     </p>
                     
-                    <form action="#" method="POST" class="product-options">
+                    <form action="{{ route('cart.store', $product->id) }}" method="POST" class="product-options">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         
@@ -154,7 +154,7 @@
                         </div>
                         
                         <div class="action-buttons">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary add-to-cart" data-product-id="{{ $product->id }}" data-color-id="{{ $product->colors->first()?->color?->id ?? '' }}" >
                                 <i class="lni lni-cart"></i> Add to Cart
                             </button>
                             

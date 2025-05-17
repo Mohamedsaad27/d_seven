@@ -137,7 +137,12 @@
                                 class="img-fluid w-100 product-img">
                         @endif 
                         <div class="product-action position-absolute bottom-0 start-0 w-100 p-3 d-flex gap-2 justify-content-center opacity-0">
-                            <button class="btn btn-sm btn-primary rounded-circle" data-bs-toggle="tooltip" title="Add to Cart">
+                            <button 
+                                href="{{ route('cart.store', $product->id) }}"
+                                class="btn btn-sm btn-outline-light rounded-circle add-to-cart " 
+                                data-product-id="{{ $product->id }}" 
+                                data-bs-toggle="tooltip" 
+                                title="Add to Cart">
                                 <i class="lni lni-cart"></i>
                             </button>
                             <button class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="tooltip" title="Add to Wishlist">
@@ -178,7 +183,12 @@
                         </div>
                         <div class="product-price d-flex justify-content-between align-items-center">
                             <span class="new-price fw-bold text-primary">{{ number_format($product->price, 2) }} EGP</span>
-                            <button class="btn btn-primary btn-sm add-to-cart">
+                            <button 
+                                href="{{ route('cart.store', $product->id) }}"
+                                class="btn btn-primary btn-sm add-to-cart" 
+                                data-product-id="{{ $product->id }}" 
+                                data-bs-toggle="tooltip" 
+                                title="Add to Cart">
                                 <i class="lni lni-cart me-1"></i> Add to Cart
                             </button>
                         </div>
@@ -298,6 +308,14 @@
     <!-- Custom CSS -->
     @push('styles')
     <link rel="stylesheet" href="{{ asset('website/css/product-list.css') }}">
+    <style>
+       .toast-message {
+                font-family: 'Cairo', sans-serif; 
+                font-size: 16px;
+                text-align: right;
+                padding-right: 10px;
+            }
+    </style>
     @endpush
 
     <!-- Custom JavaScript -->
@@ -305,3 +323,5 @@
     <script src="{{ asset('website/js/product-list.js') }}"></script>
     @endpush
 @endsection
+                 
+                           

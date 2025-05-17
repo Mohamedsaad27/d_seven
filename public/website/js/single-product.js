@@ -273,3 +273,154 @@ $(document).ready(function() {
         // Add them here
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    // Product form submission
+    const productForm = document.querySelector('.product-options');
+    
+    if (productForm) {
+        productForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const productId = formData.get('product_id');
+            const colorId = formData.get('color_id');
+            const quantity = formData.get('quantity');
+            
+            // Add loading state to button
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="lni lni-spinner lni-spin-effect"></i> Adding...';
+            submitBtn.disabled = true;
+            
+            // AJAX request to add to cart
+            fetch(`/add-to-cart/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    color_id: colorId,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                
+                if (data.status) {
+                    // Show success toast notification
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success(
+                            '<div class="text-center">' +
+                            '<div>' + (data.message || 'تمت إضافة المنتج إلى سلة التسوق بنجاح') + '</div>' +
+                            '</div>'
+                        );
+                    } else {
+                        alert(data.message || 'Product added to cart successfully');
+                    }
+                    
+                    // Update cart count in the header if you have one
+                    if (data.cart_count) {
+                        const cartCountElements = document.querySelectorAll('.cart-count');
+                        cartCountElements.forEach(element => {
+                            element.textContent = data.cart_count;
+                            
+                            // Add animation
+                            element.classList.add('animate__animated', 'animate__heartBeat');
+                            setTimeout(() => {
+                                element.classList.remove('animate__animated', 'animate__heartBeat');
+                            }, 1000);
+                        });
+                    }
+                } else {
+                    // Show error toast notification
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error(
+                            '<div class="text-center">' +
+                            '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
+                            '</div>'
+                        );
+                    } else {
+                        alert('Error adding product to cart');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                
+                // Show error message
+                if (typeof toastr !== 'undefined') {
+                    toastr.error(
+                        '<div class="text-center">' +
+                        '<div>حدث خطأ ما، يرجى المحاولة مرة أخرى</div>' +
+                        '</div>'
+                    );
+                } else {
+                    alert('Error adding product to cart');
+                }
+            });
+        });
+    }
+    
+    // Color badge selection - moved from jQuery to vanilla JS
+    const colorBadges = document.querySelectorAll('.color-badge');
+    const selectedColorInput = document.getElementById('selectedColor');
+    
+    if (colorBadges.length > 0 && selectedColorInput) {
+        colorBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                // Remove active class from all badges
+                colorBadges.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to the clicked badge
+                this.classList.add('active');
+                
+                // Update the hidden input with the selected color ID
+                const colorId = this.getAttribute('data-color');
+                selectedColorInput.value = colorId;
+            });
+        });
+    }
+    
+    // Quantity Selector functionality
+    const quantityInput = document.querySelector('.quantity-input');
+    const decreaseBtn = document.querySelector('.decrease-btn');
+    const increaseBtn = document.querySelector('.increase-btn');
+    
+    if (quantityInput && decreaseBtn && increaseBtn) {
+        decreaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+        
+        increaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            let max = parseInt(quantityInput.getAttribute('max'));
+            if (value < max) {
+                quantityInput.value = value + 1;
+            }
+        });
+        
+        quantityInput.addEventListener('change', function() {
+            let value = parseInt(this.value);
+            let max = parseInt(this.getAttribute('max'));
+            
+            if (isNaN(value) || value < 1) {
+                this.value = 1;
+            } else if (value > max) {
+                this.value = max;
+            }
+        });
+    }
+});

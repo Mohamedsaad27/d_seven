@@ -505,4 +505,43 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <script src="{{ asset('website/js/index.js') }}"></script>
+<script>
+    // Configure toastr options
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right", // Changed to center position
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "2000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "rtl": true // Enable RTL for Arabic text
+    };
+
+    // Add custom CSS to further customize toastr appearance
+    $("<style>")
+        .prop("type", "text/css")
+        .html(`
+            .toast-top-center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 250px;
+            }
+            .toast-message {
+                font-family: 'Cairo', sans-serif; 
+                font-size: 16px;
+                text-align: right;
+                padding-right: 10px;
+            }
+            .toast-success, .toast-error, .toast-info, .toast-warning {
+                padding-left: 50px; /* Make room for the icon */
+            }
+        `)
+        .appendTo("head");
+</script>
 @endpush

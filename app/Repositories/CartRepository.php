@@ -37,26 +37,27 @@ class CartRepository implements CartRepositoryInterface
     public function addToCart($id)
     {
         $product = Product::findOrFail($id);
-        if(!$product) {
+        if (!$product) {
             return response()->json([
                 'status' => false,
                 'message' => 'Product not found'
             ]);
         }
         $cart = Cart::where('user_id', Auth::id())->first();
-            if (!$cart) {
-                $cart = Cart::create([
-                    'user_id' => auth()->id()
-                ]);
-            }
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => auth()->id()
+            ]);
+        }
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
+            ->where('color_id', $product->colors->first()->id)
             ->first();
-        if($cartItem) {
+        if ($cartItem) {
             $cartItem->quantity = $cartItem->quantity + 1;
             $cartItem->save();
-        }
-        else {
+            $message = 'تم تحديث كمية المنتج في السلة!';
+        } else {
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
@@ -65,13 +66,13 @@ class CartRepository implements CartRepositoryInterface
                 'quantity' => 1,
                 'price' => $product->price
             ]);
+            $message = 'تم إضافة المنتج إلى سلة التسوق بنجاح!';
         }
         return response()->json([
             'status' => true,
-            'message' => 'Product added to cart successfully',
+            'message' => $message,
             'cart_count' => $cart->cartItems->sum('quantity')
         ]);
-
     }
 
     public function clearCart()

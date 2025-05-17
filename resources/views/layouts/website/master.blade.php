@@ -13,6 +13,8 @@
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="{{ asset('assets/css/front/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/LineIcons.3.0.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/front/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/main.css') }}" />
@@ -44,22 +46,7 @@
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
-    <script>
-    // Configure toastr options
-    toastr.options = {
-        "closeButton": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
- </script>
+   
     <!-- ========================= JS here ========================= -->
     <script src="{{ asset('assets/js/front/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/front/tiny-slider.js') }}"></script>
