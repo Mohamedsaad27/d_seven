@@ -180,7 +180,11 @@
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Total</span>
+                                                @if(Auth::check())
                                                 <span class="total-amount">{{number_format($cart->cartItems->sum('price'), 2)}} EGP</span>
+                                                @else
+                                                <span class="total-amount">0 EGP</span>
+                                                @endif
                                             </div>
                                             <div class="button">
                                                 <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
