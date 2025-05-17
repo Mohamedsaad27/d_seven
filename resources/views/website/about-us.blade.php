@@ -96,7 +96,10 @@
                         <div class="icon-circle mx-auto mb-3 bg-primary-subtle text-primary">
                             <i class="lni lni-users fs-3"></i>
                         </div>
-                        <h2 class="counter fw-bold mb-2">15,000+</h2>
+                        @php
+                        $customers = \App\Models\User::where('role', 'user')->count();
+                        @endphp
+                        <h2 class="counter fw-bold mb-2">{{ $customers }}</h2>
                         <p class="mb-0 text-muted">Happy Customers</p>
                     </div>
                 </div>
@@ -105,7 +108,10 @@
                         <div class="icon-circle mx-auto mb-3 bg-success-subtle text-success">
                             <i class="lni lni-package fs-3"></i>
                         </div>
-                        <h2 class="counter fw-bold mb-2">5,000+</h2>
+                        @php
+                        $products = \App\Models\Product::count();
+                        @endphp
+                        <h2 class="counter fw-bold mb-2">{{ $products }}</h2>
                         <p class="mb-0 text-muted">Products</p>
                     </div>
                 </div>
@@ -114,7 +120,10 @@
                         <div class="icon-circle mx-auto mb-3 bg-warning-subtle text-warning">
                             <i class="lni lni-star fs-3"></i>
                         </div>
-                        <h2 class="counter fw-bold mb-2">4.8</h2>
+                        @php
+                        $reviews = \App\Models\Review::count();
+                        @endphp
+                        <h2 class="counter fw-bold mb-2">{{ $reviews }}</h2>
                         <p class="mb-0 text-muted">Average Rating</p>
                     </div>
                 </div>
@@ -123,8 +132,11 @@
                         <div class="icon-circle mx-auto mb-3 bg-danger-subtle text-danger">
                             <i class="lni lni-map-marker fs-3"></i>
                         </div>
-                        <h2 class="counter fw-bold mb-2">25+</h2>
-                        <p class="mb-0 text-muted">Countries Served</p>
+                        @php
+                        $shipping_zones = \App\Models\ShippingZone::count();
+                        @endphp
+                        <h2 class="counter fw-bold mb-2">{{ $shipping_zones }}</h2>
+                        <p class="mb-0 text-muted">Shipping Zones</p>
                     </div>
                 </div>
             </div>
@@ -183,89 +195,6 @@
     </section>
     <!-- End Values Section -->
 
-    <!-- Start Testimonials Section -->
-    <section class="testimonials-section py-5 my-5" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center mb-5">
-                    <div class="section-tag mb-3">
-                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-normal">Testimonials</span>
-                    </div>
-                    <h2 class="display-5 fw-bold mb-3">What Our Customers Say</h2>
-                    <p class="lead text-muted mx-auto" style="max-width: 700px;">Don't just take our word for it - hear from our satisfied customers.</p>
-                </div>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="testimonial-card bg-white p-4 rounded-4 shadow-sm h-100">
-                        <div class="rating mb-3">
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                        </div>
-                        <p class="testimonial-text mb-4">"The quality of their kitchenware is exceptional. I've been using their cookware set for over a year now, and it still looks brand new!"</p>
-                        <div class="testimonial-author d-flex align-items-center">
-                            <div class="author-avatar me-3">
-                                <img src="/placeholder.svg?height=60&width=60" alt="Sarah Johnson" class="rounded-circle" width="60" height="60">
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Sarah Johnson</h5>
-                                <p class="mb-0 small text-muted">Loyal Customer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="testimonial-card bg-white p-4 rounded-4 shadow-sm h-100">
-                        <div class="rating mb-3">
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                        </div>
-                        <p class="testimonial-text mb-4">"Their customer service is outstanding. When I had an issue with my order, they resolved it immediately and even sent a small gift as an apology."</p>
-                        <div class="testimonial-author d-flex align-items-center">
-                            <div class="author-avatar me-3">
-                                <img src="/placeholder.svg?height=60&width=60" alt="Michael Chen" class="rounded-circle" width="60" height="60">
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Michael Chen</h5>
-                                <p class="mb-0 small text-muted">Happy Customer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="testimonial-card bg-white p-4 rounded-4 shadow-sm h-100">
-                        <div class="rating mb-3">
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                            <i class="lni lni-star-filled text-warning"></i>
-                        </div>
-                        <p class="testimonial-text mb-4">"I've completely transformed my living room with their furniture collection. The designs are modern yet timeless, and the quality is exceptional."</p>
-                        <div class="testimonial-author d-flex align-items-center">
-                            <div class="author-avatar me-3">
-                                <img src="/placeholder.svg?height=60&width=60" alt="Emily Rodriguez" class="rounded-circle" width="60" height="60">
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Emily Rodriguez</h5>
-                                <p class="mb-0 small text-muted">Interior Designer</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Testimonials Section -->
 
     <!-- Start CTA Section -->
     <section class="cta-section py-5 mb-5">
@@ -278,7 +207,7 @@
                                 <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Home?</h2>
                                 <p class="lead mb-4">Join thousands of satisfied customers and discover our premium collection today.</p>
                                 <div class="cta-buttons">
-                                    <a href="/shop" class="btn btn-light btn-lg me-3 px-4">Shop Now</a>
+                                    <a href="{{ route('product.index') }}" class="btn btn-light btn-lg me-3 px-4">Shop Now</a>
                                     <a href="/contact" class="btn btn-outline-light btn-lg px-4">Contact Us</a>
                                 </div>
                             </div>

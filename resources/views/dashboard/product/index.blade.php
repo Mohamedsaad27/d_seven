@@ -168,9 +168,80 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-center justify-content-md-end px-3 py-3">
-                        {{ $products->links() }}
-                    </div>
+                    <div class="pagination-container px-3 py-3">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div class="pagination-info mb-3 mb-md-0">
+            <p class="text-sm text-gray-700">
+                Showing <span class="font-medium">{{ $products->firstItem() ?? 0 }}</span> to 
+                <span class="font-medium">{{ $products->lastItem() ?? 0 }}</span> of 
+                <span class="font-medium">{{ $products->total() }}</span> results
+            </p>
+        </div>
+        
+        <div class="pagination-buttons">
+            <nav aria-label="Product Pagination">
+                <ul class="pagination pagination-sm m-0">
+                    {{-- Previous Page Link --}}
+                    @if ($products->onFirstPage())
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev" aria-label="Previous">&laquo;</a>
+                        </li>
+                    @endif
+
+                    {{-- Pagination Elements --}}
+                    @php
+                        $start = max(1, $products->currentPage() - 2);
+                        $end = min($start + 4, $products->lastPage());
+                        $start = max(1, $end - 4);
+                    @endphp
+
+                    @if($start > 1)
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->url(1) }}">1</a>
+                        </li>
+                        @if($start > 2)
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        @endif
+                    @endif
+
+                    @for ($i = $start; $i <= $end; $i++)
+                        <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+
+                    @if($end < $products->lastPage())
+                        @if($end < $products->lastPage() - 1)
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        @endif
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->url($products->lastPage()) }}">{{ $products->lastPage() }}</a>
+                        </li>
+                    @endif
+
+                    {{-- Next Page Link --}}
+                    @if ($products->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next" aria-label="Next">&raquo;</a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -202,6 +273,65 @@
 @endsection
 @push('styles')
 <style>
+    .pagination-container {
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination .page-item .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0.25rem 0.5rem;
+    margin: 0 0.15rem;
+    color: #4b5563;
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+    z-index: 2;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+    z-index: 3;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #9ca3af;
+    pointer-events: none;
+    background-color: #f3f4f6;
+    border-color: #e5e7eb;
+}
+
+.pagination-info {
+    color: #6b7280;
+}
+
+@media (max-width: 767.98px) {
+    .pagination-buttons {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+}
 .card {
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

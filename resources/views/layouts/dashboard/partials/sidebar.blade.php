@@ -180,7 +180,7 @@
                 </div>
             </li>
             <!-- Sizes Section -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="#submenu-size" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-size">
                     <span class="d-flex align-items-center">
                         <span class="sidebar-icon">
@@ -210,7 +210,7 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> -->
              <!-- Orders Section -->
              <li class="nav-item">
                 <a href="#submenu-order" class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="submenu-order">

@@ -25,10 +25,54 @@ class ProductDashboardRepository implements ProductDashboardInterface
         $this->product = $product;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->product->paginate(10);
-        return $products;
+        $query = $this->product->with('category', 'brand', 'productImages', 'reviews', 'colors', 'sizes', 'inventory');
+
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('name_en', 'like', '%' . $request->search . '%')
+                    ->orWhere('name_ar', 'like', '%' . $request->search . '%')
+                    ->orWhere('description_en', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('category') && $request->category) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->has('brand') && $request->brand) {
+            $query->where('brand_id', $request->brand);
+        }
+
+        if ($request->has('status') && $request->status !== '') {
+            $query->where('is_active', $request->status);
+        }
+
+        if ($request->has('sortBy')) {
+            switch ($request->sort) {
+                case 'oldest':
+                    $query->oldest();
+                    break;
+                case 'price_high':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'price_low':
+                    $query->orderBy('price', 'asc');
+                    break;
+                default:
+                    $query->latest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(10)->withQueryString();
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        return view('dashboard.product.index', compact('products', 'categories', 'brands'));
     }
 
     public function create() {}
@@ -39,109 +83,13 @@ class ProductDashboardRepository implements ProductDashboardInterface
         return $product;
     }
 
-    // public function store(StoreProductRequest $request){
-    //     $data = $request->validated();
-    //     try{
-    //      DB::beginTransaction();
-    //       $product = Product::create([
-    //         'name_en' => $data['name_en'],
-    //         'name_ar' => $data['name_ar'],
-    //         'price' => $data['price'],
-    //         'description_en' => $data['description_en'],
-    //         'description_ar' => $data['description_ar'],
-    //         'category_id' => $data['category_id'],
-    //         'brand_id' => $data['brand_id'],
-    //         'is_active' => $data['is_active'],
-    //       ]);
-    //       foreach($data['colors'] as $color){
-    //         $product->colors()->attach($color);
-    //       }
-    //       foreach($data['sizes'] as $size){
-    //         $product->sizes()->attach($size);
-    //       }
-    //       foreach($data['images'] as $image){
-    //         $imageName = time().'.'.$image->getClientOriginalExtension();
-    //         $imagePath = 'Uploads/products/'.$product->id.'/'.$imageName;
-    //         $image->move(public_path('Uploads/products/'.$product->id), $imageName);
-    //         ProductImage::create([
-    //             'product_id' => $product->id,
-    //             'image_url' => $imagePath,
-    //             'is_primary' => false,
-    //         ]);
-    //       }
-
-    //       DB::commit();
-    //       return redirect()->route('product.index')->with('success', 'Product created successfully');
-    //     }catch(\Exception $e){
-    //         DB::rollBack();
-    //         Log::error($e->getMessage());
-    //         return redirect()->back()->with('error', 'Failed to create product');
-    //     }
-    // }
-
-    //     public function store(StoreProductRequest $request)
-    // {
-    //     $validated = $request->validated();
-    //     // Create product
-    //     $product = Product::create([
-    //         'name_ar' => $validated['name_ar'],
-    //         'name_en' => $validated['name_en'],
-    //         'description_ar' => $validated['description_ar'],
-    //         'description_en' => $validated['description_en'],
-    //         'price' => $validated['price'],
-    //         'category_id' => $validated['category_id'],
-    //         'brand_id' => $validated['brand_id'],
-    //         'is_active' => $validated['is_active'],
-    //     ]);
-
-    //     // Add product colors
-    //     foreach ($validated['colors'] as $colorId) {
-    //         ProductColor::create([
-    //             'product_id' => $product->id,
-    //             'color_id' => $colorId,
-    //         ]);
-    //     }
-
-    //     // Add product sizes and additional prices
-    //     foreach ($validated['sizes'] as $index => $size) {
-    //         ProductSize::create([
-    //             'product_id' => $product->id,
-    //             'size' => $size,
-    //             'additional_price' => $validated['additional_prices'][$index] ?? 0,
-    //         ]);
-    //     }
-
-    //     // Add product images
-    //     foreach($validated['images'] as $image){
-    //         $imageName = time().'.'.$image->getClientOriginalExtension();
-    //         $imagePath = 'Uploads/products/'.$product->id.'/'.$imageName;
-    //         $image->move(public_path('Uploads/products/'.$product->id), $imageName);
-    //         ProductImage::create([
-    //             'product_id' => $product->id,
-    //             'image_url' => $imagePath,
-    //             'is_primary' => false,
-    //         ]);
-    //       }
-
-    //     // Add inventory
-    //     foreach ($validated['inventory_colors'] as $index => $colorId) {
-    //         Inventory::create([
-    //             'product_id' => $product->id,
-    //             'product_color_id' => $colorId,
-    //             'product_size_id' => $validated['inventory_sizes'][$index],
-    //             'quantity' => $validated['quantities'][$index],
-    //         ]);
-    //     }
-
-    //     return redirect()->route('products.index')
-    //         ->with('success', 'Product created successfully.');
-    // }
     public function store(Request $request)
     {
         $data = $request->all();
         // dd($data);
         // Create product
         DB::beginTransaction();
+
         $product = Product::create([
             'name_ar' => $data['name_ar'],
             'name_en' => $data['name_en'],
@@ -150,7 +98,7 @@ class ProductDashboardRepository implements ProductDashboardInterface
             'price' => $data['price'],
             'category_id' => $data['category_id'],
             'brand_id' => $data['brand_id'],
-            'is_active' => $data['is_active'],
+            'is_active' => $data['is_active'] ?? 0,
         ]);
 
         // Add product colors
@@ -160,34 +108,23 @@ class ProductDashboardRepository implements ProductDashboardInterface
                 'color_id' => $colorId,
             ]);
         }
-
-        // Add product sizes and additional prices
-        foreach ($data['sizes'] as $index => $size) {
-            ProductSize::create([
-                'product_id' => $product->id,
-                'size_id' => $size,
-                'additional_price' => $data['additional_prices'][$index] ?? 0,
-            ]);
-        }
-
         // Add product images
-        foreach ($data['images'] as $image) {
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+        foreach ($data['images'] as $key => $image) {
+            $imageName = time() . '_' . $key . '.' . $image->getClientOriginalExtension();
             $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
             $image->move(public_path('uploads/products/' . $product->id), $imageName);
             ProductImage::create([
                 'product_id' => $product->id,
                 'image_url' => $imagePath,
-                'is_primary' => false,
+                'is_primary' => $key == 0 ? true : false,
             ]);
         }
-        // dd($data['inventory_sizes'][0]);
         // Add inventory
         foreach ($data['inventory_colors'] as $index => $colorId) {
             Inventory::create([
                 'product_id' => $product->id,
                 'color_id' => $colorId,
-                'size_id' => $data['inventory_sizes'][$index],
+                'size_id' => $data['inventory_sizes'][$index] ?? null,
                 'quantity' => $data['quantities'][$index],
             ]);
         }

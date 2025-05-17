@@ -1,5 +1,5 @@
 @extends('layouts.website.master')
-@section('title', trans('website.product_list'))
+@section('title', 'Product List')
 @section('content')
 
     <!-- Start Hero Section -->
@@ -54,9 +54,9 @@
                                         <a href="#{{ $category->name_en }}" 
                                         class="text-decoration-none text-dark"
                                         data-category-id="{{ $category->id }}">
-                                            {{ $category->name_en }}
+                                            {{ $category->name_ar ?  $category->name_ar : $category->name_en }}
                                         </a>
-                                        <span class="badge bg-light text-dark rounded-pill">{{ $category->products()->count() }}</span>
+                                        <span class="badge bg-light text-dark rounded-pill">({{ $category->products()->count() }})</span>
                                     </div>
                                     @endforeach
                                 </div>
@@ -89,12 +89,11 @@
                                 <div class="d-flex align-items-center flex-wrap">
                                     <div class="me-4">
                                         <select class="form-select" id="sortingOptions">
-                                            <option selected>Sort by: Popularity</option>
-                                            <option>Price: Low to High</option>
-                                            <option>Price: High to Low</option>
-                                            <option>Rating: Highest</option>
-                                            <option>Name: A to Z</option>
-                                            <option>Name: Z to A</option>
+                                            <option selected value="popularity">Sort by: Popularity</option>
+                                            <option value="price-asc">Price: Low to High</option>
+                                            <option value="price-desc">Price: High to Low</option>
+                                            <option value="name-asc">Name: A to Z</option>
+                                            <option value="name-desc">Name: Z to A</option>
                                         </select>
                                     </div>
                                     <p class="text-muted mb-0 small">Showing <span class="fw-bold">1-12</span> of <span class="fw-bold">{{ $products->total() ?? 'all' }}</span> products</p>
@@ -105,9 +104,6 @@
                                     <div class="view-options btn-group" role="group">
                                         <button type="button" class="btn btn-outline-primary active" data-bs-target="#nav-grid" data-bs-toggle="tab">
                                             <i class="lni lni-grid-alt"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-target="#nav-list" data-bs-toggle="tab">
-                                            <i class="lni lni-list"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -132,11 +128,11 @@
                         @endphp
 
                         @if($firstImage && $firstImage->image_url)
-                            <img src="{{ asset($firstImage->image_url) }}" 
+                            <img src="{{ asset($firstImage->image_url ?? 'uploads/default-product-image.jpg') }}" 
                                 alt="{{ $product->name_ar }}" 
                                 class="img-fluid w-100 product-img">
                         @else
-                            <img src="https://via.placeholder.com/335x335" 
+                            <img src="{{ asset('uploads/default-product-image.jpg') }}" 
                                 alt="{{ $product->name_ar }}" 
                                 class="img-fluid w-100 product-img">
                         @endif 
@@ -193,103 +189,106 @@
         </div>
     </div>
 
-    <!-- List View -->
-    <div class="tab-pane fade" id="nav-list">
-        <div class="row g-4">
-            @foreach($products as $product)
-            <div class="col-12">
-                <div class="product-card-horizontal rounded-3 overflow-hidden bg-white shadow-sm">
-                    <div class="row g-0">
-                        <div class="col-md-4 position-relative">
-                            @if($product->created_at->isToday())
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-3">New</span>
-                            @endif  
-                            @php
-                                $firstImage = $product->productImages()->first();
-                            @endphp
-                            @if($firstImage && $firstImage->image_url)
-                                <img src="{{ asset($firstImage->image_url) }}" 
-                                     alt="{{ $product->name_ar }}" 
-                                     class="img-fluid h-100 object-fit-cover">
-                            @else
-                                <img src="https://via.placeholder.com/335x335" 
-                                     alt="{{ $product->name_ar }}" 
-                                     class="img-fluid h-100 object-fit-cover">
-                            @endif
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body d-flex flex-column h-100 p-4">
-                                <div class="mb-1">
-                                    <span class="text-muted small">{{ $product->category->name_ar ?? 'Category' }}</span>
-                                </div>
-                                <h4 class="product-title mb-2">
-                                    <a href="{{ route('product.show', $product->id) }}" class="text-dark text-decoration-none">{{ $product->name_ar }}</a>
-                                </h4>
-                                <div class="product-rating mb-2">
-                                    <div class="d-flex align-items-center">
-                                        @php
-                                            $rating = $product->calculateRating();
-                                            $fullStars = floor($rating);
-                                            $hasHalfStar = ($rating - $fullStars) >= 0.5;
-                                        @endphp
-                                        <div class="ratings me-2">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= $fullStars)
-                                                    <i class="lni lni-star-filled text-warning"></i>
-                                                @elseif ($hasHalfStar && $i == $fullStars + 1)
-                                                    <i class="lni lni-star-half text-warning"></i>
-                                                @else
-                                                    <i class="lni lni-star text-warning"></i>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <span class="text-muted small">({{ number_format($rating, 1) }})</span>
-                                    </div>
-                                </div>
-                                <p class="text-muted mb-4">{{ $product->description ?? 'No description available' }}</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <div class="product-price">
-                                        <span class="new-price fw-bold text-primary fs-4">{{ number_format($product->price, 2) }} EGP</span>
-                                    </div>
-                                    <div class="product-actions d-flex gap-2">
-                                        <button class="btn btn-primary">
-                                            <i class="lni lni-cart me-1"></i> Add to Cart
-                                        </button>
-                                        <button class="btn btn-outline-secondary">
-                                            <i class="lni lni-heart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
+  
 </div>
 
                     <!-- Pagination -->
-                    <div class="pagination-wrapper mt-5 d-flex justify-content-center">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                    <div class="pagination-wrapper mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav aria-label="Product pagination" class="d-flex justify-content-center">
+          <ul class="pagination pagination-modern">
+            <!-- Previous Page Link -->
+            @if ($products->onFirstPage())
+              <li class="page-item disabled">
+                <span class="page-link"><i class="lni lni-chevron-left"></i></span>
+              </li>
+            @else
+              <li class="page-item">
+                <a class="page-link" href="{{ $products->previousPageUrl() }}" rel="prev">
+                  <i class="lni lni-chevron-left"></i>
+                </a>
+              </li>
+            @endif
+
+            <!-- Page Number Links -->
+            @php
+              $currentPage = $products->currentPage();
+              $lastPage = $products->lastPage();
+              
+              // Calculate range of page numbers to display
+              $startPage = max(1, $currentPage - 2);
+              $endPage = min($lastPage, $currentPage + 2);
+              
+              // Show first page if not in range
+              $showFirstPage = $startPage > 1;
+              // Show last page if not in range
+              $showLastPage = $endPage < $lastPage;
+              // Show ellipsis after first page
+              $showFirstEllipsis = $startPage > 2;
+              // Show ellipsis before last page
+              $showLastEllipsis = $endPage < $lastPage - 1;
+            @endphp
+
+            <!-- First Page Link -->
+            @if ($showFirstPage)
+              <li class="page-item">
+                <a class="page-link" href="{{ $products->url(1) }}">1</a>
+              </li>
+              
+              @if ($showFirstEllipsis)
+                <li class="page-item disabled">
+                  <span class="page-link page-ellipsis">...</span>
+                </li>
+              @endif
+            @endif
+
+            <!-- Page Range Links -->
+            @for ($i = $startPage; $i <= $endPage; $i++)
+              <li class="page-item {{ $i == $currentPage ? 'active' : '' }}">
+                <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+              </li>
+            @endfor
+
+            <!-- Last Page Link -->
+            @if ($showLastEllipsis)
+              <li class="page-item disabled">
+                <span class="page-link page-ellipsis">...</span>
+              </li>
+            @endif
+            
+            @if ($showLastPage)
+              <li class="page-item">
+                <a class="page-link" href="{{ $products->url($lastPage) }}">{{ $lastPage }}</a>
+              </li>
+            @endif
+
+            <!-- Next Page Link -->
+            @if ($products->hasMorePages())
+              <li class="page-item">
+                <a class="page-link" href="{{ $products->nextPageUrl() }}" rel="next">
+                  <i class="lni lni-chevron-right"></i>
+                </a>
+              </li>
+            @else
+              <li class="page-item disabled">
+                <span class="page-link"><i class="lni lni-chevron-right"></i></span>
+              </li>
+            @endif
+          </ul>
+        </nav>
+        
+        <!-- Pagination Info -->
+        <div class="pagination-info text-center mt-3">
+          <p class="text-muted">
+            Showing {{ $products->firstItem() ?? 0 }} to {{ $products->lastItem() ?? 0 }} of {{ $products->total() }} products
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
                 </div>
             </div>
         </div>

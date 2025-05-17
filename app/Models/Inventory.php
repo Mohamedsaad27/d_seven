@@ -23,12 +23,12 @@ class Inventory extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function productColor()
+    public function color()
     {
         return $this->belongsTo(Color::class);
     }
 
-    public function productSize()
+    public function size()
     {
         return $this->belongsTo(Size::class);
     }

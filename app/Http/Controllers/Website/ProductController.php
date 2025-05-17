@@ -68,20 +68,58 @@ class ProductController extends Controller
 
     public function getProductsByCategory(Request $request, $category_id)
     {
-        $products = Product::with('productImages', 'discounts')->where('category_id', $category_id)->get();
-        return response()->json($products);
+        $products = Product::with(['productImages', 'discounts', 'category', 'brand'])
+            ->where('category_id', $category_id)
+            ->where('is_active', 1)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'count' => $products->count()
+        ]);
     }
 
     public function getProductsByBrand(Request $request, $brand_id)
     {
-        $products = Product::with('productImages', 'discounts')->where('category_id', $brand_id)->get();
-        return response()->json($products);
+        $products = Product::with(['productImages', 'discounts', 'category', 'brand'])
+            ->where('brand_id', $brand_id)
+            ->where('is_active', 1)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'count' => $products->count()
+        ]);
     }
 
     public function getAllProducts(Request $request)
     {
         $products = Product::with(['productImages', 'discounts', 'category', 'brand'])
             ->where('is_active', 1)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'count' => $products->count()
+        ]);
+    }
+
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::with(['productImages', 'discounts', 'category', 'brand'])
+            ->where('is_active', 1)
+            ->where(function ($q) use ($query) {
+                $q
+                    ->where('name_ar', 'like', "%{$query}%")
+                    ->orWhere('name_en', 'like', "%{$query}%")
+                    ->orWhere('description_ar', 'like', "%{$query}%")
+                    ->orWhere('description_en', 'like', "%{$query}%");
+            })
             ->get();
 
         return response()->json([

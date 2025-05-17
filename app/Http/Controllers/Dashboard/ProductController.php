@@ -27,12 +27,10 @@ class ProductController extends Controller
         $this->brandRepository = $brandRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->productDashboardRepository->index();
-        $categories = $this->categoryRepository->index();
-        $brands = $this->brandRepository->index();
-        return view('dashboard.product.index', compact('products', 'categories', 'brands'));
+        $products = $this->productDashboardRepository->index($request);
+        return $products;
     }
 
     public function create()

@@ -110,9 +110,36 @@ class Product extends Model
 
     public function discounts()
     {
-        return $this->belongsToMany(Discount::class, 'product_discounts', 'product_id', 'discount_id');
+        return $this->belongsToMany(Discount::class, 'product_discounts', 'product_id', 'discount_id')
+            ->where('is_active', true)
+            ->where(function($query) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })
+            ->where(function($query) {
+                $query->whereNull('ends_at')
+                    ->orWhere('ends_at', '>=', now());
+            })
+            ->orderBy('discount_amount', 'desc');
     }
-
+    public function getCurrentPrice()
+    {
+        if ($this->discounts->isNotEmpty()) {
+            return $this->price - $this->getDiscountAmount() ;
+        }
+        return $this->price;
+    }
+    public function getDiscountAmount(){
+        if($this->discounts->isNotEmpty()){
+            $discount = $this->discounts()->first();
+            if($discount->discount_type === 'percent'){
+                return ($this->price * $discount->discount_amount) / 100;
+            }else{
+                return $discount->discount_amount;
+            }
+        }
+        return 0;
+    }
     public function calculateRating()
     {
         return $this->reviews()->avg('rating') ?? 0;

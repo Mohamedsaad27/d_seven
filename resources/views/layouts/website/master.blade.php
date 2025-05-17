@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/front/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/main.css') }}" />
     <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     @stack('styles')   
      
 </head>
@@ -42,7 +44,22 @@
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
-
+    <script>
+    // Configure toastr options
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+ </script>
     <!-- ========================= JS here ========================= -->
     <script src="{{ asset('assets/js/front/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/front/tiny-slider.js') }}"></script>
@@ -50,6 +67,9 @@
     <script src="{{ asset('assets/js/front/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     @stack('scripts')
 </body>
 </html>

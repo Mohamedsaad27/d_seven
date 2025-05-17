@@ -44,7 +44,7 @@
                         {{ $product->category->name_en }}
                         @if($product->brand)
                             <span>|</span>
-                            <a href="{{ route('product.index', $product->brand->id) }}">{{ $product->brand->name_en }}</a>
+                            <a href="{{ route('product.index', ['brands' => $product->brand->id]) }}">{{ $product->brand->name_en }}</a>
                         @endif
                     </div>
                     

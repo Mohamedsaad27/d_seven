@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 interface ProductDashboardInterface
 {
-    public function index();
+    public function index(Request $request);
     public function create();
     public function show(Product $product);
     public function store(Request $request);

@@ -54,7 +54,7 @@
             @else
             <div class="user">
                 <i class="lni lni-user"></i>
-                Hello 
+                Hello
             </div>
             <ul class="user-login">
             @if(Auth::check() && Auth::user()->is_active == 0)
@@ -117,8 +117,8 @@
                     <div class="col-lg-4 col-md-2 col-5">
                         <div class="middle-right-area">
                             <div class="nav-hotline">
-                                <i class="lni lni-phone"></i>
-                                <h3>Hotline:
+                            <i class="lni lni-phone-set"></i> <!-- Support hotline -->
+                            <h3>Hotline:
                                     <span>(+20) 01021369699</span>
                                 </h3>
                             </div>
@@ -132,51 +132,48 @@
                                 <div class="cart-items">
                                     <a href="{{route('cart.index')}}" class="main-btn">
                                         <i class="lni lni-cart"></i>
-                                        <span class="total-items">2</span>
+                                        @php
+                                        $cart = App\Models\Cart::with('cartItems')->where('user_id', Auth::user()->id)->first();
+                                        $cartItemsCount = $cart ? $cart->cartItems->count() : 0;
+                                        @endphp
+                                        <span class="total-items">{{$cartItemsCount}}</span>
                                     </a>
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>2 Items</span>
+                                            <span>{{$cartItemsCount}} Items</span>
                                             <a href="{{route('cart.index')}}">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
+                                            @forelse($cart->cartItems as $cartItem)
                                             <li>
                                                 <a href="javascript:void(0)" class="remove"
                                                     title="Remove this item"><i class="lni lni-close"></i></a>
                                                 <div class="cart-img-head">
-                                                    <a class="cart-img" href="product-details.html"><img
-                                                            src="assets/images/header/cart-items/item1.jpg"
+                                                    <a class="cart-img" href="{{route('product.show', $cartItem->product->id)}}"><img
+                                                            src="{{asset($cartItem->product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg')}}"
                                                             alt="#"></a>
                                                 </div>
 
                                                 <div class="content">
-                                                    <h4><a href="product-details.html">
-                                                            Apple Watch Series 6</a></h4>
-                                                    <p class="quantity">1x - <span class="amount">$99.00</span></p>
+                                                    <h4><a href="{{route('product.show', $cartItem->product->id)}}">
+                                                            {{$cartItem->product->name_ar ? $cartItem->product->name_ar : $cartItem->product->name_en}}</a></h4>
+                                                    <p class="quantity"><span class="amount">{{number_format($cartItem->price, 2)}} EGP</span></p>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <a href="javascript:void(0)" class="remove"
-                                                    title="Remove this item"><i class="lni lni-close"></i></a>
-                                                <div class="cart-img-head">
-                                                    <a class="cart-img" href="product-details.html"><img
-                                                            src="assets/images/header/cart-items/item2.jpg"
-                                                            alt="#"></a>
-                                                </div>
-                                                <div class="content">
-                                                    <h4><a href="product-details.html">Wi-Fi Smart Camera</a></h4>
-                                                    <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                                </div>
-                                            </li>
+                                           @empty
+                                           <li>
+                                                <p>No items in the cart</p>
+                                           </li>
+                                           @endforelse
                                         </ul>
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Total</span>
-                                                <span class="total-amount">$134.00</span>
+                                                <span class="total-amount">{{number_format($cart->cartItems->sum('price'), 2)}} EGP</span>
                                             </div>
                                             <div class="button">
-                                                <a href="checkout.html" class="btn animate">Checkout</a>
+                                                <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +191,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="nav-inner">
-                        @php 
+                        @php
                         $categories = \App\Models\Category::whereNull('parent_category_id')
                         ->where('is_active', 1)
                         ->with(['children' => function ($q) {
@@ -252,7 +249,7 @@
                                     <li class="nav-item">
                                         <a aria-label="Toggle navigation" href="{{ route('product.index') }}">Products</a>
                                     </li>
-                                   
+
                                     <li class="nav-item">
                                         <a href="{{route('contact.index')}}" aria-label="Toggle navigation">Contact Us</a>
                                     </li>
@@ -277,6 +274,12 @@
                             </li>
                             <li>
                                 <a href="https://t.me/+EOgqegm9M_ZjMTk0"><i class="lni lni-telegram"></i></a>
+                            </li>
+                            <li>
+                                <a href="https://vt.tiktok.com/ZShNaPGrL/"><i class="lni lni-tiktok"></i></a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/dseven_houseware?igsh=MXNtbDNzcDkzcHRzNg=="><i class="lni lni-instagram"></i></a>
                             </li>
                         </ul>
                     </div>

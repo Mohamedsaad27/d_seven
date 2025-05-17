@@ -1,205 +1,216 @@
 @extends('layouts.website.master')
 
-@section('title',trans('messages.cart'))
+@section('title', Auth::user()->name ? 'Cart' : 'My Cart')
 
 @section('content')
- <!-- Start Breadcrumbs -->
- <div class="breadcrumbs">
+<!-- Hero Section -->
+<div class="cart-hero">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12">
-                <div class="breadcrumbs-content">
-                    <h1 class="page-title">Cart</h1>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <ul class="breadcrumb-nav">
-                    <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                    <li><a href="index.html">Shop</a></li>
-                    <li>Cart</li>
-                </ul>
-            </div>
+        <div class="cart-hero-content">
+            <h1>Your Shopping Cart</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('index') }}"><i class="lni lni-home"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                </ol>
+            </nav>
         </div>
     </div>
 </div>
-<!-- End Breadcrumbs -->
 
-<!-- Shopping Cart -->
-<div class="shopping-cart section">
-    <div class="container">
-        <div class="cart-list-head">
-            <!-- Cart List Title -->
-            <div class="cart-list-title">
-                <div class="row">
-                    <div class="col-lg-1 col-md-1 col-12">
-
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <p>Product Name</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>Quantity</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>Subtotal</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>Discount</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <p>Remove</p>
-                    </div>
+<!-- Shopping Cart Section -->
+<section class="cart-section">
+    <div class="container"> 
+        <div class="cart-container">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                <div class="cart-header">
+                    <h2>Cart Items <span class="item-count">({{ $cart->cartItems->count() }})</span></h2>
                 </div>
-            </div>
-            <!-- End Cart List Title -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-                        <a href="product-details.html"><img src="https://via.placeholder.com/220x200" alt="#"></a>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="product-details.html">
-                                Canon EOS M50 Mirrorless Camera</a></h5>
-                        <p class="product-des">
-                            <span><em>Type:</em> Mirrorless</span>
-                            <span><em>Color:</em> Black</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+                
+                <!-- Cart Item -->
+                @if ($cart->cartItems->count() > 0)
+                    @foreach ($cart->cartItems as $cartItem)
+                    <div class="cart-item" data-id="{{ $cartItem->id }}" data-price="{{ $cartItem->product->getCurrentPrice() }}" data-discount="{{ $cartItem->product->getDiscountAmount() }}">
+                        <div class="item-image">
+                            <a href="{{ route('product.show', $cartItem->product->id) }}">
+                                <img src="{{ asset($cartItem->product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $cartItem->product->name_en }}">
+                            </a>
                         </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$910.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$29.00</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single List list -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-                        <a href="product-details.html"><img src="https://via.placeholder.com/220x200" alt="#"></a>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="product-details.html">
-                                Apple iPhone X 256 GB Space Gray</a></h5>
-                        <p class="product-des">
-                            <span><em>Memory:</em> 256 GB</span>
-                            <span><em>Color:</em> Space Gray</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$1100.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single List list -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-                        <a href="product-details.html"><img src="https://via.placeholder.com/220x200" alt="#"></a>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="product-details.html">HP LaserJet Pro Laser Printer</a></h5>
-                        <p class="product-des">
-                            <span><em>Type:</em> Laser</span>
-                            <span><em>Color:</em> White</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$550.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single List list -->
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <!-- Total Amount -->
-                <div class="total-amount">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-6 col-12">
-                            <div class="left">
-                                <div class="coupon">
-                                    <form action="#" target="_blank">
-                                        <input name="Coupon" placeholder="Enter Your Coupon">
-                                        <div class="button">
-                                            <button class="btn">Apply Coupon</button>
+                        <div class="item-details">
+                            <div class="item-info">
+                                <h3 class="item-title">
+                                    <a href="{{ route('product.show', $cartItem->product->id) }}">{{ $cartItem->product->name_ar ? $cartItem->product->name_ar : $cartItem->product->name_en }}</a>
+                                </h3>
+                                <div class="item-meta">
+                                    <span class="meta-item"><span class="meta-label">Brand:</span> {{ $cartItem->product->brand->name_ar ? $cartItem->product->brand->name_ar : $cartItem->product->brand->name_en }}</span>
+                                    <span class="meta-item"><span class="meta-label">Color:</span> {{ $cartItem->color->color->name_en ? $cartItem->color->color->name_en : $cartItem->color->color->name_ar }}</span>
+                                </div>
+                                <div class="item-price-mobile">
+                                    <div class="price-current">{{ $cartItem->product->getCurrentPrice() }} EGP</div>
+                                    @if($cartItem->product->discounts->isNotEmpty())
+                                        <div class="price-original">
+                                            <del>{{ $cartItem->product->price }} EGP</del>
                                         </div>
-                                    </form>
+                                        <div class="price-discount">
+                                            <span class="discount-badge">-{{ $cartItem->product->discounts->first()->discount_amount }} EGP</span>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <div class="right">
-                                <ul>
-                                    <li>Cart Subtotal<span>$2560.00</span></li>
-                                    <li>Shipping<span>Free</span></li>
-                                    <li>You Save<span>$29.00</span></li>
-                                    <li class="last">You Pay<span>$2531.00</span></li>
-                                </ul>
-                                <div class="button">
-                                    <a href="checkout.html" class="btn">Checkout</a>
-                                    <a href="product-grids.html" class="btn btn-alt">Continue shopping</a>
+                            <div class="item-controls">
+                                <div class="quantity-control">
+                                    <button class="qty-btn decrease">
+                                        <i class="lni lni-minus"></i>
+                                    </button>
+                                    <input type="number" class="qty-input" value="{{ $cartItem->quantity }}"  data-item-id="{{ $cartItem->id }}">
+                                    <button class="qty-btn increase">
+                                        <i class="lni lni-plus"></i>
+                                    </button>
                                 </div>
+                                <div class="item-price">
+                                    <div class="price-current">
+                                        {{ $cartItem->product->getCurrentPrice() }} EGP
+                                    </div>
+                                    @if($cartItem->product->discounts->isNotEmpty())
+                                        <div class="price-original">
+                                            <del>{{ $cartItem->product->price }} EGP</del>
+                                        </div>
+                                        <div class="price-discount">
+                                            <span class="discount-badge">-{{ $cartItem->product->discounts->first()->discount_amount }} EGP</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <button class="remove-item" aria-label="Remove item">
+                                    <i class="lni lni-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                @else
+                    <!-- Empty Cart Message -->
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">
+                            <i class="lni lni-cart"></i>
+                        </div>
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added anything to your cart yet.</p>
+                        <a href="{{ route('product.index') }}" class="btn-shop-now">Start Shopping</a>
+                    </div>
+                @endif
+            </div>
+            
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <div class="summary-header">
+                    <h2>Order Summary</h2>
                 </div>
-                <!--/ End Total Amount -->
+                
+                <div class="summary-content">
+                    <div class="coupon-section">
+                        <div class="coupon-form">
+                            <div class="input-group">
+                                <input type="text" disabled placeholder="Enter coupon code" class="coupon-input">
+                                <button class="btn-apply-coupon">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-totals">
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value subtotal">{{ $cart->cartItems->sum(function($item) { return $item->product->getCurrentPrice() * $item->quantity; }) }} EGP</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">Discount</span>
+                            <span class="summary-value discount">-{{ $cart->cartItems->sum(function($item) { return $item->product->getDiscountAmount() * $item->quantity; }) }} EGP</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="shipping-label">Shipping</span>
+                            <span class="shipping-value">
+                                <select id="shipping-zone" class="shipping-select">
+                                    @foreach($shippingZones as $zone)
+                                        <option value="{{ $zone->id }}" data-cost="{{ $zone->shipping_cost }}">
+                                            {{ $zone->zone_name }} - {{ $zone->shipping_cost > 0 ? $zone->shipping_cost . ' EGP' : 'Free' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </span>
+                        </div>
+                        <div class="summary-row total">
+                            <span class="summary-label">Total</span>
+                            <span class="summary-value total-amount">
+                                {{ $cart->cartItems->sum(function($item) { 
+                                    return ($item->product->getCurrentPrice() * $item->quantity) - ($item->product->getDiscountAmount() * $item->quantity);
+                                }) + ($shippingZones->first() ? $shippingZones->first()->shipping_cost : 0) }} EGP
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-actions">
+                        <a href="#" class="btn-checkout">
+                            Proceed to Checkout
+                        </a>
+                        <a href="{{ route('products.index') }}" class="btn-continue">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--/ End Shopping Cart -->
+</section>
+
+<!-- You May Also Like Section -->
+<section class="recommendations-section">
+    <div class="container">
+        <h2 class="section-title">You May Also Like</h2>
+        <div class="product-slider">
+            @if(isset($cart->recommendedProducts) && $cart->recommendedProducts->count() > 0)
+                <div class="recommended-products">
+                    @foreach($cart->recommendedProducts as $product)
+                    <div class="product-card">
+                        <div class="product-image">
+                            <a href="{{ route('product.show', $product->id) }}">
+                                <img src="{{ asset($product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $product->name_en }}">
+                            </a>
+                            @if($product->discounts->isNotEmpty())
+                            <div class="product-badge">{{ $product->discounts->first()->discount_amount }}  OFF</div>
+                            @endif
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">
+                                <a href="{{ route('product.show', $product->id) }}">{{ $product->name_ar ? $product->name_ar : $product->name_en }}</a>
+                            </h3>
+                            <div class="product-price">
+                                <span class="current-price">{{ $product->getCurrentPrice() }} EGP</span>
+                                @if($product->discounts->isNotEmpty())
+                                <span class="original-price"><del>{{ $product->price }} EGP</del></span>
+                                @endif
+                            </div>
+                            <button class="add-to-cart-btn" data-product-id="{{ $product->id }}">
+                                <i class="lni lni-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            @else
+            <div class="product-placeholder">
+                <div class="placeholder-text">Related products would appear here</div>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('website/css/cart.css') }}">
+@endpush
+
+@push('scripts')
+<script src="{{ asset('website/js/cart.js') }}"></script>
+@endpush
