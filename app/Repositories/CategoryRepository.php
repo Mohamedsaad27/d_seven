@@ -62,7 +62,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $validated = $request->validated();
         try {
             if ($request->hasFile('image')) {
-                if ($category->image) {
+                if ($category->image && file_exists(public_path($category->image))) {
                     unlink(public_path($category->image));
                 }
                 $image = $request->file('image');
@@ -74,6 +74,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             $category->update($validated);
             return redirect()->route('category.index')->with('success', 'Category Updated Successfully');
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Category Update Failed');
         }
     }
