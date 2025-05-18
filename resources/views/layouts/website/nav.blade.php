@@ -151,37 +151,42 @@
                                         </div>
                                         <ul class="shopping-list">
                                             @auth
-                                            @php
-                                            $cart = \App\Models\Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
-                                                    ->where('user_id', auth()->id())
-                                                    ->orderBy('created_at', 'desc')
-                                                    ->first();
-                                            @endphp
-                                            @forelse($cart->cartItems as $cartItem)
-                                            <li>
-                                                <a href="javascript:void(0)" class="remove"
-                                                    title="Remove this item"><i class="lni lni-close"></i></a>
-                                                <div class="cart-img-head">
-                                                    <a class="cart-img" href="{{route('product.show', $cartItem->product->id)}}"><img
-                                                            src="{{asset($cartItem->product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg')}}"
-                                                            alt="#"></a>
-                                                </div>
+                                                @php
+                                                $cart = \App\Models\Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+                                                        ->where('user_id', auth()->id())
+                                                        ->orderBy('created_at', 'desc')
+                                                        ->first();
+                                                @endphp
+                                                
+                                                @if($cart && $cart->cartItems->count() > 0)
+                                                    @foreach($cart->cartItems as $cartItem)
+                                                    <li>
+                                                        <a href="javascript:void(0)" class="remove" title="Remove this item"><i class="lni lni-close"></i></a>
+                                                        <div class="cart-img-head">
+                                                            <a class="cart-img" href="{{route('product.show', $cartItem->product->id)}}">
+                                                                <img src="{{asset($cartItem->product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg')}}" alt="#">
+                                                            </a>
+                                                        </div>
 
-                                                <div class="content">
-                                                    <h4><a href="{{route('product.show', $cartItem->product->id)}}">
-                                                            {{$cartItem->product->name_ar ? $cartItem->product->name_ar : $cartItem->product->name_en}}</a></h4>
-                                                    <p class="quantity"><span class="amount">{{number_format($cartItem->price, 2)}} EGP</span></p>
-                                                </div>
-                                            </li>
-                                           @empty
-                                           <li>
-                                                <p>No items in the cart</p>
-                                           </li>
-                                           @endforelse
+                                                        <div class="content">
+                                                            <h4>
+                                                                <a href="{{route('product.show', $cartItem->product->id)}}">
+                                                                    {{$cartItem->product->name_ar ? $cartItem->product->name_ar : $cartItem->product->name_en}}
+                                                                </a>
+                                                            </h4>
+                                                            <p class="quantity"><span class="amount">{{number_format($cartItem->price, 2)}} EGP</span></p>
+                                                        </div>
+                                                    </li>
+                                                    @endforeach
+                                                @else
+                                                    <li>
+                                                        <p>No items in the cart</p>
+                                                    </li>
+                                                @endif
                                             @else
-                                            <li>
-                                                <p>No items in the cart</p>
-                                           </li>
+                                                <li>
+                                                    <p>No items in the cart</p>
+                                                </li>
                                             @endauth
                                         </ul>
                                         <div class="bottom">
