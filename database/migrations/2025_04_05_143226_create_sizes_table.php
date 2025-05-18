@@ -27,6 +27,10 @@ return new class extends Migration {
             $table->foreign('size_id')->references('id')->on('sizes')->onDelete('cascade');
             $table->unique(['product_id', 'color_id', 'size_id']);
         });
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->unsignedBigInteger('size_id')->nullable()->after('product_id');
+            $table->foreign('size_id')->references('id')->on('sizes')->onDelete('cascade');
+        });
     }
 
     /**

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,12 +14,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('color_id');
-            $table->unsignedBigInteger('size_id');
             $table->foreign('cart_id')->references('id')->on('carts');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('color_id')->references('id')->on('product_colors');
-            $table->foreign('size_id')->references('id')->on('product_sizes');
             $table->integer('quantity');
             $table->decimal('price', 8, 2)->default(0);
             $table->timestamps();

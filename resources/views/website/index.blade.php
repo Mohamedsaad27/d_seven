@@ -32,6 +32,7 @@
             </div>
             <div class="col-lg-4 col-12">
                 <div class="row">
+                    @if($latestProduct)
                     <div class="col-lg-12 col-md-6 col-12 mb-4">
                         <!-- Start Small Banner -->
                         <div class="small-banner" style="background-image: url({{ asset($latestProduct->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }});">
@@ -47,6 +48,7 @@
                         </div>
                         <!-- End Small Banner -->
                     </div>
+                    @endif
                     <div class="col-lg-12 col-md-6 col-12">
                         <!-- Start Small Banner -->
                         <div class="small-banner weekly-sale">
@@ -390,7 +392,7 @@
             ] as $section)
                 <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">
                     <h4 class="list-title">{{ $section['title'] }}</h4>
-                    @foreach ($section['products'] as $product)
+                    @forelse ($section['products'] as $product)
                         <div class="single-list">
                             <div class="list-image">
                                 <a href="{{ route('product.show', $product->id) }}">
@@ -404,7 +406,15 @@
                                 <span>{{ $product->price }} EGP</span>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="single-list">
+                            <div class="list-info">
+                                <h3>
+                                    <a href="#">No Products Found</a>
+                                </h3>
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
             @endforeach
         </div>
@@ -428,13 +438,19 @@
         </div>
         <div class="brands-container">
             <div class="brands-wrapper">
-                @foreach ($brands as $brand)
+                @forelse ($brands as $brand)
                     <div class="brand-item">
                         <div class="brand-logo">
                             <img src="{{ asset($brand->image ?? 'uploads/Brands/default-brand-image.jpg') }}" alt="Brand Logo">
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="brand-item">
+                        <div class="brand-logo">
+                            <img src="{{ asset('uploads/Brands/default-brand-image.jpg') }}" alt="Brand Logo">
+                        </div>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>

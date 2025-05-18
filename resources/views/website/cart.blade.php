@@ -1,6 +1,6 @@
 @extends('layouts.website.master')
 
-@section('title', Auth::user()->name ? 'Cart' : 'My Cart')
+@section('title', Auth::check() ? 'Cart' : 'My Cart')
 
 @section('content')
 <!-- Hero Section -->

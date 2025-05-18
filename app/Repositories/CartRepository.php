@@ -19,18 +19,45 @@ class CartRepository implements CartRepositoryInterface
 
     public function getCart()
     {
-        $authUser = Auth::user()->id;
-        $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
-            ->where('user_id', $authUser)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        if (Auth::check()) {
+            $authUser = Auth::user()->id;
+            $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+                ->where('user_id', $authUser)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if (!$cart) {
+                $cart = new Cart();
+                $cart->user_id = $authUser;
+                $cart->save();
+            }
+        } else {
+            $sessionCartId = session('cart_id');
+
+            if ($sessionCartId) {
+                $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+                    ->where('id', $sessionCartId)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+            }
+
+            if (empty($cart)) {
+                $cart = new Cart();
+                $cart->cartItems = collect([]);  
+            }
+        }
+
+        $productIdsToExclude = $cart->cartItems->isNotEmpty() ? $cart->cartItems->pluck('product_id')->toArray() : [0];
+
         $recommendedProducts = Product::where('is_active', true)
-            ->where('id', '!=', $cart->cartItems->pluck('product_id')->toArray())
+            ->whereNotIn('id', $productIdsToExclude)
             ->inRandomOrder()
             ->orderBy('price', 'desc')
             ->limit(4)
             ->get();
+
         $cart->recommendedProducts = $recommendedProducts;
+
         return $cart;
     }
 
@@ -62,7 +89,7 @@ class CartRepository implements CartRepositoryInterface
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
                 'color_id' => $product->colors->first()->id ?? null,
-                'size_id' => null,
+                'size_id' => $product->sizes->first()->id ?? null,
                 'quantity' => 1,
                 'price' => $product->price
             ]);
