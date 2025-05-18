@@ -150,7 +150,7 @@
                                             <a href="{{route('cart.index')}}">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
-                                            @if(Auth::check())
+                                            @auth
                                             @forelse($cart->cartItems as $cartItem)
                                             <li>
                                                 <a href="javascript:void(0)" class="remove"
@@ -181,11 +181,11 @@
                                         <div class="bottom">
                                             <div class="total">
                                                 <span>Total</span>
-                                                @if(Auth::check())
+                                                @auth
                                                 <span class="total-amount">{{number_format($cart->cartItems->sum('price'), 2)}} EGP</span>
                                                 @else
                                                 <span class="total-amount">0 EGP</span>
-                                                @endif
+                                                @endauth
                                             </div>
                                             <div class="button">
                                                 <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
