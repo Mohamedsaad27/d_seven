@@ -190,20 +190,16 @@
                                             @endauth
                                         </ul>
                                         <div class="bottom">
-                                            <div class="total">
-                                                <span>Total</span>
-                                                @auth
-                                                <span class="total-amount">{{
-                                                    @auth
-                                                    number_format($cart->cartItems->sum('price'), 2)
-                                                    @else
-                                                    0
-                                                    @endauth
-                                                    }} EGP</span>
-                                            </div>
-                                            <div class="button">
-                                                <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
-                                            </div>
+                                        <div class="total">
+                                            <span>Total</span>
+                                            @auth
+                                                <span class="total-amount">{{ number_format($cart?->cartItems->sum('price') ?? 0, 2) }} EGP</span>
+                                            @else
+                                                <span class="total-amount">0 EGP</span>
+                                            @endauth
+                                        </div>
+                                        <div class="button">
+                                            <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
                                         </div>
                                     </div>
                                     <!--/ End Shopping Item -->
