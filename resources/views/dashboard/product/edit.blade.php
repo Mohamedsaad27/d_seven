@@ -34,7 +34,7 @@
 
                         <div class="row mt-4">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Update Product</button>
+                                <button type="submit" class="btn btn-primary w-100">Update Product</button>
                             </div>
                         </div>
                     </form>
