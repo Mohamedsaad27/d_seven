@@ -45,7 +45,7 @@
                                 </h3>
                                 <div class="item-meta">
                                     <span class="meta-item"><span class="meta-label">Brand:</span> {{ $cartItem->product->brand->name_ar ? $cartItem->product->brand->name_ar : $cartItem->product->brand->name_en }}</span>
-                                    <span class="meta-item"><span class="meta-label">Color:</span> {{ $cartItem->color->color->name_en ? $cartItem->color->color->name_en : $cartItem->color->color->name_ar }}</span>
+                                    <span class="meta-item"><span class="meta-label">Color:</span> {{ $cartItem->product->colors->first()->name_en ? $cartItem->product->colors->first()->name_en : $cartItem->product->colors->first()->name_ar }}</span>
                                 </div>
                                 <div class="item-price-mobile">
                                     <div class="price-current">{{ $cartItem->product->getCurrentPrice() }} EGP</div>
