@@ -21,7 +21,7 @@ class CartRepository implements CartRepositoryInterface
     {
         if (Auth::check()) {
             $authUser = Auth::user()->id;
-            $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+            $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.product.brand'])
                 ->where('user_id', $authUser)
                 ->orderBy('created_at', 'desc')
                 ->first();
@@ -35,7 +35,7 @@ class CartRepository implements CartRepositoryInterface
             $sessionCartId = session('cart_id');
 
             if ($sessionCartId) {
-                $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+                $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.product.brand'])
                     ->where('id', $sessionCartId)
                     ->orderBy('created_at', 'desc')
                     ->first();
