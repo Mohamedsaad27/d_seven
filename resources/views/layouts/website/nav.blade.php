@@ -200,9 +200,6 @@
                                                     0
                                                     @endauth
                                                     }} EGP</span>
-                                                @else
-                                                <span class="total-amount">0 EGP</span>
-                                                @endauth
                                             </div>
                                             <div class="button">
                                                 <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
