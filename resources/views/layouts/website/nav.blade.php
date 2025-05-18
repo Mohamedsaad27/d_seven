@@ -30,6 +30,11 @@
                                         <li>
                                             <a href="{{ route('myAccount') }}">My Account</a>
                                         </li>
+                                        @if(Auth::user()->role == 'admin')
+                                        <li>
+                                            <a href="{{ route('admin.dashboard') }}">Admin Panel</a>
+                                        </li>
+                                        @endif
                                         <li>
                                             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 Logout
