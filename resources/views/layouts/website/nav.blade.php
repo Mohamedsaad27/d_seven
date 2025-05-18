@@ -151,6 +151,12 @@
                                         </div>
                                         <ul class="shopping-list">
                                             @auth
+                                            @php
+                                            $cart = Cart::with(['cartItems.product.productImages', 'cartItems.product.discounts', 'cartItems.color.color', 'cartItems.product.brand'])
+                                                    ->where('user_id', auth()->id())
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->first();
+                                            @endphp
                                             @forelse($cart->cartItems as $cartItem)
                                             <li>
                                                 <a href="javascript:void(0)" class="remove"
