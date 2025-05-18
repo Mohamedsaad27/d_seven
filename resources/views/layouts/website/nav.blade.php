@@ -32,7 +32,7 @@
                                         </li>
                                         @if(Auth::user()->role == 'admin')
                                         <li>
-                                            <a href="{{ route('admin.dashboard') }}">Admin Panel</a>
+                                            <a href="{{ route('dashboard') }}">Admin Panel</a>
                                         </li>
                                         @endif
                                         <li>
