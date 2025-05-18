@@ -1,21 +1,12 @@
-    <!-- Start Header Area -->
-    <header class="header navbar-area">
+<!-- Start Header Area -->
+<header class="header navbar-area">
         <!-- Start Topbar -->
         <div class="topbar">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-left">
-                            <!-- <ul class="menu-top-link">
-                                <li>
-                                    <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">العربية</option>
-                                        </select>
-                                    </div>
-                                </li>
-                            </ul> -->
+                            <!-- Language selection removed for simplicity -->
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
@@ -28,53 +19,53 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
-    <div class="top-end">
-        @if(Auth::check() && Auth::user()->is_active == 1)
-            <div class="user">
-                <i class="lni lni-user"></i>
-                @if(Auth::user()->name_en)
-                    Hello, {{ Auth::user()->name_en }}
-                @else
-                    Hello, {{ Auth::user()->name_ar }}
-                @endif
-            </div>
-            <ul class="user-login">
-                <li>
-                    <a href="{{ route('myAccount') }}">My Account</a>
-                </li>
-                <li>
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </li>
-            </ul>
-            @else
-            <div class="user">
-                <i class="lni lni-user"></i>
-                Hello
-            </div>
-            <ul class="user-login">
-            @if(Auth::check() && Auth::user()->is_active == 0)
-                <li>
-                    <a href="{{ route('verification.form') }}">Verify Account</a>
-                </li>
-            @else
-                <li>
-                    <a href="{{ route('login') }}">Sign In</a>
-                </li>
-                <li>
-                    <a href="{{ route('register') }}">Register</a>
-                </li>
-            @endauth
-            </ul>
-        @endauth
-    </div>
-</div>
-
-
+                        <div class="top-end">
+                            @auth
+                                @if(Auth::user()->is_active == 1)
+                                    <div class="user">
+                                        <i class="lni lni-user"></i>
+                                        Hello, {{ Auth::user()->name_en ?: Auth::user()->name_ar }}
+                                    </div>
+                                    <ul class="user-login">
+                                        <li>
+                                            <a href="{{ route('myAccount') }}">My Account</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        </li>
+                                    </ul>
+                                @else
+                                    <div class="user">
+                                        <i class="lni lni-user"></i>
+                                        Hello
+                                    </div>
+                                    <ul class="user-login">
+                                        <li>
+                                            <a href="{{ route('verification.form') }}">Verify Account</a>
+                                        </li>
+                                    </ul>
+                                @endif
+                            @else
+                                <div class="user">
+                                    <i class="lni lni-user"></i>
+                                    Hello
+                                </div>
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="{{ route('login') }}">Sign In</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('register') }}">Register</a>
+                                    </li>
+                                </ul>
+                            @endauth
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,12 +87,7 @@
                             <!-- navbar search start -->
                             <div class="navbar-search search-style-5">
                                 <div class="search-select">
-                                    <!-- <div class="select-position">
-                                        <select id="select1">
-                                            <option selected>All</option>
-                                            <option value="1">option 01</option>
-                                        </select>
-                                    </div> -->
+                                    <!-- Search select removed for simplicity -->
                                 </div>
                                 <div class="search-input">
                                     <input type="text" placeholder="Search">
@@ -117,8 +103,8 @@
                     <div class="col-lg-4 col-md-2 col-5">
                         <div class="middle-right-area">
                             <div class="nav-hotline">
-                            <i class="lni lni-phone-set"></i> <!-- Support hotline -->
-                            <h3>Hotline:
+                                <i class="lni lni-phone-set"></i> <!-- Support hotline -->
+                                <h3>Hotline:
                                     <span>(+20) 01021369699</span>
                                 </h3>
                             </div>
@@ -130,23 +116,23 @@
                                     </a>
                                 </div>
                                 <div class="cart-items">
-                                <a href="{{ route('cart.index') }}" class="main-btn">
-                                <i class="lni lni-cart"></i>
-                                    @auth
-                                        @php
-                                            $cartItemsCount = \App\Models\Cart::where('user_id', auth()->id())
-                                                ->withCount('cartItems')
-                                                ->value('cart_items_count') ?? 0;
-                                        @endphp
-                                        <span class="total-items">{{ $cartItemsCount }}</span>
-                                    @else
-                                        <span class="total-items">0</span>
-                                    @endauth
-                                </a>
+                                    <a href="{{ route('cart.index') }}" class="main-btn">
+                                        <i class="lni lni-cart"></i>
+                                        @auth
+                                            @php
+                                                $cartItemsCount = \App\Models\Cart::where('user_id', auth()->id())
+                                                    ->withCount('cartItems')
+                                                    ->value('cart_items_count') ?? 0;
+                                            @endphp
+                                            <span class="total-items">{{ $cartItemsCount }}</span>
+                                        @else
+                                            <span class="total-items">0</span>
+                                        @endauth
+                                    </a>
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
-                                            <span>@if(Auth::check()){{$cartItemsCount}} Items @else 0 Items @endif</span>
+                                            <span>@auth {{$cartItemsCount}} Items @else 0 Items @endauth</span>
                                             <a href="{{route('cart.index')}}">View Cart</a>
                                         </div>
                                         <ul class="shopping-list">
@@ -190,16 +176,17 @@
                                             @endauth
                                         </ul>
                                         <div class="bottom">
-                                        <div class="total">
-                                            <span>Total</span>
-                                            @auth
-                                                <span class="total-amount">{{ number_format($cart?->cartItems->sum('price') ?? 0, 2) }} EGP</span>
-                                            @else
-                                                <span class="total-amount">0 EGP</span>
-                                            @endauth
-                                        </div>
-                                        <div class="button">
-                                            <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
+                                            <div class="total">
+                                                <span>Total</span>
+                                                @auth
+                                                    <span class="total-amount">{{ number_format($cart?->cartItems->sum('price') ?? 0, 2) }} EGP</span>
+                                                @else
+                                                    <span class="total-amount">0 EGP</span>
+                                                @endauth
+                                            </div>
+                                            <div class="button">
+                                                <a href="{{route('cart.index')}}" class="btn animate">Checkout</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <!--/ End Shopping Item -->
@@ -226,30 +213,30 @@
                         @endphp
                         <!-- Start Mega Category Menu -->
                         <div class="mega-category-menu">
-                        <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
-                        <ul class="sub-category">
-                            @foreach($categories as $category)
-                                <li>
-                                    <a href="{{ route('product.index', $category->id) }}">
-                                        {{ $category->name_en }}
-                                        @if($category->children->count())
-                                            <i class="lni lni-chevron-right"></i>
-                                        @endif
-                                    </a>
+                            <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                            <ul class="sub-category">
+                                @foreach($categories as $category)
+                                    <li>
+                                        <a href="{{ route('product.index', $category->id) }}">
+                                            {{ $category->name_en }}
+                                            @if($category->children->count())
+                                                <i class="lni lni-chevron-right"></i>
+                                            @endif
+                                        </a>
 
-                                    @if($category->children->count())
-                                        <ul class="inner-sub-category">
-                                            @foreach($category->children as $child)
-                                                <li>
-                                                    <a href="{{ route('product.index', $child->id) }}">
-                                                        {{ $child->name_en }}
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </li>
-                            @endforeach
+                                        @if($category->children->count())
+                                            <ul class="inner-sub-category">
+                                                @foreach($category->children as $child)
+                                                    <li>
+                                                        <a href="{{ route('product.index', $child->id) }}">
+                                                            {{ $child->name_en }}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
 
