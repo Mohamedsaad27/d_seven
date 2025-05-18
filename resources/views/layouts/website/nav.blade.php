@@ -193,7 +193,13 @@
                                             <div class="total">
                                                 <span>Total</span>
                                                 @auth
-                                                <span class="total-amount">{{number_format($cart->cartItems->sum('price'), 2)}} EGP</span>
+                                                <span class="total-amount">{{
+                                                    @auth
+                                                    number_format($cart->cartItems->sum('price'), 2)
+                                                    @else
+                                                    0
+                                                    @endauth
+                                                    }} EGP</span>
                                                 @else
                                                 <span class="total-amount">0 EGP</span>
                                                 @endauth
