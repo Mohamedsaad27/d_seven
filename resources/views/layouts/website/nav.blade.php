@@ -130,18 +130,19 @@
                                     </a>
                                 </div>
                                 <div class="cart-items">
-                                    <a href="{{route('cart.index')}}" class="main-btn">
-                                        <i class="lni lni-cart"></i>
-                                        @if(Auth::check())
+                                <a href="{{ route('cart.index') }}" class="main-btn">
+                                <i class="lni lni-cart"></i>
+                                    @auth
                                         @php
-                                        $cart = App\Models\Cart::with('cartItems')->where('user_id', Auth::user()->id)->first();
-                                        $cartItemsCount = $cart ? $cart->cartItems->count() : 0;
+                                            $cartItemsCount = \App\Models\Cart::where('user_id', auth()->id())
+                                                ->withCount('cartItems')
+                                                ->value('cart_items_count') ?? 0;
                                         @endphp
-                                        <span class="total-items">{{$cartItemsCount}}</span>
-                                        @else
+                                        <span class="total-items">{{ $cartItemsCount }}</span>
+                                    @else
                                         <span class="total-items">0</span>
-                                        @endif
-                                    </a>
+                                    @endauth
+                                </a>
                                     <!-- Shopping Item -->
                                     <div class="shopping-item">
                                         <div class="dropdown-cart-header">
