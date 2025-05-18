@@ -53,6 +53,7 @@
                             <tr>
                                 <th class="px-4 py-3 text-muted">#</th>
                                 <th class="px-4 py-3 text-muted">Category</th>
+                                <th class="px-4 py-3 text-muted">Parent Category</th>
                                 <th class="px-4 py-3 text-muted">Description</th>
                                 <th class="px-4 py-3 text-muted">Image</th>
                                 <th class="px-4 py-3 text-muted">Status</th>
@@ -77,6 +78,11 @@
                                             </div>
                                         </div>
                                     </td>
+                                    @if($category->parent_category)
+                                    <td>{{ $category->parent_category->name_en}}</td>
+                                    @else
+                                    <td><span class="text-info">No Parent Category</span></td>
+                                    @endif
                                     <td class="px-4">
                                         <div class="d-flex flex-column">
                                             <span class="text-dark">

@@ -82,7 +82,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function destroy(Category $category)
     {
         try {
-            if ($category->image) {
+            if ($category->image && file_exists(public_path($category->image))) {
                 unlink(public_path($category->image));
             }
             $category->delete();
