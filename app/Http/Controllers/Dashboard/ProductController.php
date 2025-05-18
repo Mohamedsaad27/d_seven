@@ -48,6 +48,24 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
 
+    public function edit(Product $product)
+    {
+        $product = $this->productDashboardRepository->edit($product);
+        $categories = $this->categoryRepository->index();
+        $brands = $this->brandRepository->index();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $productColors = $product->colors ?? [];
+        $inventory = $product->inventory ?? [];
+        return view('dashboard.product.edit', compact('product', 'categories', 'brands', 'colors', 'sizes', 'productColors', 'inventory'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $this->productDashboardRepository->update($request, $product);
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+    }
+
     public function show(Product $product)
     {
         $product = $this->productDashboardRepository->show($product);

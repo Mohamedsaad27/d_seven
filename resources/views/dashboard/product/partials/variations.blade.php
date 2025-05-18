@@ -20,27 +20,50 @@
                         <i class="fas fa-plus me-1"></i> Add Color
                     </button>
                 </div>
-                
+
                 <div id="colorsContainer" class="variation-container">
-                    <div class="row color-row mb-3 align-items-center g-2">
-                        <div class="col-md-11 col-10">
-                            <select name="colors[]" class="form-select shadow-none" required>
-                                @foreach($colors as $color)
-                                    <option value="{{ $color->id }}">{{ $color->name_en }}</option>
-                                @endforeach
-                            </select>
+                    @if(isset($productColors) && count($productColors) > 0)
+                        @foreach($productColors as $selectedColor)
+                            <div class="row color-row mb-3 align-items-center g-2">
+                                <div class="col-md-11 col-10">
+                                    <select name="colors[]" class="form-select shadow-none" required>
+                                        @foreach($colors as $color)
+                                            <option value="{{ $color->id }}" {{ $color->id == $selectedColor->color_id ? 'selected' : '' }}>
+                                                {{ $color->name_en }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-1 col-2 text-end">
+                                    <button type="button" class="btn btn-outline-danger btn-sm remove-field rounded-circle">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <!-- Default one field for create mode -->
+                        <div class="row color-row mb-3 align-items-center g-2">
+                            <div class="col-md-11 col-10">
+                                <select name="colors[]" class="form-select shadow-none" required>
+                                    @foreach($colors as $color)
+                                        <option value="{{ $color->id }}">{{ $color->name_en }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1 col-2 text-end">
+                                <button type="button" class="btn btn-outline-danger btn-sm remove-field rounded-circle">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-1 col-2 text-end">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-field rounded-circle">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <style>
     .section-title {

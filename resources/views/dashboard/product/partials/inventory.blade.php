@@ -18,24 +18,50 @@
                             </tr>
                         </thead>
                         <tbody id="inventoryTableBody" class="border-top-0">
-                            <tr>
-                                <td class="ps-3">
-                                    <select name="inventory_colors[]" class="form-select shadow-none" required>
-                                        <option value="" disabled selected>Select Color</option>
-                                        @foreach($colors as $color)
-                                            <option value="{{ $color->id }}">{{ $color->name_en }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" placeholder="0" name="quantities[]" class="form-control shadow-none" min="0" required>
-                                </td>
-                                <td class="text-end pe-3">
-                                    <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            @if(isset($inventory) && count($inventory) > 0)
+                                @foreach($inventory as $item)
+                                    <tr>
+                                        <td class="ps-3">
+                                            <select name="inventory_colors[]" class="form-select shadow-none" required>
+                                                <option value="" disabled>Select Color</option>
+                                                @foreach($colors as $color)
+                                                    <option value="{{ $color->id }}" {{ $color->id == $item['color_id'] ? 'selected' : '' }}>
+                                                        {{ $color->name_en }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0"
+                                                value="{{ $item['quantity'] }}" min="0" required>
+                                        </td>
+                                        <td class="text-end pe-3">
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="ps-3">
+                                        <select name="inventory_colors[]" class="form-select shadow-none" required>
+                                            <option value="" disabled selected>Select Color</option>
+                                            @foreach($colors as $color)
+                                                <option value="{{ $color->id }}">{{ $color->name_en }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" placeholder="0" name="quantities[]" class="form-control shadow-none" min="0" required>
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                     <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addInventoryRow">
@@ -47,37 +73,41 @@
     </div>
 </div>
 
+<template id="inventoryRowTemplate">
+    <tr>
+        <td class="ps-3">
+            <select name="inventory_colors[]" class="form-select shadow-none" required>
+                <option value="" disabled selected>Select Color</option>
+                @foreach($colors as $color)
+                    <option value="{{ $color->id }}">{{ $color->name_en }}</option>
+                @endforeach
+            </select>
+        </td>
+        <td>
+            <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0" min="0" required>
+        </td>
+        <td class="text-end pe-3">
+            <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+    </tr>
+</template>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const addInventoryRowBtn = document.getElementById('addInventoryRow');
         const inventoryTableBody = document.getElementById('inventoryTableBody');
+        const template = document.getElementById('inventoryRowTemplate');
 
-        addInventoryRowBtn.addEventListener('click', function() {
-            const newRow = `
-                <tr>
-                    <td class="ps-3">
-                        <select name="inventory_colors[]" class="form-select shadow-none" required>
-                            <option value="" disabled selected>Select Color</option>
-                            @foreach($colors as $color)
-                                <option value="{{ $color->id }}">{{ $color->name_en }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0" min="0" required>
-                    </td>
-                    <td class="text-end pe-3">
-                        <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-            inventoryTableBody.insertAdjacentHTML('beforeend', newRow);
+        // Add new row
+        addInventoryRowBtn.addEventListener('click', function () {
+            const newRow = template.content.cloneNode(true);
+            inventoryTableBody.appendChild(newRow);
         });
 
-        // Delete row functionality
-        inventoryTableBody.addEventListener('click', function(e) {
+        // Delete row
+        inventoryTableBody.addEventListener('click', function (e) {
             if (e.target.closest('.delete-row')) {
                 e.target.closest('tr').remove();
             }
