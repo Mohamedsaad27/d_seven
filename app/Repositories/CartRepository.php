@@ -43,7 +43,7 @@ class CartRepository implements CartRepositoryInterface
 
             if (empty($cart)) {
                 $cart = new Cart();
-                $cart->cartItems = collect([]);  
+                $cart->cartItems = collect([]);
             }
         }
 
@@ -68,6 +68,13 @@ class CartRepository implements CartRepositoryInterface
             return response()->json([
                 'status' => false,
                 'message' => 'Product not found'
+            ]);
+        }
+        if (!Auth::check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق',
+                'auth_required' => true
             ]);
         }
         $cart = Cart::where('user_id', Auth::id())->first();

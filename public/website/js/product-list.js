@@ -423,6 +423,8 @@ $(document).ready(function() {
     
 
 });
+
+// AJAX Setup with CSRF token
 $(document).ready(function() {
     $.ajaxSetup({
         headers: {
@@ -435,7 +437,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         const productId = $(this).data('product-id');
-        const url = $(this).attr('href');
+        const url = $(this).attr('href') || `/add-to-cart/${productId}`;
 
         $.ajax({
             type: 'POST',
@@ -457,19 +459,30 @@ $(document).ready(function() {
                         $('.cart-count').text(response.cart_count);
                     }
                 } else {
-                    // Show error toast notification with centered large icon and Arabic message
-                    toastr.error(
-                        '<div class="text-center">' +
-                        '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
-                        '</div>'
-                    );
+                    // Check if auth is required
+                    if (response.auth_required) {
+                        // Show auth modal
+                        toastr.error(
+                            '<div class="text-center">' +
+                            '<div>يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق الخاصة بك.</div>' +
+                            '</div>'
+                        );
+                    } else {
+                        // Show error toast notification with centered large icon and Arabic message
+                        toastr.error(
+                            '<div class="text-center">' +
+                            '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
+                            '</div>'
+                        );
+                    }
                 }
             },
             error: function(xhr, status, error) {
-                if (xhr.status === 302) {
+                if (xhr.status === 401 || xhr.responseJSON && xhr.responseJSON.auth_required) {
+                    // Show auth modal if user is not authenticated
                     toastr.error(
                         '<div class="text-center">' +
-                        '<div>انتهت الجلسة أو تحتاج إلى تسجيل الدخول. يرجى تحديث الصفحة</div>' +
+                        '<div>يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق الخاصة بك.</div>' +
                         '</div>'
                     );
                 } else {

@@ -302,6 +302,7 @@
                 </div>
             </div>
         </div>
+        
     </section>
     <!-- End Product Grids -->
 

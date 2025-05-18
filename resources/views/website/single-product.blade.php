@@ -142,13 +142,13 @@
                                     <input type="hidden" name="color_id" id="selectedColor" value="{{ $product->colors->first()?->color?->id ?? '' }}">
                                 </div>
                             </div>
-                        @endif
+                        @endif`
                         
                         <div class="mb-4">
                             <h3 class="option-title">Quantity</h3>
                             <div class="quantity-selector">
                                 <button type="button" class="quantity-btn decrease-btn">-</button>
-                                <input type="number" name="quantity" class="quantity-input" value="1" min="1" max="{{ $product->inventory->sum('quantity') }}">
+                                <input type="number" name="quantity" class="quantity-input" value="1" >
                                 <button type="button" class="quantity-btn increase-btn">+</button>
                             </div>
                         </div>

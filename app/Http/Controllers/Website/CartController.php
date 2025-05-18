@@ -25,14 +25,26 @@ class CartController extends Controller
 
     public function addToCart($id)
     {
+        // Call repository method to add to cart
         $response = $this->cartRepository->addToCart($id);
 
-        $responseData = json_decode($response->getContent());
+        // Decode the JSON response
+        $responseData = json_decode($response->getContent(), true);
 
+        // Check if authentication is required
+        if (isset($responseData['auth_required']) && $responseData['auth_required']) {
+            return response()->json([
+                'status' => false,
+                'message' => $responseData['message'] ?? 'يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق',
+                'auth_required' => true
+            ]);
+        }
+
+        // Return original response
         return response()->json([
-            'status' => true,
-            'message' => $responseData->message,
-            'cart_count' => auth()->user()->cart->cartItems->sum('quantity')
+            'status' => $responseData['status'] ?? false,
+            'message' => $responseData['message'] ?? 'تمت إضافة المنتج إلى سلة التسوق بنجاح',
+            'cart_count' => $responseData['cart_count'] ?? 0
         ]);
     }
 
