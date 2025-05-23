@@ -288,7 +288,7 @@ $(document).ready(function() {
                 if (response.success || response.status) {
                     $('#loginModal').modal('hide');
                     toastr.success('تم تسجيل الدخول بنجاح');
-                    
+                    location.reload();
                     // Update CSRF token after successful login
                     refreshCSRFToken().then(function() {
                         // Retry adding product to cart if there was a pending request

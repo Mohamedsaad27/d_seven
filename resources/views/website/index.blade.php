@@ -502,59 +502,81 @@
 <!-- End Shipping Info -->
 
 <div class="modal fade auth-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="lni lni-close"></i>
-                </button>
-                <div class="w-100">
-                    <h4 class="modal-title" id="loginModalLabel">تسجيل الدخول</h4>
-                    <p class="modal-subtitle">يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق</p>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Visual Header with Kitchen Theme -->
+                <div class="modal-visual-header">
+                    <div class="kitchen-elements">
+                        <i class="fas fa-utensils kitchen-icon"></i>
+                        <i class="fas fa-cookie-bite kitchen-icon"></i>
+                        <i class="fas fa-pepper-hot kitchen-icon"></i>
+                        <i class="fas fa-coffee kitchen-icon"></i>
+                        <i class="fas fa-blender kitchen-icon"></i>
+                    </div>
+                    <div class="brand-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        <div class="brand-name" style="font-family: 'Cairo', sans-serif;">  دي سيفن  </div>
+                        <div class="brand-subtitle">كل أدوات الطبخ في مكان واحد</div>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-body">
-                <form id="loginForm" action="{{ route('login') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <input type="email" class="form-control" name="email" placeholder="البريد الإلكتروني" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <input type="password" class="form-control" name="password" placeholder="كلمة المرور" required>
-                    </div>
-                    
-                    <div class="mb-3 form-check text-start">
-                        <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
-                        <label class="form-check-label" for="rememberMe">
-                            تذكرني
-                        </label>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary btn-login">
-                        <span class="login-text">تسجيل الدخول</span>
-                        <span class="login-spinner d-none">
-                            <i class="spinner-border spinner-border-sm" role="status"></i>
-                            جاري التسجيل...
-                        </span>
+
+                <div class="modal-header">
+                    <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
                     </button>
-                    
-                    <div class="text-center mt-2">
-                        <a href="{{ route('password.request') }}" class="text-muted small">نسيت كلمة المرور؟</a>
+                    <div class="w-100">
+                        <h4 class="modal-title" id="loginModalLabel">مرحباً بك مرة أخرى</h4>
+                        <p class="modal-subtitle">سجل دخولك للوصول إلى أفضل أدوات المطبخ وإضافة المنتجات إلى سلة التسوق</p>
                     </div>
-                </form>
-                
-                <div class="divider">
-                    <span>أو</span>
                 </div>
                 
-                <a href="{{ route('register') }}" class="btn btn-success btn-register">
-                    إنشاء حساب جديد
-                </a>
+                <div class="modal-body">
+                    <form id="loginForm" action="{{ route('login') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" class="form-control" name="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" name="password" placeholder="كلمة المرور" required>
+                        </div>
+                        
+                        <div class="form-check text-start">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
+                            <label class="form-check-label" for="rememberMe">
+                                تذكرني
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-login">
+                            <span class="login-text">تسجيل الدخول</span>
+                            <span class="login-spinner d-none">
+                                <i class="spinner-border spinner-border-sm" role="status"></i>
+                                جاري التسجيل...
+                            </span>
+                        </button>
+                        
+                        <div class="forgot-password">
+                            <a href="#">نسيت كلمة المرور؟</a>
+                        </div>
+                    </form>
+                    
+                    <div class="divider">
+                        <span>أو</span>
+                    </div>
+                    
+                    <button class="btn btn-register" onclick="window.location.href='{{ route('register') }}'">
+                        <i class="fas fa-user-plus me-2"></i>
+                        إنشاء حساب جديد
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @push('styles')
