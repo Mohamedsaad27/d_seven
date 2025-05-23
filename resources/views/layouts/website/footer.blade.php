@@ -15,7 +15,7 @@
                     <div class="col-lg-9 col-md-8 col-12">
                         <div class="footer-newsletter">
                             <h4 class="title">
-                                Subscribe to our Newsletter
+                                Subscribe to DSeven
                                 <span>Get all the latest information, Sales and Offers.</span>
                             </h4>
                             <div class="newsletter-form-head">
