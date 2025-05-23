@@ -1,5 +1,5 @@
 @extends('layouts.website.master')
-@section('title', trans('website.login'))
+@section('title', 'Login')
 @section('content')
 
     <!-- Start Hero Section -->

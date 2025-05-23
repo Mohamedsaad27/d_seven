@@ -195,7 +195,7 @@
 
 
 <!-- Start Special Offer -->
-<section class="special-offer section">
+<!-- <section class="special-offer section">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -209,7 +209,6 @@
             <div class="col-lg-8 col-md-12 col-12">
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
                                 <img src="{{ asset('uploads/1.jpg') }}" alt="#" class="product-img">
@@ -236,10 +235,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Single Product -->
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
-                        <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
                                 <img src="{{ asset('uploads/2.jpg') }}" alt="#" class="product-img">
@@ -266,10 +263,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Single Product -->
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
-                        <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-image">
                                 <img src="{{ asset('uploads/3.jpg') }}" alt="#" class="product-img">
@@ -296,10 +291,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Single Product -->
                     </div>
                 </div>
-                <!-- Start Banner -->
                 <div class="single-banner modern-banner" style="background-image:url('{{ asset('uploads/2.jpg') }}');">
                     <div class="banner-overlay"></div>
                     <div class="content">
@@ -315,7 +308,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Banner -->
             </div>
             <div class="col-lg-4 col-md-12 col-12">
                 <div class="offer-content">
@@ -367,7 +359,6 @@
                             <a href="product-details.html" class="btn">Shop Now <i class="lni lni-arrow-right"></i></a>
                         </div>
                         
-                        <!-- Deal Ended Alert (hidden by default) -->
                         <div class="deal-ended-alert">
                             <div class="alert-icon"><i class="lni lni-alarm-clock"></i></div>
                             <h3>We are sorry, this offer has ended!</h3>
@@ -378,7 +369,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!-- End Special Offer -->
 
 <!-- Start Home Product List -->
@@ -510,12 +501,68 @@
 </section>
 <!-- End Shipping Info -->
 
-
+<div class="modal fade auth-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="lni lni-close"></i>
+                </button>
+                <div class="w-100">
+                    <h4 class="modal-title" id="loginModalLabel">تسجيل الدخول</h4>
+                    <p class="modal-subtitle">يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm" action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="البريد الإلكتروني" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="كلمة المرور" required>
+                    </div>
+                    
+                    <div class="mb-3 form-check text-start">
+                        <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
+                        <label class="form-check-label" for="rememberMe">
+                            تذكرني
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-login">
+                        <span class="login-text">تسجيل الدخول</span>
+                        <span class="login-spinner d-none">
+                            <i class="spinner-border spinner-border-sm" role="status"></i>
+                            جاري التسجيل...
+                        </span>
+                    </button>
+                    
+                    <div class="text-center mt-2">
+                        <a href="{{ route('password.request') }}" class="text-muted small">نسيت كلمة المرور؟</a>
+                    </div>
+                </form>
+                
+                <div class="divider">
+                    <span>أو</span>
+                </div>
+                
+                <a href="{{ route('register') }}" class="btn btn-success btn-register">
+                    إنشاء حساب جديد
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 <link rel="stylesheet" href="{{ asset('website/css/index.css') }}">
+<style>
+
+</style>
 @endpush
 
 @push('scripts')
@@ -529,7 +576,7 @@
         "positionClass": "toast-top-right", // Changed to center position
         "showDuration": "300",
         "hideDuration": "1000",
-        "timeOut": "2000",
+        "timeOut": "5000",
         "extendedTimeOut": "1000",
         "showEasing": "swing",
         "hideEasing": "linear",

@@ -426,9 +426,26 @@ $(document).ready(function() {
 
 // AJAX Setup with CSRF token
 $(document).ready(function() {
+    // Get fresh CSRF token function
+    function refreshCSRFToken() {
+        return $.get('/csrf-token').then(function(data) {
+            $('meta[name="csrf-token"]').attr('content', data.csrf_token);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': data.csrf_token
+                }
+            });
+        }).catch(function() {
+            // If route doesn't exist, try to get from form
+            console.warn('CSRF refresh route not found');
+        });
+    }
+
+    // Initial CSRF setup
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest'
         }
     });
 
@@ -437,7 +454,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         const productId = $(this).data('product-id');
-        const url = $(this).attr('href') || `/add-to-cart/${productId}`;
+        const url = $(this).attr('href');
 
         $.ajax({
             type: 'POST',
@@ -447,44 +464,39 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.status) {
-                    // Show success toast notification with centered large icon and Arabic message
                     toastr.success(
                         '<div class="text-center">' +
                         '<div>تمت إضافة المنتج إلى سلة التسوق بنجاح</div>' +
                         '</div>'
                     );
 
-                    // Update cart count in the header if you have one
                     if (response.cart_count) {
                         $('.cart-count').text(response.cart_count);
                     }
                 } else {
-                    // Check if auth is required
                     if (response.auth_required) {
-                        // Show auth modal
-                        toastr.error(
-                            '<div class="text-center">' +
-                            '<div>يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق الخاصة بك.</div>' +
-                            '</div>'
-                        );
+                        $('#loginModal').modal('show');
+                        $('#loginModal').data('product-id', productId);
+                        $('#loginModal').data('product-url', url);
                     } else {
-                        // Show error toast notification with centered large icon and Arabic message
                         toastr.error(
                             '<div class="text-center">' +
-                            '<div>حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى</div>' +
+                            '<div>' + (response.message || 'حدث خطأ أثناء إضافة المنتج، يرجى المحاولة مرة أخرى') + '</div>' +
                             '</div>'
                         );
                     }
                 }
             },
             error: function(xhr, status, error) {
-                if (xhr.status === 401 || xhr.responseJSON && xhr.responseJSON.auth_required) {
-                    // Show auth modal if user is not authenticated
+                if (xhr.status === 401) {
+                    $('#loginModal').modal('show');
+                } else if (xhr.status === 302) {
                     toastr.error(
                         '<div class="text-center">' +
-                        '<div>يرجى تسجيل الدخول لإضافة المنتجات إلى سلة التسوق الخاصة بك.</div>' +
+                        '<div>انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى</div>' +
                         '</div>'
                     );
+                    $('#loginModal').modal('show');
                 } else {
                     toastr.error(
                         '<div class="text-center">' +
@@ -494,5 +506,119 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    // Handle login form submission
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const $form = $(this);
+        const $submitBtn = $form.find('.btn-login');
+        const $loginText = $submitBtn.find('.login-text');
+        const $loginSpinner = $submitBtn.find('.login-spinner');
+        
+        // Show loading state
+        $submitBtn.prop('disabled', true);
+        $loginText.addClass('d-none');
+        $loginSpinner.removeClass('d-none');
+        
+        // Get fresh CSRF token before login
+        const formData = new FormData(this);
+        
+        $.ajax({
+            type: 'POST',
+            url: $form.attr('action'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            success: function(response) {
+                if (response.success || response.status) {
+                    $('#loginModal').modal('hide');
+                    toastr.success('تم تسجيل الدخول بنجاح');
+                    location.reload();
+                    // Update CSRF token after successful login
+                    refreshCSRFToken().then(function() {
+                        // Retry adding product to cart if there was a pending request
+                        const productId = $('#loginModal').data('product-id');
+                        const productUrl = $('#loginModal').data('product-url');
+                        
+                        if (productId && productUrl) {
+                            setTimeout(function() {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: productUrl,
+                                    data: {
+                                        product_id: productId
+                                    },
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    },
+                                    success: function(response) {
+                                        if (response.status) {
+                                            toastr.success('تمت إضافة المنتج إلى سلة التسوق بنجاح');
+                                            if (response.cart_count) {
+                                                $('.cart-count').text(response.cart_count);
+                                            }
+                                        }
+                                    },
+                                    error: function() {
+                                        toastr.error('حدث خطأ أثناء إضافة المنتج');
+                                    }
+                                });
+                            }, 1000);
+                        }
+                    });
+                    
+                    $('#loginModal').removeData('product-id product-url');
+                    
+                } else {
+                    toastr.error(response.message || 'خطأ في تسجيل الدخول');
+                }
+            },
+            error: function(xhr) {
+                console.log('Login error:', xhr); // Debug log
+                
+                if (xhr.status === 422) {
+                    const errors = xhr.responseJSON?.errors;
+                    if (errors) {
+                        let errorMessage = 'يرجى تصحيح الأخطاء التالية:<br>';
+                        for (let field in errors) {
+                            errorMessage += '- ' + errors[field][0] + '<br>';
+                        }
+                        toastr.error(errorMessage);
+                    } else {
+                        toastr.error('بيانات غير صحيحة');
+                    }
+                } else if (xhr.status === 419) {
+                    toastr.error('انتهت صلاحية الصفحة، يرجى إعادة تحميل الصفحة');
+                    // Refresh CSRF token
+                    refreshCSRFToken();
+                } else {
+                    toastr.error('حدث خطأ أثناء تسجيل الدخول');
+                }
+            },
+            complete: function() {
+                $submitBtn.prop('disabled', false);
+                $loginText.removeClass('d-none');
+                $loginSpinner.addClass('d-none');
+            }
+        });
+    });
+
+    // Clear stored data when modal is closed
+    $('#loginModal').on('hidden.bs.modal', function () {
+        $(this).removeData('product-id product-url');
+        $('#loginForm')[0].reset();
+    });
+
+    // Refresh CSRF token when modal opens
+    $('#loginModal').on('shown.bs.modal', function () {
+        refreshCSRFToken();
     });
 });

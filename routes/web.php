@@ -49,3 +49,10 @@ Route::get('/404', function () {
 Route::get('/my-account', function () {
     return view('website.my_account');
 })->name('myAccount');
+
+// ################################# CSRF Token Route #########################
+Route::get('/csrf-token', function () {
+    return response()->json([
+        'csrf_token' => csrf_token()
+    ]);
+})->name('csrf.token');

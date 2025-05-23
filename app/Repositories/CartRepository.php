@@ -85,7 +85,7 @@ class CartRepository implements CartRepositoryInterface
         }
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
-            ->where('color_id', $product->colors->first()->id)
+            ->where('color_id', $product->colors->first()->color_id)
             ->first();
         if ($cartItem) {
             $cartItem->quantity = $cartItem->quantity + 1;
@@ -95,8 +95,8 @@ class CartRepository implements CartRepositoryInterface
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
-                'color_id' => $product->colors->first()->id ?? null,
-                'size_id' => $product->sizes->first()->id ?? null,
+                'color_id' => $product->colors->first()->color_id ?? null,
+                'size_id' => $product->sizes->first()->size_id ?? null,
                 'quantity' => 1,
                 'price' => $product->price
             ]);
