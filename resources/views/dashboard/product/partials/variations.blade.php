@@ -41,8 +41,10 @@
                                 </div>
                             </div>
                         @endforeach
-                    @else
-                        <!-- Default one field for create mode -->
+                    @endif
+                    
+                    <!-- Hidden template for adding new color rows -->
+                    <template id="colorRowTemplate">
                         <div class="row color-row mb-3 align-items-center g-2">
                             <div class="col-md-11 col-10">
                                 <select name="colors[]" class="form-select shadow-none" required>
@@ -57,7 +59,7 @@
                                 </button>
                             </div>
                         </div>
-                    @endif
+                    </template>
                 </div>
             </div>
         </div>

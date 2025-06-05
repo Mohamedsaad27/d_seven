@@ -22,7 +22,7 @@
                                 @foreach($inventory as $item)
                                     <tr>
                                         <td class="ps-3">
-                                            <select name="inventory_colors[]" class="form-select shadow-none" required>
+                                            <select name="inventory_colors[]" class="form-select shadow-none" >
                                                 <option value="" disabled>Select Color</option>
                                                 @foreach($colors as $color)
                                                     <option value="{{ $color->id }}" {{ $color->id == $item['color_id'] ? 'selected' : '' }}>
@@ -33,7 +33,7 @@
                                         </td>
                                         <td>
                                             <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0"
-                                                value="{{ $item['quantity'] }}" min="0" required>
+                                                value="{{ $item['quantity'] }}" min="0" >
                                         </td>
                                         <td class="text-end pe-3">
                                             <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
@@ -45,7 +45,7 @@
                             @else
                                 <tr>
                                     <td class="ps-3">
-                                        <select name="inventory_colors[]" class="form-select shadow-none" required>
+                                        <select name="inventory_colors[]" class="form-select shadow-none" >
                                             <option value="" disabled selected>Select Color</option>
                                             @foreach($colors as $color)
                                                 <option value="{{ $color->id }}">{{ $color->name_en }}</option>
@@ -53,7 +53,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" placeholder="0" name="quantities[]" class="form-control shadow-none" min="0" required>
+                                        <input type="number" placeholder="0" name="quantities[]" class="form-control shadow-none" min="0" >
                                     </td>
                                     <td class="text-end pe-3">
                                         <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">
@@ -76,7 +76,7 @@
 <template id="inventoryRowTemplate">
     <tr>
         <td class="ps-3">
-            <select name="inventory_colors[]" class="form-select shadow-none" required>
+            <select name="inventory_colors[]" class="form-select shadow-none" >
                 <option value="" disabled selected>Select Color</option>
                 @foreach($colors as $color)
                     <option value="{{ $color->id }}">{{ $color->name_en }}</option>
@@ -84,7 +84,7 @@
             </select>
         </td>
         <td>
-            <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0" min="0" required>
+            <input type="number" name="quantities[]" class="form-control shadow-none" placeholder="0" min="0" >
         </td>
         <td class="text-end pe-3">
             <button type="button" class="btn btn-outline-danger btn-sm delete-row rounded-circle">

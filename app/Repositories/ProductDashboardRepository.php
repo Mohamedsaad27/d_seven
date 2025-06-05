@@ -85,54 +85,89 @@ class ProductDashboardRepository implements ProductDashboardInterface
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        // dd($data);
-        // Create product
-        DB::beginTransaction();
+        try {
+            $data = $request->all();
 
-        $product = Product::create([
-            'name_ar' => $data['name_ar'],
-            'name_en' => $data['name_en'],
-            'description_ar' => $data['description_ar'],
-            'description_en' => $data['description_en'],
-            'price' => $data['price'],
-            'category_id' => $data['category_id'],
-            'brand_id' => $data['brand_id'],
-            'is_active' => $data['is_active'] ?? 0,
-        ]);
+            DB::beginTransaction();
 
-        // Add product colors
-        foreach ($data['colors'] as $colorId) {
-            ProductColor::create([
-                'product_id' => $product->id,
-                'color_id' => $colorId,
+            $product = Product::create([
+                'name_ar' => $data['name_ar'],
+                'name_en' => $data['name_en'],
+                'description_ar' => $data['description_ar'],
+                'description_en' => $data['description_en'],
+                'price' => $data['price'],
+                'category_id' => $data['category_id'],
+                'brand_id' => $data['brand_id'],
+                'is_active' => $data['is_active'] ?? 0,
             ]);
-        }
-        // Add product images
-        foreach ($data['images'] as $key => $image) {
-            $imageName = time() . '_' . $key . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
-            $image->move(public_path('uploads/products/' . $product->id), $imageName);
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image_url' => $imagePath,
-                'is_primary' => $key == 0 ? true : false,
-            ]);
-        }
-        // Add inventory
-        foreach ($data['inventory_colors'] as $index => $colorId) {
-            Inventory::create([
-                'product_id' => $product->id,
-                'color_id' => $colorId,
-                'size_id' => $data['inventory_sizes'][$index] ?? null,
-                'quantity' => $data['quantities'][$index],
-            ]);
-        }
-        DB::commit();
 
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Product created successfully.');
+            if (isset($data['colors']) && count($data['colors']) > 0) {
+                foreach ($data['colors'] as $colorId) {
+                    ProductColor::create([
+                        'product_id' => $product->id,
+                        'color_id' => $colorId,
+                    ]);
+                }
+            } else {
+                DB::rollBack();
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Please select at least one color');
+            }
+
+            if (isset($data['images']) && count($data['images']) > 0) {
+                $uploadPath = public_path('uploads/products/' . $product->id);
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                foreach ($data['images'] as $key => $image) {
+                    $imageName = time() . '_' . $key . '.' . $image->getClientOriginalExtension();
+                    $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
+
+                    // Move the uploaded file
+                    $image->move($uploadPath, $imageName);
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $imagePath,
+                        'is_primary' => $key == 0 ? true : false,
+                    ]);
+                }
+            }
+
+            if (isset($data['inventory_colors']) && count($data['inventory_colors']) > 0) {
+                foreach ($data['inventory_colors'] as $index => $colorId) {
+                    Inventory::create([
+                        'product_id' => $product->id,
+                        'color_id' => $colorId,
+                        'size_id' => $data['inventory_sizes'][$index] ?? null,
+                        'quantity' => $data['quantities'][$index] ?? 0,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Product created successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Log the error for debugging
+            \Log::error('Product creation failed: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'request_data' => $request->except(['images']),  // Exclude images from log
+                'error_trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to create product. Please try again.');
+        }
     }
 
     public function edit(Product $product)
@@ -164,7 +199,7 @@ class ProductDashboardRepository implements ProductDashboardInterface
             ProductColor::where('product_id', $product->id)->delete();
 
             // Then add new colors
-            foreach ($data['colors'] as $colorId) {
+            foreach (isset($data['colors']) ? $data['colors'] : [] as $colorId) {
                 ProductColor::create([
                     'product_id' => $product->id,
                     'color_id' => $colorId,
@@ -217,8 +252,6 @@ class ProductDashboardRepository implements ProductDashboardInterface
                 ProductImage::where('id', $data['primary_image_id'])->update(['is_primary' => true]);
             }
 
-            // Update inventory
-            // Delete existing inventory
             Inventory::where('product_id', $product->id)->delete();
 
             // Add new inventory
