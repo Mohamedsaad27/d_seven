@@ -30,7 +30,7 @@ class CartItem extends Model
 
     public function color()
     {
-        return $this->belongsTo(Color::class);
+        return $this->belongsTo(ProductColor::class);
     }
 
     public function size()

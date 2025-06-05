@@ -26,11 +26,11 @@ return new class extends Migration {
         });
         Schema::table('inventory', function (Blueprint $table) {
             $table->unsignedBigInteger('color_id')->nullable()->after('product_id');
-            $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
+            $table->foreign('color_id')->references('id')->on('product_colors')->onDelete('cascade');
         });
         Schema::table('cart_items', function (Blueprint $table) {
             $table->unsignedBigInteger('color_id')->nullable()->after('product_id');
-            $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
+            $table->foreign('color_id')->references('id')->on('product_colors')->onDelete('cascade');
         });
     }
 
