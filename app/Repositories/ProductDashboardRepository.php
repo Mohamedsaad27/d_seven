@@ -11,10 +11,10 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductImage;
-use App\Models\ProductSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductDashboardRepository implements ProductDashboardInterface
 {
@@ -83,90 +83,212 @@ class ProductDashboardRepository implements ProductDashboardInterface
         return $product;
     }
 
-    public function store(Request $request)
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $data = $request->all();
+
+    //         DB::beginTransaction();
+
+    //         $product = Product::create([
+    //             'name_ar' => $data['name_ar'],
+    //             'name_en' => $data['name_en'],
+    //             'description_ar' => $data['description_ar'],
+    //             'description_en' => $data['description_en'],
+    //             'price' => $data['price'],
+    //             'category_id' => $data['category_id'],
+    //             'brand_id' => $data['brand_id'],
+    //             'is_active' => $data['is_active'] ?? 0,
+    //         ]);
+
+    //         if (isset($data['colors']) && count($data['colors']) > 0) {
+    //             foreach ($data['colors'] as $colorId) {
+    //                 ProductColor::create([
+    //                     'product_id' => $product->id,
+    //                     'color_id' => $colorId,
+    //                 ]);
+    //             }
+    //         } else {
+    //             DB::rollBack();
+    //             return redirect()
+    //                 ->back()
+    //                 ->withInput()
+    //                 ->with('error', 'Please select at least one color');
+    //         }
+
+    //         if (isset($data['images']) && count($data['images']) > 0) {
+    //             $uploadPath = public_path('uploads/products/' . $product->id);
+    //             if (!file_exists($uploadPath)) {
+    //                 mkdir($uploadPath, 0755, true);
+    //             }
+
+    //             foreach ($data['images'] as $key => $image) {
+    //                 $imageName = time() . '_' . $key . '.' . $image->getClientOriginalExtension();
+    //                 $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
+
+    //                 // Move the uploaded file
+    //                 $image->move($uploadPath, $imageName);
+
+    //                 ProductImage::create([
+    //                     'product_id' => $product->id,
+    //                     'image_url' => $imagePath,
+    //                     'is_primary' => $key == 0 ? true : false,
+    //                 ]);
+    //             }
+    //         }
+
+    //         if (isset($data['inventory_colors']) && count($data['inventory_colors']) > 0) {
+    //             foreach ($data['inventory_colors'] as $index => $colorId) {
+    //                 Inventory::create([
+    //                     'product_id' => $product->id,
+    //                     'color_id' => $colorId,
+    //                     'size_id' => $data['inventory_sizes'][$index] ?? null,
+    //                     'quantity' => $data['quantities'][$index] ?? 0,
+    //                 ]);
+    //             }
+    //         }
+
+    //         DB::commit();
+
+    //         return redirect()
+    //             ->route('products.index')
+    //             ->with('success', 'Product created successfully.');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+
+    //         // Log the error for debugging
+    //         \Log::error('Product creation failed: ' . $e->getMessage(), [
+    //             'user_id' => auth()->id(),
+    //             'request_data' => $request->except(['images']),  // Exclude images from log
+    //             'error_trace' => $e->getTraceAsString()
+    //         ]);
+
+    //         return redirect()
+    //             ->back()
+    //             ->withInput()
+    //             ->with('error', 'Failed to create product. Please try again.');
+    //     }
+    // }
+
+    public function store(StoreProductRequest $request)
     {
         try {
-            $data = $request->all();
+            $validatedData = $request->validated();
 
             DB::beginTransaction();
 
+            // Create product with slugs
             $product = Product::create([
-                'name_ar' => $data['name_ar'],
-                'name_en' => $data['name_en'],
-                'description_ar' => $data['description_ar'],
-                'description_en' => $data['description_en'],
-                'price' => $data['price'],
-                'category_id' => $data['category_id'],
-                'brand_id' => $data['brand_id'],
-                'is_active' => $data['is_active'] ?? 0,
+                'name_ar' => $validatedData['name_ar'],
+                'name_en' => $validatedData['name_en'],
+                'slug_ar' => Str::slug($validatedData['name_ar']),
+                'slug_en' => Str::slug($validatedData['name_en']),
+                'description_ar' => $validatedData['description_ar'],
+                'description_en' => $validatedData['description_en'],
+                'price' => $validatedData['price'],
+                'category_id' => $validatedData['category_id'],
+                'brand_id' => $validatedData['brand_id'],
+                'is_active' => $validatedData['is_active'] ?? 0,
             ]);
 
-            if (isset($data['colors']) && count($data['colors']) > 0) {
-                foreach ($data['colors'] as $colorId) {
-                    ProductColor::create([
-                        'product_id' => $product->id,
-                        'color_id' => $colorId,
-                    ]);
-                }
-            } else {
-                DB::rollBack();
-                return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', 'Please select at least one color');
+            // Handle product colors
+            $colorData = [];
+            foreach ($validatedData['colors'] as $colorId) {
+                $colorData[] = [
+                    'product_id' => $product->id,
+                    'color_id' => $colorId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            ProductColor::insert($colorData);
+
+            // Handle images upload
+            if (isset($validatedData['images']) && count($validatedData['images']) > 0) {
+                $this->handleImageUpload($product, $validatedData['images']);
             }
 
-            if (isset($data['images']) && count($data['images']) > 0) {
-                $uploadPath = public_path('uploads/products/' . $product->id);
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0755, true);
-                }
-
-                foreach ($data['images'] as $key => $image) {
-                    $imageName = time() . '_' . $key . '.' . $image->getClientOriginalExtension();
-                    $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
-
-                    // Move the uploaded file
-                    $image->move($uploadPath, $imageName);
-
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_url' => $imagePath,
-                        'is_primary' => $key == 0 ? true : false,
-                    ]);
-                }
-            }
-
-            if (isset($data['inventory_colors']) && count($data['inventory_colors']) > 0) {
-                foreach ($data['inventory_colors'] as $index => $colorId) {
-                    Inventory::create([
-                        'product_id' => $product->id,
-                        'color_id' => $colorId,
-                        'size_id' => $data['inventory_sizes'][$index] ?? null,
-                        'quantity' => $data['quantities'][$index] ?? 0,
-                    ]);
-                }
-            }
+            // Handle inventory
+            $this->handleInventory($product, $validatedData['inventory_colors'], $validatedData['quantities']);
 
             DB::commit();
 
             return redirect()
                 ->route('products.index')
-                ->with('success', 'Product created successfully.');
+                ->with('success', 'Product created successfully with all validations passed.');
         } catch (\Exception $e) {
             DB::rollBack();
 
             // Log the error for debugging
             \Log::error('Product creation failed: ' . $e->getMessage(), [
                 'user_id' => auth()->id(),
-                'request_data' => $request->except(['images']),  // Exclude images from log
+                'request_data' => $request->except(['images']),
                 'error_trace' => $e->getTraceAsString()
             ]);
 
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Failed to create product. Please try again.');
+                ->with('error', 'Failed to create product. Please check all fields and try again.');
+        }
+    }
+
+    /**
+     * Handle image upload with validation
+     */
+    private function handleImageUpload($product, $images)
+    {
+        $uploadPath = public_path('uploads/products/' . $product->id);
+
+        if (!file_exists($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+
+        $imageData = [];
+        foreach ($images as $key => $image) {
+            // Generate unique filename
+            $imageName = time() . '_' . $key . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'uploads/products/' . $product->id . '/' . $imageName;
+
+            // Move the uploaded file
+            if ($image->move($uploadPath, $imageName)) {
+                $imageData[] = [
+                    'product_id' => $product->id,
+                    'image_url' => $imagePath,
+                    'is_primary' => $key == 0 ? 1 : 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        if (!empty($imageData)) {
+            ProductImage::insert($imageData);
+        }
+    }
+
+    /**
+     * Handle inventory creation with validation
+     */
+    private function handleInventory($product, $inventoryColors, $quantities)
+    {
+        $inventoryData = [];
+
+        foreach ($inventoryColors as $index => $colorId) {
+            if (isset($quantities[$index]) && $quantities[$index] >= 0) {
+                $inventoryData[] = [
+                    'product_id' => $product->id,
+                    'color_id' => $colorId,
+                    'size_id' => null,  // Assuming no sizes for now
+                    'quantity' => $quantities[$index],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        if (!empty($inventoryData)) {
+            Inventory::insert($inventoryData);
         }
     }
 
@@ -280,5 +402,61 @@ class ProductDashboardRepository implements ProductDashboardInterface
         }
     }
 
-    public function destroy(Product $product) {}
+    public function destroy(Product $product)
+    {
+        try {
+            DB::beginTransaction();
+    
+            // Delete physical image files
+            $productImages = ProductImage::where('product_id', $product->id)->get();
+            foreach ($productImages as $image) {
+                $imagePath = public_path($image->image_url);
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+    
+            // Delete product images records
+            ProductImage::where('product_id', $product->id)->delete();
+    
+            // Delete product colors
+            ProductColor::where('product_id', $product->id)->delete();
+    
+            // Delete inventory records
+            Inventory::where('product_id', $product->id)->delete();
+    
+            // Delete the product directory if it exists and is empty
+            $productDirectory = public_path('uploads/products/' . $product->id);
+            if (is_dir($productDirectory)) {
+                // Check if directory is empty
+                $files = array_diff(scandir($productDirectory), array('.', '..'));
+                if (empty($files)) {
+                    rmdir($productDirectory);
+                }
+            }
+    
+            // Finally delete the product itself
+            $product->delete();
+    
+            DB::commit();
+    
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Product deleted successfully.');
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            // Log the error for debugging
+            Log::error('Product deletion failed: ' . $e->getMessage(), [
+                'product_id' => $product->id,
+                'user_id' => auth()->id(),
+                'error_trace' => $e->getTraceAsString()
+            ]);
+    
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to delete product. Please try again.');
+        }
+    }
 }

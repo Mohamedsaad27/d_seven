@@ -146,7 +146,7 @@
                             @endif
                         @endif
                         <div class="button">  
-                            <a href="{{ route('cart.store', $product->id) }}" class="btn add-to-cart" data-product-id="{{ $product->id }}">
+                            <a href="{{ route('cart.store', $product->id) }}" class="btn add-to-cart" data-product-id="{{ $product->id }}" >
                                 <i class="lni lni-cart"></i> Add to Cart
                             </a>  
                         </div>

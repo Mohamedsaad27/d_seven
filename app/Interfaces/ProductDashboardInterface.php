@@ -12,7 +12,7 @@ interface ProductDashboardInterface
     public function index(Request $request);
     public function create();
     public function show(Product $product);
-    public function store(Request $request);
+    public function store(StoreProductRequest $request);
     public function edit(Product $product);
     public function update(UpdateProductRequest $request, Product $product);
     public function destroy(Product $product);

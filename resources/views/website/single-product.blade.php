@@ -142,7 +142,7 @@
                                     <input type="hidden" name="color_id" id="selectedColor" value="{{ $product->colors->first()?->color?->id ?? '' }}">
                                 </div>
                             </div>
-                        @endif`
+                        @endif
                         
                         <div class="mb-4">
                             <h3 class="option-title">Quantity</h3>

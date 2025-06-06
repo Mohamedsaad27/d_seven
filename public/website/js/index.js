@@ -188,7 +188,6 @@ $(document).ready(function() {
             console.warn('CSRF refresh route not found');
         });
     }
-
     // Initial CSRF setup
     $.ajaxSetup({
         headers: {
@@ -203,7 +202,6 @@ $(document).ready(function() {
 
         const productId = $(this).data('product-id');
         const url = $(this).attr('href');
-
         $.ajax({
             type: 'POST',
             url: url,
@@ -234,6 +232,7 @@ $(document).ready(function() {
                         );
                     }
                 }
+                location.reload();
             },
             error: function(xhr, status, error) {
                 if (xhr.status === 401) {

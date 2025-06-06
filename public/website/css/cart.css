@@ -774,4 +774,249 @@
       height: 180px;
     }
   }
-  
+  .cart-item {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+/* Remove Button - Top Right */
+.remove-item-top {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.remove-item-top:hover {
+    background: #ff3742;
+    transform: scale(1.1);
+}
+
+/* Remove Button - In Controls */
+.remove-item-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.remove-item-btn:hover {
+    background: #ff3742;
+    transform: translateY(-1px);
+}
+
+.remove-item-btn .remove-text {
+    display: none;
+}
+
+/* Quantity Control Enhancement */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    background: #f8f9fa;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.qty-btn:hover {
+    background: #e9ecef;
+    color: #007bff;
+}
+
+.qty-input {
+    border: none;
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    background: white;
+}
+
+.qty-input:focus {
+    outline: none;
+    background: #f8f9fa;
+}
+
+/* Item Controls Layout */
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+/* Price Display Enhancement */
+.item-price, .item-price-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.price-current {
+    font-size: 18px;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.price-original {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.discount-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .cart-item {
+        padding: 15px;
+    }
+    
+    .remove-item-top {
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+    }
+    
+    .remove-item-btn .remove-text {
+        display: inline;
+    }
+    
+    .item-controls {
+        gap: 15px;
+        justify-content: space-between;
+    }
+    
+    .quantity-control {
+        order: 1;
+    }
+    
+    .remove-item-btn {
+        order: 3;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .item-price {
+        order: 2;
+        text-align: right;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .quantity-control {
+        align-self: center;
+    }
+    
+    .remove-item-btn {
+        align-self: center;
+        justify-content: center;
+    }
+}
+
+/* Cart Header Enhancement */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.item-count {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.clear-cart {
+    transition: all 0.3s ease;
+}
+
+.clear-cart:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Loading State */
+.cart-item.updating {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.cart-item.updating::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}  

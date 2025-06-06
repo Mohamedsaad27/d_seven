@@ -27,26 +27,45 @@
             <div class="cart-items">
                 <div class="cart-header">
                     <h2>Cart Items <span class="item-count">({{ $cart->cartItems->count() }})</span></h2>
+                    @if ($cart->cartItems->count() > 0)
+                        <button class="btn btn-danger btn-sm clear-cart" style="margin-left: auto;">
+                            <i class="lni lni-trash"></i> Clear Cart
+                        </button>
+                    @endif
                 </div>
                 
                 <!-- Cart Item -->
                 @if ($cart->cartItems->count() > 0)
                     @foreach ($cart->cartItems as $cartItem)
                     <div class="cart-item" data-id="{{ $cartItem->id }}" data-price="{{ $cartItem->product->getCurrentPrice() }}" data-discount="{{ $cartItem->product->getDiscountAmount() }}">
+                        <!-- Remove Button - Top Right -->
+                        <button class="remove-item remove-item-top" data-item-id="{{ $cartItem->id }}" aria-label="Remove item" title="Remove from cart">
+                            <i class="lni lni-close"></i>
+                        </button>
+                        
                         <div class="item-image">
                             <a href="{{ route('product.show', $cartItem->product->id) }}">
                                 <img src="{{ asset($cartItem->product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $cartItem->product->name_en }}">
                             </a>
                         </div>
+                        
                         <div class="item-details">
                             <div class="item-info">
                                 <h3 class="item-title">
                                     <a href="{{ route('product.show', $cartItem->product->id) }}">{{ $cartItem->product->name_ar ? $cartItem->product->name_ar : $cartItem->product->name_en }}</a>
                                 </h3>
                                 <div class="item-meta">
-                                    <span class="meta-item"><span class="meta-label">Brand:</span> {{ $cartItem->product->brand->name_ar ? $cartItem->product->brand->name_ar : $cartItem->product->brand->name_en }}</span>
-                                    <span class="meta-item"><span class="meta-label">Color:</span> {{ $cartItem->product->colors->first()->name_en ? $cartItem->product->colors->first()->name_en : $cartItem->product->colors->first()->name_ar }}</span>
+                                    <span class="meta-item">
+                                        <span class="meta-label">Brand:</span> 
+                                        {{ $cartItem->product->brand->name_ar ? $cartItem->product->brand->name_ar : $cartItem->product->brand->name_en }}
+                                    </span>
+                                    <span class="meta-item">
+                                        <span class="meta-label">Color:</span> 
+                                        {{ $cartItem->color->color->name_en ? $cartItem->color->color->name_en : $cartItem->color->color->name_ar }}
+                                    </span>
                                 </div>
+                                
+                                <!-- Mobile Price Display -->
                                 <div class="item-price-mobile">
                                     <div class="price-current">{{ $cartItem->product->getCurrentPrice() }} EGP</div>
                                     @if($cartItem->product->discounts->isNotEmpty())
@@ -59,16 +78,20 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <div class="item-controls">
+                                <!-- Quantity Control -->
                                 <div class="quantity-control">
-                                    <button class="qty-btn decrease">
+                                    <button class="qty-btn decrease" data-item-id="{{ $cartItem->id }}">
                                         <i class="lni lni-minus"></i>
                                     </button>
-                                    <input type="number" class="qty-input" value="{{ $cartItem->quantity }}"  data-item-id="{{ $cartItem->id }}">
-                                    <button class="qty-btn increase">
+                                    <input type="number" class="qty-input" value="{{ $cartItem->quantity }}" min="1" data-item-id="{{ $cartItem->id }}">
+                                    <button class="qty-btn increase" data-item-id="{{ $cartItem->id }}">
                                         <i class="lni lni-plus"></i>
                                     </button>
                                 </div>
+                                
+                                <!-- Desktop Price Display -->
                                 <div class="item-price">
                                     <div class="price-current">
                                         {{ $cartItem->product->getCurrentPrice() }} EGP
@@ -82,9 +105,9 @@
                                         </div>
                                     @endif
                                 </div>
-                                <button class="remove-item" aria-label="Remove item">
-                                    <i class="lni lni-trash"></i>
-                                </button>
+                                
+                                <!-- Remove Button - In Controls -->
+                                
                             </div>
                         </div>
                     </div>
@@ -97,7 +120,7 @@
                         </div>
                         <h3>Your cart is empty</h3>
                         <p>Looks like you haven't added anything to your cart yet.</p>
-                        <a href="{{ route('product.index') }}" class="btn-shop-now">Start Shopping</a>
+                        <a href="{{ route('products.index') }}" class="btn-shop-now">Start Shopping</a>
                     </div>
                 @endif
             </div>
@@ -177,7 +200,7 @@
                                 <img src="{{ asset($product->productImages->where('is_primary', 1)->first()->image_url ?? 'uploads/default-product-image.jpg') }}" alt="{{ $product->name_en }}">
                             </a>
                             @if($product->discounts->isNotEmpty())
-                            <div class="product-badge">{{ $product->discounts->first()->discount_amount }}  OFF</div>
+                            <div class="product-badge">{{ $product->discounts->first()->discount_amount }} OFF</div>
                             @endif
                         </div>
                         <div class="product-info">
@@ -190,9 +213,11 @@
                                 <span class="original-price"><del>{{ $product->price }} EGP</del></span>
                                 @endif
                             </div>
-                            <button class="add-to-cart-btn" data-product-id="{{ $product->id }}">
-                                <i class="lni lni-cart"></i> Add to Cart
-                            </button>
+                            <div class="button">
+                                <a href="{{ route('cart.store', $product->id) }}" class="btn add-to-cart" data-product-id="{{ $product->id }}">
+                                    <i class="lni lni-cart"></i> Add to Cart
+                                </a>
+                            </div>
                         </div>
                     </div>
                     @endforeach

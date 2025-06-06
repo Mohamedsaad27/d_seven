@@ -6,6 +6,7 @@ use App\Interfaces\CartRepositoryInterface;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartRepository implements CartRepositoryInterface
@@ -64,6 +65,7 @@ class CartRepository implements CartRepositoryInterface
     public function addToCart($id)
     {
         $product = Product::findOrFail($id);
+
         if (!$product) {
             return response()->json([
                 'status' => false,
@@ -77,15 +79,14 @@ class CartRepository implements CartRepositoryInterface
                 'auth_required' => true
             ]);
         }
-        $cart = Cart::where('user_id', Auth::id())->first();
-        if (!$cart) {
-            $cart = Cart::create([
-                'user_id' => auth()->id()
-            ]);
-        }
+        $cart = Cart::firstOrCreate([
+            'user_id' => Auth::id()
+        ]);
+        $firstColor = $product->colors()->first();
+        $firstSize = $product->sizes()->first();
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
-            ->where('color_id', $product->colors->first()->color_id)
+            ->where('color_id', $firstColor->id)
             ->first();
         if ($cartItem) {
             $cartItem->quantity = $cartItem->quantity + 1;
@@ -95,10 +96,10 @@ class CartRepository implements CartRepositoryInterface
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
-                'color_id' => $product->colors->first()->color_id ?? null,
-                'size_id' => $product->sizes->first()->size_id ?? null,
+                'color_id' => $firstColor->id ?? null,
+                'size_id' => $firstSize->id ?? null,
                 'quantity' => 1,
-                'price' => $product->price
+                'price' => $product->getCurrentPrice()
             ]);
             $message = 'تم إضافة المنتج إلى سلة التسوق بنجاح!';
         }
@@ -111,16 +112,77 @@ class CartRepository implements CartRepositoryInterface
 
     public function clearCart()
     {
-        // TODO: Implement clearCart() method.
+        if (!Auth::check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'يرجى تسجيل الدخول',
+                'auth_required' => true
+            ]);
+        }
+
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (!$cart) {
+            return response()->json([
+                'status' => false,
+                'message' => 'السلة فارغة بالفعل'
+            ]);
+        }
+        $cart->cartItems()->delete();
+        $cart->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'تم إفراغ السلة بنجاح',
+            'cart_count' => 0
+        ]);
     }
 
     public function removeFromCart($id)
     {
-        // TODO: Implement removeFromCart() method.
+        if (!Auth::check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'يرجى تسجيل الدخول',
+                'auth_required' => true
+            ]);
+        }
+
+        $cartItem = CartItem::whereHas('cart', function ($query) {
+            $query->where('user_id', Auth::id());
+        })->where('id', $id)->first();
+
+        if (!$cartItem) {
+            return response()->json([
+                'status' => false,
+                'message' => 'العنصر غير موجود في السلة'
+            ]);
+        }
+
+        $cartItem->delete();
+
+        // Get updated cart count
+        $cart = Cart::where('user_id', Auth::id())->first();
+        $cartCount = $cart ? $cart->cartItems->sum('quantity') : 0;
+
+        return response()->json([
+            'status' => true,
+            'message' => 'تم حذف المنتج من السلة بنجاح',
+            'cart_count' => $cartCount
+        ]);
     }
 
     public function getTotal()
     {
-        // TODO: Implement getTotal() method.
+        if (!Auth::check()) {
+            return 0;
+        }
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (!$cart) {
+            return 0;
+        }
+        return $cart->cartItems->sum(function ($item) {
+            return ($item->product->getCurrentPrice() * $item->quantity) - ($item->product->getDiscountAmount() * $item->quantity);
+        });
     }
+
+    public function checkout(Request $request) {}
 }

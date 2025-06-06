@@ -50,19 +50,93 @@ class CartController extends Controller
 
     public function removeFromCart($id)
     {
-        $this->cartRepository->removeFromCart($id);
-        return redirect()->back();
+        try {
+            // Call repository method to remove from cart
+            $response = $this->cartRepository->removeFromCart($id);
+            $responseData = json_decode($response->getContent(), true);
+
+            // For AJAX requests
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => $responseData['status'] ?? false,
+                    'message' => $responseData['message'] ?? 'تم حذف المنتج من السلة',
+                    'cart_count' => $responseData['cart_count'] ?? 0
+                ]);
+            }
+
+            // For regular form requests
+            if ($responseData['status'] ?? false) {
+                return redirect()->back()->with('success', $responseData['message'] ?? 'تم حذف المنتج من السلة بنجاح');
+            } else {
+                return redirect()->back()->with('error', $responseData['message'] ?? 'حدث خطأ أثناء حذف المنتج');
+            }
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'حدث خطأ أثناء حذف المنتج',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'حدث خطأ أثناء حذف المنتج');
+        }
     }
 
     public function clearCart()
     {
-        $this->cartRepository->clearCart();
-        return redirect()->back();
+        try {
+            // Call repository method to clear cart
+            $response = $this->cartRepository->clearCart();
+            $responseData = json_decode($response->getContent(), true);
+
+            // For AJAX requests
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => $responseData['status'] ?? false,
+                    'message' => $responseData['message'] ?? 'تم إفراغ السلة',
+                    'cart_count' => $responseData['cart_count'] ?? 0
+                ]);
+            }
+
+            // For regular form requests
+            if ($responseData['status'] ?? false) {
+                return redirect()->back()->with('success', $responseData['message'] ?? 'تم إفراغ السلة بنجاح');
+            } else {
+                return redirect()->back()->with('error', $responseData['message'] ?? 'حدث خطأ أثناء إفراغ السلة');
+            }
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'حدث خطأ أثناء إفراغ السلة',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'حدث خطأ أثناء إفراغ السلة');
+        }
     }
 
     public function getTotal()
     {
-        $total = $this->cartRepository->getTotal();
-        return $total;
+        try {
+            $total = $this->cartRepository->getTotal();
+            return response()->json([
+                'status' => true,
+                'total' => $total
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'حدث خطأ أثناء حساب المجموع',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        return $this->cartRepository->checkout($request);
     }
 }

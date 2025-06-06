@@ -486,6 +486,7 @@ $(document).ready(function() {
                         );
                     }
                 }
+                location.reload();
             },
             error: function(xhr, status, error) {
                 if (xhr.status === 401) {

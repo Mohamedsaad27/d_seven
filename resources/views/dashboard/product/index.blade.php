@@ -158,12 +158,12 @@
                                                title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" 
-                                                    class="btn btn-danger btn-sm delete-product" 
-                                                    data-product-id="{{ $product->id }}"
-                                                    title="Delete">
+                                            <a href="#" 
+                                               class="btn btn-danger btn-sm delete-product" 
+                                               data-product-id="{{ $product->id }}"
+                                               title="Delete">
                                                 <i class="fas fa-trash"></i>
-                                            </button>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -421,9 +421,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteForm = document.getElementById('deleteForm');
     
     document.querySelectorAll('.delete-product').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.dataset.productId;
-            deleteForm.action = `/admin/products/${productId}`;
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent navigation
+            const productId = this.getAttribute('data-product-id'); // Alternative way to get the ID
+            deleteForm.action = `/dashboard/products/${productId}`; // Adjust path as needed
             deleteModal.show();
         });
     });

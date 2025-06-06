@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/front/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/front/main.css') }}" />
     <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     @stack('styles')   

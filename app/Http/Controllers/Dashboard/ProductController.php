@@ -42,7 +42,7 @@ class ProductController extends Controller
         return view('dashboard.product.create', compact('categories', 'brands', 'colors', 'sizes'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
         $this->productDashboardRepository->store($request);
         return redirect()->route('products.index')->with('success', 'Product created successfully');
@@ -70,5 +70,11 @@ class ProductController extends Controller
     {
         $product = $this->productDashboardRepository->show($product);
         return view('dashboard.product.show', compact('product'));
+    }
+
+    public function destroy(Product $product)
+    {
+        $this->productDashboardRepository->destroy($product);
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');    
     }
 }

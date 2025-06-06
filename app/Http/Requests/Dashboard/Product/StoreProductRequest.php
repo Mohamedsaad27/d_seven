@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
@@ -22,78 +23,218 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_en' => 'required|string|max:255',
-            'name_ar' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'description_en' => 'required|string',
-            'description_ar' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'is_active' => 'required|boolean',
-            'images' => 'required|array|min:1',
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'colors' => 'required|array|min:1',
-            'colors.*' => 'required|exists:colors,id',
-            'sizes' => 'nullable|array|min:1',
-            'sizes.*' => 'nullable|string',
-            'additional_prices' => 'nullable|numeric|min:0',
-            'additional_prices.*' => 'nullable|numeric|min:0',
-            'inventory_colors' => 'required|array|min:1',
-            'inventory_colors.*' => 'required|exists:product_colors,id',
-            'inventory_sizes' => 'required|array|min:1',
-            'inventory_sizes.*' => 'required|exists:product_sizes,id',
-            'quantities' => 'required|array|min:1',
-            'quantities.*' => 'required|numeric|min:0',
+            // Basic Information
+            'name_en' => [
+                'required',
+                'string',
+                'min:2',
+                'max:255',
+                'regex:/^[a-zA-Z0-9\s\-\_\.\,\(\)]+$/',  // Allow alphanumeric, spaces, and common punctuation
+            ],
+            'name_ar' => [
+                'required',
+                'string',
+                'min:2',
+                'max:255',
+                'regex:/^[\p{Arabic}\s\-\_\.\,\(\)0-9]+$/u',  // Allow Arabic characters, spaces, and common punctuation
+            ],
+            'description_en' => [
+                'required',
+                'string',
+                'min:10',
+                'max:5000',
+            ],
+            'description_ar' => [
+                'required',
+                'string',
+                'min:10',
+                'max:5000',
+            ],
+            'price' => [
+                'required',
+                'numeric',
+                'min:0.01',
+                'max:999999.99',
+                'regex:/^\d+(\.\d{1,2})?$/',  // Ensure proper decimal format
+            ],
+            'category_id' => [
+                'required',
+                'integer',
+                'exists:categories,id',
+            ],
+            'brand_id' => [
+                'required',
+                'integer',
+                'exists:brands,id',
+            ],
+            'is_active' => [
+                'nullable',
+                'boolean',
+            ],
+            // Images
+            'images' => [
+                'required',
+                'array',
+                'min:1',
+                'max:10',  // Maximum 10 images
+            ],
+            'images.*' => [
+                'required',
+                'image',
+                'mimes:jpeg,jpg,png,webp',
+                'max:5120',  // 5MB max per image
+                'dimensions:min_width=300,min_height=300,max_width=3000,max_height=3000',
+            ],
+            // Colors
+            'colors' => [
+                'required',
+                'array',
+                'min:1',
+                'max:20',  // Maximum 20 colors
+            ],
+            'colors.*' => [
+                'required',
+                'integer',
+                'exists:colors,id',
+                'distinct',  // No duplicate colors
+            ],
+            // Inventory
+            'inventory_colors' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'inventory_colors.*' => [
+                'required',
+                'integer',
+                'exists:colors,id',
+            ],
+            'quantities' => [
+                'required',
+                'array',
+                'size:' . count($this->input('inventory_colors', [])),  // Must match inventory_colors array size
+            ],
+            'quantities.*' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:999999',
+            ],
         ];
     }
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array<string, string>
-     */
+
     public function messages(): array
     {
         return [
+            // Basic Information Messages
             'name_en.required' => 'English name is required.',
+            'name_en.min' => 'English name must be at least 2 characters.',
+            'name_en.max' => 'English name cannot exceed 255 characters.',
+            'name_en.regex' => 'English name contains invalid characters.',
             'name_ar.required' => 'Arabic name is required.',
-            'price.required' => 'Price is required.',
-            'price.numeric' => 'Price must be a number.',
-            'price.min' => 'Price must be at least 0.',
+            'name_ar.min' => 'Arabic name must be at least 2 characters.',
+            'name_ar.max' => 'Arabic name cannot exceed 255 characters.',
+            'name_ar.regex' => 'Arabic name contains invalid characters.',
             'description_en.required' => 'English description is required.',
+            'description_en.min' => 'English description must be at least 10 characters.',
+            'description_en.max' => 'English description cannot exceed 5000 characters.',
             'description_ar.required' => 'Arabic description is required.',
+            'description_ar.min' => 'Arabic description must be at least 10 characters.',
+            'description_ar.max' => 'Arabic description cannot exceed 5000 characters.',
+            'price.required' => 'Price is required.',
+            'price.numeric' => 'Price must be a valid number.',
+            'price.min' => 'Price must be at least $0.01.',
+            'price.max' => 'Price cannot exceed $999,999.99.',
+            'price.regex' => 'Price must have maximum 2 decimal places.',
             'category_id.required' => 'Category is required.',
-            'category_id.exists' => 'Category does not exist.',
+            'category_id.exists' => 'Selected category does not exist.',
             'brand_id.required' => 'Brand is required.',
-            'brand_id.exists' => 'Brand does not exist.',
-            'is_active.required' => 'Active status is required.',
-            'is_active.boolean' => 'Active status must be a boolean.',
-            'images.required' => 'At least one image is required.',
-            'images.array' => 'Images must be an array.',
-            'images.min' => 'At least one image is required.',
-            'images.*.image' => 'Each image must be an image.',
-            'images.*.mimes' => 'Each image must be a valid image format.',
-            'images.*.max' => 'Each image size must not be greater than 2048KB.',
-            'colors.required' => 'At least one color is required.',
-            'colors.array' => 'Colors must be an array.',
-            'colors.min' => 'At least one color is required.',
-            'colors.*.exists' => 'Color does not exist.',
-            'sizes.array' => 'Sizes must be an array.',
-            'sizes.min' => 'At least one size is required.',
-            'additional_prices.numeric' => 'Additional price must be a number.',
-            'additional_prices.min' => 'Additional price must be at least 0.',
-            'inventory_colors.required' => 'At least one inventory color is required.',
-            'inventory_colors.array' => 'Inventory colors must be an array.',
-            'inventory_colors.min' => 'At least one inventory color is required.',
-            'inventory_colors.*.exists' => 'Inventory color does not exist.',
-            'inventory_sizes.required' => 'At least one inventory size is required.',
-            'inventory_sizes.array' => 'Inventory sizes must be an array.',
-            'inventory_sizes.min' => 'At least one inventory size is required.',
-            'inventory_sizes.*.exists' => 'Inventory size does not exist.',
-            'quantities.required' => 'At least one quantity is required.',
-            'quantities.array' => 'Quantities must be an array.',
-            'quantities.min' => 'At least one quantity is required.',
-            'quantities.*.numeric' => 'Quantity must be a number.',
-            'quantities.*.min' => 'Quantity must be at least 0.',
+            'brand_id.exists' => 'Selected brand does not exist.',
+            // Images Messages
+            'images.required' => 'At least one product image is required.',
+            'images.min' => 'At least one product image is required.',
+            'images.max' => 'Maximum 10 images allowed.',
+            'images.*.required' => 'All image files are required.',
+            'images.*.image' => 'File must be a valid image.',
+            'images.*.mimes' => 'Image must be JPEG, JPG, PNG, or WebP format.',
+            'images.*.max' => 'Image size cannot exceed 5MB.',
+            'images.*.dimensions' => 'Image dimensions must be between 300x300 and 3000x3000 pixels.',
+            // Colors Messages
+            'colors.required' => 'At least one color must be selected.',
+            'colors.min' => 'At least one color must be selected.',
+            'colors.max' => 'Maximum 20 colors allowed.',
+            'colors.*.required' => 'Color selection is required.',
+            'colors.*.exists' => 'Selected color does not exist.',
+            'colors.*.distinct' => 'Duplicate colors are not allowed.',
+            // Inventory Messages
+            'inventory_colors.required' => 'Inventory colors are required.',
+            'inventory_colors.min' => 'At least one inventory entry is required.',
+            'inventory_colors.*.required' => 'Inventory color is required.',
+            'inventory_colors.*.exists' => 'Selected inventory color does not exist.',
+            'quantities.required' => 'Quantities are required.',
+            'quantities.size' => 'Quantities must match the number of inventory colors.',
+            'quantities.*.required' => 'Quantity is required.',
+            'quantities.*.integer' => 'Quantity must be a whole number.',
+            'quantities.*.min' => 'Quantity cannot be negative.',
+            'quantities.*.max' => 'Quantity cannot exceed 999,999.',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            // Check if inventory colors are subset of product colors
+            $colors = $this->input('colors', []);
+            $inventoryColors = $this->input('inventory_colors', []);
+
+            $invalidInventoryColors = array_diff($inventoryColors, $colors);
+            if (!empty($invalidInventoryColors)) {
+                $validator->errors()->add(
+                    'inventory_colors',
+                    'All inventory colors must be selected in the product colors section.'
+                );
+            }
+
+            // Check for duplicate inventory color entries
+            if (count($inventoryColors) !== count(array_unique($inventoryColors))) {
+                $validator->errors()->add(
+                    'inventory_colors',
+                    'Duplicate inventory colors are not allowed.'
+                );
+            }
+
+            // Validate that quantities array has values for each inventory color
+            $quantities = $this->input('quantities', []);
+            if (count($inventoryColors) !== count($quantities)) {
+                $validator->errors()->add(
+                    'quantities',
+                    'Each inventory color must have a corresponding quantity.'
+                );
+            }
+        });
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
+    {
+        // Clean and prepare the data
+        $this->merge([
+            'price' => is_numeric($this->price) ? round((float) $this->price, 2) : $this->price,
+            'is_active' => $this->has('is_active') ? 1 : 0,
+            'colors' => array_filter($this->input('colors', []), function ($value) {
+                return !empty($value);
+            }),
+            'inventory_colors' => array_filter($this->input('inventory_colors', []), function ($value) {
+                return !empty($value);
+            }),
+            'quantities' => array_filter($this->input('quantities', []), function ($value) {
+                return $value !== null && $value !== '';
+            }),
+        ]);
     }
 }
