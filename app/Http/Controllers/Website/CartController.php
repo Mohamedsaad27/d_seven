@@ -137,6 +137,71 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        return $this->cartRepository->checkout($request);
+        // Validate request
+        $request->validate([
+            'shipping_zone_id' => 'required|exists:shipping_zones,id'
+        ]);
+
+        try {
+            $response = $this->cartRepository->checkout($request);
+            $responseData = json_decode($response->getContent(), true);
+
+            // For AJAX requests
+            if ($request->ajax()) {
+                return response()->json($responseData, $response->getStatusCode());
+            }
+
+            // For regular form requests
+            if ($responseData['status'] ?? false) {
+                $message = $responseData['message'] ?? 'تم إنشاء الطلب بنجاح';
+
+                if ($responseData['is_first_order'] ?? false) {
+                    $message .= ' - مبروك! هذا أول طلب لك والشحن مجاني!';
+                }
+
+                return redirect()
+                    ->route('orders.show', $responseData['order_id'])
+                    ->with('success', $message);
+            } else {
+                return redirect()
+                    ->back()
+                    ->withErrors($responseData['message'] ?? 'حدث خطأ أثناء إنشاء الطلب')
+                    ->withInput();
+            }
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'حدث خطأ أثناء إنشاء الطلب',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()
+                ->back()
+                ->with('error', 'حدث خطأ أثناء إنشاء الطلب')
+                ->withInput();
+        }
+    }
+
+    public function showCheckout()
+    {
+        if (!auth()->check()) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'يرجى تسجيل الدخول لإتمام عملية الشراء');
+        }
+
+        $cart = $this->cartRepository->getCart();
+
+        if (!$cart || $cart->cartItems->isEmpty()) {
+            return redirect()
+                ->route('cart.index')
+                ->with('error', 'السلة فارغة');
+        }
+
+        $shippingZones = ShippingZone::all();
+
+        return view('website.checkout', compact('cart', 'shippingZones'));
     }
 }

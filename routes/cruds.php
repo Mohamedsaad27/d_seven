@@ -25,6 +25,10 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('sizes', SizeController::class)->middleware('admin');
     Route::resource('colors', ColorController::class)->middleware('admin');
     Route::resource('orders', OrderController::class)->middleware('admin');
+    Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::post('orders/bulk-action', [OrderController::class, 'bulkAction'])->name('orders.bulk-action');
+    Route::get('orders/export', [OrderController::class, 'export'])->name('orders.export');
+    Route::post('orders/{order}/send-confirmation-email', [OrderController::class, 'sendConfirmationEmail'])->name('orders.send-confirmation-email');
     Route::resource('discounts', DiscountController::class)->middleware('admin');
     Route::get('discounts/assignProductsToDiscount', [DiscountController::class, 'assignProductsToDiscount'])->name('discounts.assignProductsToDiscount');
     Route::get('/discounts/{discount}/assigned-products', [DiscountController::class, 'getAssignedProducts'])->middleware('admin');

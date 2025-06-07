@@ -231,16 +231,11 @@
                 <div class="multi-level collapse" id="submenu-order" aria-expanded="false">
                     <ul class="flex-column nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('orders.create')}}">
-                                <span class="sidebar-text ms-3" data-i18n="add_order">Add Order</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{route('orders.index')}}">
-                                <span class="sidebar-text ms-3" data-i18n="order_list">Order List</span>
+                                <span class="sidebar-text ms-3" data-i18n="order_list">Orders List</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul>   
                 </div>
             </li>
              <!-- Discounts Section -->

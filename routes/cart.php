@@ -13,4 +13,6 @@ Route::match(['GET', 'POST'], '/clear-cart', [CartController::class, 'clearCart'
 
 Route::get('/get-total', [CartController::class, 'getTotal'])->name('cart.total');
 
+// Checkout routes
+Route::get('/checkout', [CartController::class, 'showCheckout'])->name('checkout.show');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');

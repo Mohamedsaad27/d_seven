@@ -1,0 +1,477 @@
+/* Orders Management Styles */
+.orders-management {
+    padding: 20px 0;
+}
+
+/* Statistics Cards */
+.stats-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stats-primary::before {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stats-warning::before {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stats-info::before {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stats-success::before {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stats-card .stats-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    font-size: 24px;
+}
+
+.stats-warning .stats-icon {
+    background: rgba(240, 147, 251, 0.1);
+    color: #f093fb;
+}
+
+.stats-info .stats-icon {
+    background: rgba(79, 172, 254, 0.1);
+    color: #4facfe;
+}
+
+.stats-success .stats-icon {
+    background: rgba(67, 233, 123, 0.1);
+    color: #43e97b;
+}
+
+.stats-content h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+    line-height: 1;
+}
+
+.stats-content p {
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Revenue Cards */
+.revenue-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 25px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.revenue-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+}
+
+.revenue-content h4 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.revenue-content p {
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.revenue-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+/* Orders Header */
+.orders-header {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* Filters Section */
+.filters-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.filters-form .form-group {
+    margin-bottom: 0;
+}
+
+.filters-form label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.filters-form .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.filters-form .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Orders Table */
+.orders-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.orders-table {
+    margin: 0;
+    border: none;
+}
+
+.orders-table thead th {
+    background: #f8f9fa;
+    border: none;
+    padding: 20px 15px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.orders-table tbody td {
+    padding: 20px 15px;
+    border-top: 1px solid #f1f3f4;
+    vertical-align: middle;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Order ID */
+.order-id strong {
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* Customer Info */
+.customer-info .customer-name {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.customer-info .customer-email {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Order Items */
+.order-items .items-count {
+    font-weight: 600;
+    color: #495057;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.order-items .items-preview {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.order-items .item-name {
+    font-weight: 500;
+}
+
+.order-items .more-items {
+    color: #667eea;
+    font-weight: 500;
+}
+
+/* Order Total */
+.order-total strong {
+    color: #28a745;
+    font-size: 1.1rem;
+}
+
+/* Shipping Zone */
+.shipping-zone {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Status Management */
+.status-container {
+    position: relative;
+}
+
+.status-select {
+    display: none;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-processing {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge:hover {
+    transform: scale(1.05);
+}
+
+/* Order Date */
+.order-date .date {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 2px;
+}
+
+.order-date .time {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-buttons .btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+    padding: 60px 20px;
+}
+
+.empty-state i {
+    opacity: 0.3;
+}
+
+.empty-state h4 {
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #6c757d;
+    margin: 0;
+}
+
+/* Pagination */
+.pagination-container {
+    padding: 25px;
+    border-top: 1px solid #f1f3f4;
+    background: #f8f9fa;
+}
+
+/* Bulk Actions */
+#bulkDeleteBtn {
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-bottom: 1px solid #f1f3f4;
+    padding: 25px;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    border-top: 1px solid #f1f3f4;
+    padding: 20px 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stats-card {
+        margin-bottom: 20px;
+    }
+    
+    .orders-header .row {
+        text-align: center;
+    }
+    
+    .orders-header .col-md-6:last-child {
+        margin-top: 15px;
+    }
+    
+    .filters-form .col-md-3,
+    .filters-form .col-md-2,
+    .filters-form .col-md-1 {
+        margin-bottom: 15px;
+    }
+    
+    .orders-table-container {
+        overflow-x: auto;
+    }
+    
+    .orders-table {
+        min-width: 800px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-content h3 {
+        font-size: 2rem;
+    }
+    
+    .revenue-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .orders-header,
+    .filters-section,
+    .action-buttons,
+    .pagination-container {
+        display: none !important;
+    }
+    
+    .orders-table-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}

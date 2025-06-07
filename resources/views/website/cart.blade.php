@@ -173,10 +173,16 @@
                     </div>
                     
                     <div class="checkout-actions">
-                        <a href="#" class="btn-checkout">
-                            Proceed to Checkout
-                        </a>
-                        <a href="{{ route('products.index') }}" class="btn-continue">
+                        @if ($cart->cartItems->count() > 0)
+                            <a href="{{ route('checkout.show') }}" class="btn-checkout">
+                                Proceed to Checkout
+                            </a>
+                        @else
+                            <button class="btn-checkout" disabled>
+                                Cart is Empty
+                            </button>
+                        @endif
+                        <a href="{{ route('product.index') }}" class="btn-continue">
                             Continue Shopping
                         </a>
                     </div>
