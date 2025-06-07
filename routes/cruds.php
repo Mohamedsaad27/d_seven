@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('contact', ContactController::class);
 
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('admin');
     Route::resource('category', CategoryController::class)->middleware('admin');
     Route::resource('brand', BrandController::class)->middleware('admin');
     Route::resource('products', ProductController::class);
